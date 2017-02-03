@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Makar | Log In</title>
+        <link rel="stylesheet" type="text/css" href="dist/css/bootstrap.min.css">
+		
+		<style>
+			body{
+				width: 100%;
+				height: 100%;
+			}
+			#desc{
+				height: 100vh;
+				background-image: url("img/11.png");
+				background-size: cover;
+				display: inline;
+			}
+			#login{
+				height: 100vh;
+				background-color: #ffffff;
+				display: block;
+				padding-top: 50px;
+			}
+			#logo{
+				height: 175px;
+				width: 190px;
+				display: block;
+				margin: auto;
+				margin-top: 100px;
+			}
+			#words{
+				margin-top: 100px;
+				text-align: center;
+			}
+			#words2{
+				width: 430px;
+				margin-top: 70px;
+				line-height: 125%;
+				text-align: justify;
+			}
+			.words{
+				font-family: "Yu Gothic Light", sans-serif;
+				display: block;
+				margin: auto;
+				color: #cccccc;
+			}
+			.space1{
+				padding-top: 65px;
+			}
+			.space2{
+				padding-top: 20px;
+			}
+			#loginb{
+				padding-top: 50px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			#signb{
+				padding-top: 50px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.breadcrumb{
+				background-color: #ffffff;
+			}
+			footer{
+				padding-top: 10%;
+			}
+			.center-dc{
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.input-group{
+				width: 250px;
+			}
+		</style>
+	</head>
+	
+    <body>
+        <div class='container-fluid'>
+            <div class='row'>
+				<div class="col-lg-7" id="desc">
+					<div>
+						<img src="img/logo2.png" id="logo">
+					</div>
+					<div>
+						<h4 class="words" id="words">A million dollars isn’t cool.</h4>
+						<h4 class="words" id="words2">You know what’s cool? A basilisk, the Arctic, silence, today's air quality, the policeman in the intersection, a bolo tie, Werner Herzog, that blinking red light in the night sky, and also writing. Welcome to Makar.</h4>
+					</div>
+					
+					
+				</div>
+				<div class="col-lg-5" id="login">
+					<ul class="breadcrumb">
+						<li role="presentation"><a class="log" href="#">Login</a></li>
+						<li role="presentation"><a class="sign" href="#">Sign up</a></li>
+					</ul>
+					<div class="row">
+						<div class="col-lg-12 center-dc l">
+							<div>
+								<div class="input-group space1">
+									<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
+									<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
+								</div>
+							
+								<div class="input-group space2">
+									<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+									<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
+								</div>
+							
+								<div id="loginb">
+									<button type="button" class="btn btn-primary">Login</button>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-lg-12 center-dc s">
+							<div>
+								<div class="input-group space1">
+									<input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon2">
+									<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-asterisk"></span></span>
+								</div>
+						
+								<div class="input-group space2">
+									<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
+									<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
+								</div>
+							
+								<div class="input-group space2">
+									<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+									<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
+								</div>
+							
+								<div class="input-group space2">
+									<input type="text" class="form-control" placeholder="Do that one more time" aria-describedby="basic-addon2">
+									<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
+								</div>
+							
+								<div id="signb">
+									<button type="button" class="btn btn-primary">Sign up</button>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					<footer class="center-dc">
+						<div class="col-lg-3">
+							<button type="button" class="btn btn-link">ABOUT US</button>
+						</div>
+							
+						<div class="col-lg-3">
+							<button type="button" class="btn btn-link">TERMS</button>
+						</div>
+						
+						<div class="col-lg-3">
+							<button type="button" class="btn btn-link">PRIVACY</button>
+						</div>
+					</footer>
+				</div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script src="jq/jquery.min.js"></script>
+
+<script>
+	$(document).ready(function(){
+		$(".s").hide();
+		
+		$(".sign").on("click",function(){
+			
+				$(".l").hide();
+				$(".s").show();
+		});	
+		
+		$(".log").on("click",function(){
+			
+				$(".s").hide();
+				$(".l").show();
+		});		
+			
+		
+	});
+</script>
+
