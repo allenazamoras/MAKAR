@@ -3,21 +3,38 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Makar | Log In</title>
-        <link rel="stylesheet" type="text/css" href="dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
 		
 		<style>
 			body{
+				background-image: url("img/11.png");
 				width: 100%;
 				height: 100%;
+				z-index: 0;
+			}
+			.bg{
+				background-image: url("img/11.png");
+				filter: blur(5px);
+				-webkit-filter: blur(5px);
+				position: absolute;
+				z-index: 2;
+				width: 511px;
+				height: 600px;
+			}
+			#login-box{
+				margin-top: 100px;
+				border-radius: 3px;
+				box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
 			}
 			#desc{
-				height: 100vh;
-				background-image: url("img/11.png");
-				background-size: cover;
+				width: 527.66px;
+				height: 600px; /*100vh*/
+				position: absolute;
 				display: inline;
+				z-index: 2;
 			}
 			#login{
-				height: 100vh;
+				height: 600px; /*100vh*/
 				background-color: #ffffff;
 				display: block;
 				padding-top: 50px;
@@ -65,6 +82,11 @@
 			}
 			.breadcrumb{
 				background-color: #ffffff;
+				color: #397ac6;
+			}
+			button:hover{
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  				transition: 0.2s ease;
 			}
 			footer{
 				padding-top: 10%;
@@ -77,96 +99,104 @@
 			.input-group{
 				width: 250px;
 			}
+			.shadow{
+			   -moz-box-shadow:    inset 0 0 10px #000000;
+			   -webkit-box-shadow: inset 0 0 10px #000000;
+			   box-shadow:         inset 0 0 10px #000000;
+			}
 		</style>
 	</head>
 	
     <body>
         <div class='container-fluid'>
-            <div class='row'>
-				<div class="col-lg-7" id="desc">
-					<div>
-						<img src="img/logo2.png" id="logo">
+            <div class="row">
+            	<div id="login-box">
+					<div class="col-lg-4 col-lg-offset-2">
+						<div class="bg"></div>
+						<div id="desc">
+						<div>
+							<img src="img/logo2.png" id="logo">
+						</div>
+						<div>
+							<h4 class="words" id="words">A million dollars isn’t cool.</h4>
+							<h4 class="words" id="words2">You know what’s cool? A basilisk, the Arctic, silence, today's air quality, the policeman in the intersection, a bolo tie, Werner Herzog, that blinking red light in the night sky, and also writing. Welcome to Makar.</h4>
+						</div>
+						</div>
 					</div>
-					<div>
-						<h4 class="words" id="words">A million dollars isn’t cool.</h4>
-						<h4 class="words" id="words2">You know what’s cool? A basilisk, the Arctic, silence, today's air quality, the policeman in the intersection, a bolo tie, Werner Herzog, that blinking red light in the night sky, and also writing. Welcome to Makar.</h4>
-					</div>
-					
-					
-				</div>
-				<div class="col-lg-5" id="login">
-					<ul class="breadcrumb">
-						<li role="presentation"><a class="log" href="#">Login</a></li>
-						<li role="presentation"><a class="sign" href="#">Sign up</a></li>
-					</ul>
-					<div class="row">
-						<div class="col-lg-12 center-dc l">
-							<div>
-								<div class="input-group space1">
-									<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
-									<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
-								</div>
-							
-								<div class="input-group space2">
-									<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
-									<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
-								</div>
-							
-								<div id="loginb">
-									<button type="button" class="btn btn-primary">Login</button>
+					<div class="col-lg-4" id="login">
+						<ul class="breadcrumb">
+							<li role="presentation"><a class="log h4" href="#">Login</a></li>
+							<li role="presentation"><a class="sign h4" href="#">Sign up</a></li>
+						</ul>
+						<div class="row">
+							<div class="col-lg-12 center-dc l">
+								<div>
+									<div class="input-group space1">
+										<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
+										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
+									</div>
+								
+									<div class="input-group space2">
+										<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
+									</div>
+								
+									<div id="loginb">
+										<button type="button" class="btn btn-primary">Login</button>
+									</div>
 								</div>
 							</div>
-						</div>
-						
-						<div class="col-lg-12 center-dc s">
-							<div>
-								<div class="input-group space1">
-									<input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon2">
-									<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-asterisk"></span></span>
-								</div>
-						
-								<div class="input-group space2">
-									<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
-									<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
-								</div>
 							
-								<div class="input-group space2">
-									<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
-									<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
-								</div>
+							<div class="col-lg-12 center-dc s">
+								<div>
+									<div class="input-group space1">
+										<input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon2">
+										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-asterisk"></span></span>
+									</div>
 							
-								<div class="input-group space2">
-									<input type="text" class="form-control" placeholder="Do that one more time" aria-describedby="basic-addon2">
-									<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
-								</div>
-							
-								<div id="signb">
-									<button type="button" class="btn btn-primary">Sign up</button>
+									<div class="input-group space2">
+										<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
+										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
+									</div>
+								
+									<div class="input-group space2">
+										<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
+									</div>
+								
+									<div class="input-group space2">
+										<input type="text" class="form-control" placeholder="Do that one more time" aria-describedby="basic-addon2">
+										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
+									</div>
+								
+									<div id="signb">
+										<button type="button" class="btn btn-primary">Sign up</button>
+									</div>
 								</div>
 							</div>
-						</div>
-						
-					</div>
-					<footer class="center-dc">
-						<div class="col-lg-3">
-							<button type="button" class="btn btn-link">ABOUT US</button>
-						</div>
 							
-						<div class="col-lg-3">
-							<button type="button" class="btn btn-link">TERMS</button>
 						</div>
-						
-						<div class="col-lg-3">
-							<button type="button" class="btn btn-link">PRIVACY</button>
-						</div>
-					</footer>
-				</div>
+						<footer class="center-dc">
+							<div class="col-lg-3">
+								<button type="button" class="btn btn-link h4">ABOUT US</button>
+							</div>
+								
+							<div class="col-lg-3">
+								<button type="button" class="btn btn-link h4">TERMS</button>
+							</div>
+							
+							<div class="col-lg-3">
+								<button type="button" class="btn btn-link h4">PRIVACY</button>
+							</div>
+						</footer>
+					</div>
+				</div>	
             </div>
         </div>
     </body>
 </html>
 
-<script src="jq/jquery.min.js"></script>
+<script src="js/jquery.min.js"></script>
 
 <script>
 	$(document).ready(function(){
@@ -187,4 +217,3 @@
 		
 	});
 </script>
-
