@@ -1,69 +1,69 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<link rel='stylesheet' href='dist/css/bootstrap.min.css'>
-	<title>Makar</title>
-	<style>
-		body{
-			background-color: #fafafa;
-			margin: 0px;
-		}
-		h5{
-			color: gray;
-		}
-		.nav, .navbar-form, .btn{
-			display: inline-block;
-		}
-		.navi{
-			height: 70px;
-		}
-		.navbar{
-			min-width: 100%;
-			position: fixed;
-			z-index: 1;
-			border-radius: 0px;
-		}
-		.navbar-default{
-			background-color: #ffffff;
-		}
-		.navbar-header, #container{
-			width: 100%;
-			height: 50px;
-		}
-		.navbar-brand{
-			padding-top: 10px;
-			padding-left: 60px
-		}
-		.form-control{
-			background-color: #fafafa;
-			width: 300px; !important
-		}
-		.btn-default{
-			border: 0px;
-		}
-		.edit{
-			float: right;
-		}
-		#userinfo{
-			position: fixed;
-		}
-		#logo{
-			width: 150px;
-		}
-		#search{
-			width: 270px;
-		}
-		#options{
-			margin-top: 5px;
-		}
-		#test{
-			margin-top: 1000px;
-		}
-		#box{
-			border: 1px solid yellow;
-		}
-	</style>
-</head>
+	<head>
+		<link rel="stylesheet" type="text/css" href="dist/css/bootstrap.min.css">
+		<title>Makar</title>
+		<style>
+			body{
+				background-color: #fafafa;
+				margin: 0px;
+			}
+			h5{
+				color: gray;
+			}
+			.nav, .navbar-form, .btn{
+				display: inline-block;
+			}
+			.navi{
+				height: 70px;
+			}
+			.navbar{
+				min-width: 100%;
+				position: fixed;
+				z-index: 1;
+				border-radius: 0px;
+			}
+			.navbar-default{
+				background-color: #ffffff;
+			}
+			.navbar-header, #container{
+				width: 100%;
+				height: 50px;
+			}
+			.navbar-brand{
+				padding-top: 10px;
+				padding-left: 60px
+			}
+			.form-control{
+				background-color: #fafafa;
+				width: 300px; !important
+			}
+			.btn-default{
+				border: 0px;
+			}
+			.edit{
+				float: right;
+			}
+			#userinfo{
+				position: fixed;
+			}
+			#logo{
+				width: 150px;
+			}
+			#search{
+				width: 270px;
+			}
+			#options{
+				margin-top: 5px;
+			}
+			#test{
+				margin-top: 1000px;
+			}
+			#box{
+				border: 1px solid yellow;
+			}
+		</style>
+	</head>
 
 <body>
 	<div class='container-fluid'>
@@ -129,7 +129,7 @@
 						<div class="row">
 							<div class="col-lg-4">
 								<h5><span class="badge">1</span> Contributors</h5>
-								<button type="button" class="btn btn-default btn-lg">
+								<button type="button" id="comments" class="btn btn-default btn-lg">
 									<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
 								</button>
 							</div>
@@ -168,19 +168,12 @@
 <script>
 	$(".list-group").hide();
 	$(document).ready(function(){
-		$(".glyphicon-chevron-down").on("click", function(){
+		$("#comments").on("click", function(){
 			console.log("test");
-			$(".list-group").show();
-			$(this).removeClass("glyphicon-chevron-down");
-			$(this).addClass("glyphicon-chevron-up");
+			$(".list-group").toggle();
+			$(this).children().toggleClass("glyphicon-chevron-down");
+			$(this).children().toggleClass("glyphicon-chevron-up");
 			console.log($(this).attr("class"));
-		});
-		
-		$(".glyphicon-chevron-up").on("click", function(){
-			console.log("test2");
-			$(".list-group").hide();
-			$(this).removeClass("glyphicon-chevron-up");
-			$(this).addClass("glyphicon-chevron-down");
 		});
 	});
 </script>
