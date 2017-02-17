@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Makar | Log In</title>
-        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="dist/css/bootstrap.min.css">
 		
 		<style>
 			body{
@@ -18,12 +18,11 @@
 				-webkit-filter: blur(5px);
 				position: absolute;
 				z-index: 2;
-				width: 430px;/*511px*/
+				width: 415px;
 				height: 600px;
 			}
 			#login-box{
-				height: 600px;
-				margin: 20px 0px;
+				margin-top: 50px;
 				border-radius: 3px;
 				box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
 			}
@@ -112,84 +111,88 @@
         <div class='container-fluid'>
             <div class="row">
             	<div id="login-box">
-					<div class="col-md-4 col-md-offset-2">
+					<div class="col-lg-4 col-lg-offset-2">
 						<div class="bg"></div>
 						<div id="desc">
-							<div>
-								<img src="img/logo2.png" id="logo">
-							</div>
-							<div>
-								<h4 class="words" id="words">A million dollars isn’t cool.</h4>
-								<h4 class="words" id="words2">You know what’s cool? A basilisk, the Arctic, silence, today's air quality, the policeman in the intersection, a bolo tie, Werner Herzog, that blinking red light in the night sky, and also writing. Welcome to Makar.</h4>
-							</div>
+						<div>
+							<img src="img/logo2.png" id="logo">
+						</div>
+						<div>
+							<h4 class="words" id="words">A million dollars isn’t cool.</h4>
+							<h4 class="words" id="words2">You know what’s cool? A basilisk, the Arctic, silence, today's air quality, the policeman in the intersection, a bolo tie, Werner Herzog, that blinking red light in the night sky, and also writing. Welcome to Makar.</h4>
+						</div>
 						</div>
 					</div>
-					<div class="col-md-4" id="login">
+					<div class="col-lg-4" id="login">
 						<ul class="breadcrumb">
 							<li role="presentation"><a class="log h4" href="#">Login</a></li>
 							<li role="presentation"><a class="sign h4" href="#">Sign up</a></li>
 						</ul>
 						<div class="row">
-							<div class="col-md-12 center-dc l">
+							<div class="col-lg-12 center-dc l">
 								<div>
-									<div class="input-group space1">
-										<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
-										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
-									</div>
+									<form action="" method="POST">
+										<div class="input-group space1">
+											<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
+											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
+										</div>
 								
-									<div class="input-group space2">
-										<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
-										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
-									</div>
+										<div class="input-group space2">
+											<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
+										</div>
 								
-									<div id="loginb">
-										<button type="button" class="btn btn-primary">Login</button>
-									</div>
+										<div id="loginb">
+											<button type="submit" class="btn btn-primary">Login</button>
+										</div>
+									</form>
 								</div>
 							</div>
 							
-							<div class="col-md-12 center-dc s">
+							<div class="col-lg-12 center-dc s">
 								<div>
-									<div class="input-group space1">
-										<input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon2">
-										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-asterisk"></span></span>
-									</div>
+									<form action="" method="">
+										<div class="input-group space1">
+											<input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon2">
+											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-asterisk"></span></span>
+										</div>
 							
-									<div class="input-group space2">
-										<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
-										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
-									</div>
+										<div class="input-group space2">
+											<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
+											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
+										</div>
 								
-									<div class="input-group space2">
-										<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
-										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
-									</div>
+										<div class="input-group space2">
+											<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
+										</div>
 								
-									<div class="input-group space2">
-										<input type="text" class="form-control" placeholder="Do that one more time" aria-describedby="basic-addon2">
-										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
-									</div>
+										<div class="input-group space2">
+											<input type="text" class="form-control" placeholder="Do that one more time" aria-describedby="basic-addon2">
+											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"	></span></span>
+										</div>
 								
-									<div id="signb">
-										<button type="button" class="btn btn-primary">Sign up</button>
-									</div>
+										<div id="signb">
+											<button type="submit" class="btn btn-primary">Sign up</button>
+										</div>
+									</form>
 								</div>
 							</div>
 							
 						</div>
 						<footer class="center-dc">
-							<div class="col-md-3">
+							<div class="col-lg-3">
 								<button type="button" class="btn btn-link h4">ABOUT US</button>
 							</div>
 								
-							<div class="col-md-3">
+							<div class="col-lg-3">
 								<button type="button" class="btn btn-link h4">TERMS</button>
 							</div>
 							
-							<div class="col-md-3">
+							<div class="col-lg-3">
 								<button type="button" class="btn btn-link h4">PRIVACY</button>
 							</div>
-						</footer> 
+						</footer>
 					</div>
 				</div>	
             </div>
