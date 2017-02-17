@@ -18,7 +18,7 @@
 				-webkit-filter: blur(5px);
 				position: absolute;
 				z-index: 2;
-				width: 415px;
+				width: 433px;
 				height: 600px;
 			}
 			#login-box{
