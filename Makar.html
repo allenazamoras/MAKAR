@@ -1,179 +1,220 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<link rel="stylesheet" type="text/css" href="dist/css/bootstrap.min.css">
-		<title>Makar</title>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Makar | Log In</title>
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+		
 		<style>
 			body{
-				background-color: #fafafa;
-				margin: 0px;
-			}
-			h5{
-				color: gray;
-			}
-			.nav, .navbar-form, .btn{
-				display: inline-block;
-			}
-			.navi{
-				height: 70px;
-			}
-			.navbar{
-				min-width: 100%;
-				position: fixed;
-				z-index: 1;
-				border-radius: 0px;
-			}
-			.navbar-default{
-				background-color: #ffffff;
-			}
-			.navbar-header, #container{
+				background-image: url("img/11.png");
 				width: 100%;
-				height: 50px;
+				height: 100%;
+				z-index: 0;
 			}
-			.navbar-brand{
-				padding-top: 10px;
-				padding-left: 60px
+			.bg{
+				background-image: url("img/11.png");
+				filter: blur(5px);
+				-webkit-filter: blur(5px);
+				position: absolute;
+				z-index: 2;
+				width: 430px;/*511px*/
+				height: 600px;
 			}
-			.form-control{
-				background-color: #fafafa;
-				width: 300px; !important
+			#login-box{
+				height: 600px;
+				margin: 20px 0px;
+				border-radius: 3px;
+				box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
 			}
-			.btn-default{
-				border: 0px;
+			#desc{
+				width: 415px;
+				height: 600px; /*100vh*/
+				position: absolute;
+				display: inline;
+				z-index: 2;
 			}
-			.edit{
-				float: right;
-			}
-			#userinfo{
-				position: fixed;
+			#login{
+				height: 600px; /*100vh*/
+				background-color: #ffffff;
+				display: block;
+				padding-top: 50px;
 			}
 			#logo{
-				width: 150px;
+				height: 175px;
+				width: 190px;
+				display: block;
+				margin: auto;
+				margin-top: 100px;
 			}
-			#search{
-				width: 270px;
+			#words{
+				margin-top: 100px;
+				text-align: center;
 			}
-			#options{
-				margin-top: 5px;
+			#words2{
+				width: 430px;
+				margin-top: 70px;
+				line-height: 125%;
+				text-align: justify;
 			}
-			#test{
-				margin-top: 1000px;
+			.words{
+				font-family: "Yu Gothic Light", sans-serif;
+				display: block;
+				margin: auto;
+				color: #cccccc;
 			}
-			#box{
-				border: 1px solid yellow;
+			.space1{
+				padding-top: 65px;
+			}
+			.space2{
+				padding-top: 20px;
+			}
+			#loginb{
+				padding-top: 50px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			#signb{
+				padding-top: 50px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.breadcrumb{
+				background-color: #ffffff;
+				color: #397ac6;
+			}
+			button:hover{
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  				transition: 0.2s ease;
+			}
+			footer{
+				padding-top: 10%;
+			}
+			.center-dc{
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.input-group{
+				width: 250px;
+			}
+			.shadow{
+			   -moz-box-shadow:    inset 0 0 10px #000000;
+			   -webkit-box-shadow: inset 0 0 10px #000000;
+			   box-shadow:         inset 0 0 10px #000000;
 			}
 		</style>
 	</head>
-
-<body>
-	<div class='container-fluid'>
-		<div class='row navi'>
-			<nav class="navbar navbar-default">
-				<div class="container-fluid" id="container">
-					<div class="navbar-header">
-						<div class="col-lg-12">
-							<div class="col-lg-2">
-								<a class="navbar-brand" href="#">
-									<img id="logo" src="img/logo1.png">
-								</a>
-							</div>
-							
-							<div class="nav col-lg-3 col-lg-offset-2 col-md-offset-1">
-								<form class="navbar-form" role="search">
-									<input id="search" type="text" class="form-control" placeholder="Search">
-								</form>
-							</div>
-							
-							<div class="nav col-lg-2 col-lg-offset-3 col-md-offset-1" id="options">
-								<button type="button" class="btn btn-default btn-lg">
-									<span class="glyphicon glyphicon-user" aria-hidden="true" aria-label="User"></span>
-								</button>
-								
-								<button type="button" class="btn btn-default btn-lg">
-									<span class="glyphicon glyphicon-globe" aria-hidden="true" aria-label="Notifications"></span>
-								</button>
-								
-								<button type="button" class="btn btn-default btn-lg">
-									<span class="glyphicon glyphicon-off" aria-hidden="true" aria-label="Log-out"></span>
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</nav>
-		</div>
-		
-		<div class="row cont">
-			<div class="col-lg-3">
-				<div class="row">
-					<div class="col-lg-10 col-lg-offset-1">
-						<div class="thumbnail">
-							<img src="img/logo.png" alt="picture">
-								<div class="caption">
-									<h3>NAME</h3>
-									<h5>@username</h5>
-								</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-lg-5">
-				<div class="panel panel-primary">
-					<div class="panel-heading">TITLE</div>
-					<div class="panel-body">
-						<p>A friendly desert community where the sun is hot, 
-						   the moon is beautiful, and mysterious lights pass 
-						   overhead while we all pretend to sleep. 
-						   Welcome to Night Vale.</p>
-						<div class="row">
-							<div class="col-lg-4">
-								<h5><span class="badge">1</span> Contributors</h5>
-								<button type="button" id="comments" class="btn btn-default btn-lg">
-									<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
-								</button>
-							</div>
-							
-							<div class="col-lg-4 col-lg-offset-4">
-								<button type="button" class="btn btn-default btn-lg edit">
-									<span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
-								</button>
-								<button type="button" class="btn btn-default btn-lg edit">
-									<span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
-								</button>
-							</div>
-						</div>
-						
-						<ul class="list-group">
+	
+    <body>
+        <div class='container-fluid'>
+            <div class="row">
+            	<div id="login-box">
+					<div class="col-md-4 col-md-offset-2">
+						<div class="bg"></div>
+						<div id="desc">
 							<div>
-								<blockquote>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-									<footer><cite title="Source Title">@username</cite></footer>
-								</blockquote>
+								<img src="img/logo2.png" id="logo">
 							</div>
-						</ul>
+							<div>
+								<h4 class="words" id="words">A million dollars isn’t cool.</h4>
+								<h4 class="words" id="words2">You know what’s cool? A basilisk, the Arctic, silence, today's air quality, the policeman in the intersection, a bolo tie, Werner Herzog, that blinking red light in the night sky, and also writing. Welcome to Makar.</h4>
+							</div>
+						</div>
 					</div>
-				</div>
-			</div>
-			
-			<div class="col-lg-3" id="box">
-				
-			</div>
-		</div>
-	</div>
-</body>
+					<div class="col-md-4" id="login">
+						<ul class="breadcrumb">
+							<li role="presentation"><a class="log h4" href="#">Login</a></li>
+							<li role="presentation"><a class="sign h4" href="#">Sign up</a></li>
+						</ul>
+						<div class="row">
+							<div class="col-md-12 center-dc l">
+								<div>
+									<div class="input-group space1">
+										<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
+										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
+									</div>
+								
+									<div class="input-group space2">
+										<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
+									</div>
+								
+									<div id="loginb">
+										<button type="button" class="btn btn-primary">Login</button>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-md-12 center-dc s">
+								<div>
+									<div class="input-group space1">
+										<input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon2">
+										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-asterisk"></span></span>
+									</div>
+							
+									<div class="input-group space2">
+										<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
+										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
+									</div>
+								
+									<div class="input-group space2">
+										<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
+									</div>
+								
+									<div class="input-group space2">
+										<input type="text" class="form-control" placeholder="Do that one more time" aria-describedby="basic-addon2">
+										<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
+									</div>
+								
+									<div id="signb">
+										<button type="button" class="btn btn-primary">Sign up</button>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+						<footer class="center-dc">
+							<div class="col-md-3">
+								<button type="button" class="btn btn-link h4">ABOUT US</button>
+							</div>
+								
+							<div class="col-md-3">
+								<button type="button" class="btn btn-link h4">TERMS</button>
+							</div>
+							
+							<div class="col-md-3">
+								<button type="button" class="btn btn-link h4">PRIVACY</button>
+							</div>
+						</footer> 
+					</div>
+				</div>	
+            </div>
+        </div>
+    </body>
 </html>
 
 <script src="jq/jquery.min.js"></script>
+
 <script>
-	$(".list-group").hide();
 	$(document).ready(function(){
-		$("#comments").on("click", function(){
-			console.log("test");
-			$(".list-group").toggle();
-			$(this).children().toggleClass("glyphicon-chevron-down");
-			$(this).children().toggleClass("glyphicon-chevron-up");
-			console.log($(this).attr("class"));
-		});
+		$(".s").hide();
+		
+		$(".sign").on("click",function(){
+			
+				$(".l").hide();
+				$(".s").show();
+		});	
+		
+		$(".log").on("click",function(){
+			
+				$(".s").hide();
+				$(".l").show();
+		});		
+			
+		
 	});
 </script>
