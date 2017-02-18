@@ -111,7 +111,7 @@
 							<img src="img/logo.png" alt="picture">
 								<div class="caption">
 									<h3>NAME</h3>
-									<h5>@username</h5>
+									<h5>username</h5>
 								</div>
 						</div>
 					</div>

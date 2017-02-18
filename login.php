@@ -63,7 +63,7 @@
 				color: #cccccc;
 			}
 			.space1{
-				padding-top: 65px;
+				padding-top: 50px;
 			}
 			.space2{
 				padding-top: 20px;
@@ -75,7 +75,7 @@
 				justify-content: center;
 			}
 			#signb{
-				padding-top: 50px;
+				padding-top: 40px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -131,14 +131,14 @@
 						<div class="row">
 							<div class="col-lg-12 center-dc l">
 								<div>
-									<form action="" method="POST">
+									<form action="login_check.php" method="POST">
 										<div class="input-group space1">
-											<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
+											<input name="email" type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
 											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
 										</div>
 								
 										<div class="input-group space2">
-											<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+											<input name="password" type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
 											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
 										</div>
 								
@@ -151,24 +151,29 @@
 							
 							<div class="col-lg-12 center-dc s">
 								<div>
-									<form action="" method="">
+									<form action="register.php" method="POST">
 										<div class="input-group space1">
-											<input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon2">
+											<input name="name" type="text" class="form-control" placeholder="Full Name" aria-describedby="basic-addon2">
+											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-asterisk"></span></span>
+										</div>
+										
+										<div class="input-group space2">
+											<input name="username" type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon2">
 											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-asterisk"></span></span>
 										</div>
 							
 										<div class="input-group space2">
-											<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
+											<input name="email" type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
 											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
 										</div>
 								
 										<div class="input-group space2">
-											<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+											<input name="password" type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
 											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
 										</div>
 								
 										<div class="input-group space2">
-											<input type="text" class="form-control" placeholder="Do that one more time" aria-describedby="basic-addon2">
+											<input name="password2" type="text" class="form-control" placeholder="Do that one more time" aria-describedby="basic-addon2">
 											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"	></span></span>
 										</div>
 								
@@ -182,15 +187,15 @@
 						</div>
 						<footer class="center-dc">
 							<div class="col-lg-3">
-								<button type="button" class="btn btn-link h4">ABOUT US</button>
+								<button type="button" class="btn btn-default h4">ABOUT US</button>
 							</div>
 								
 							<div class="col-lg-3">
-								<button type="button" class="btn btn-link h4">TERMS</button>
+								<button type="button" class="btn btn-default h4">TERMS</button>
 							</div>
 							
 							<div class="col-lg-3">
-								<button type="button" class="btn btn-link h4">PRIVACY</button>
+								<button type="button" class="btn btn-default h4">PRIVACY</button>
 							</div>
 						</footer>
 					</div>
