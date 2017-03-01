@@ -44,8 +44,16 @@
 			.edit{
 				float: right;
 			}
+			.fix{
+				position: fixed;
+			}
 			#userinfo{
 				position: fixed;
+				width: 250px;
+			}
+			#featured{
+				position: fixed;
+				right: 20px;
 			}
 			#logo{
 				width: 150px;
@@ -103,22 +111,26 @@
 			</nav>
 		</div>
 		
-		<div class="row cont">
-			<div class="col-lg-3">
-				<div class="row">
-					<div class="col-lg-10 col-lg-offset-1">
-						<div class="thumbnail">
-							<img src="img/logo.png" alt="picture">
-								<div class="caption">
-									<h3>NAME</h3>
-									<h5>username</h5>
-								</div>
-						</div>
-					</div>
+		<div id="userinfo"> <!-- user info and actions -->
+			<div class="thumbnail">
+				<img src="img/logo.png" alt="picture">
+				<div class="caption">
+					<h3>NAME</h3>
+					<h5>@username</h5>
 				</div>
+				<button type="button" class="btn btn-primary h4">Write</button>
 			</div>
+		</div>
+		<div id="featured" class="thumbnail">
+			<p>Post of the day</p>
+			<p>Writer of the Day</p>
+			<p>Most Contributed</p>
+			<p>Most Favorite</p>
+		</div>
+	</div>
+		<div class="row">
 
-			<div class="col-lg-5">
+			<div class="col-lg-5 col-lg-offset-3">
 				<div class="panel panel-primary">
 					<div class="panel-heading">TITLE</div>
 					<div class="panel-body">
@@ -129,7 +141,78 @@
 						<div class="row">
 							<div class="col-lg-4">
 								<h5><span class="badge">1</span> Contributors</h5>
-								<button type="button" id="comments" class="btn btn-default btn-lg">
+								<button type="button" class="btn btn-default btn-lg comments">
+									<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
+								</button>
+							</div>
+							
+							<div class="col-lg-4 col-lg-offset-4">
+								<button type="button" class="btn btn-default btn-lg edit">
+									<span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
+								</button>
+								<button type="button" class="btn btn-default btn-lg edit">
+									<span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
+								</button>
+							</div>
+						</div>
+						
+						<ul class="list-group">
+							<div>
+								<blockquote>
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+									<footer><cite title="Source Title">@username</cite></footer>
+								</blockquote>
+							</div>
+						</ul>
+					</div>
+				</div>
+				<!-- copying  -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">TITLE</div>
+					<div class="panel-body">
+						<p>A friendly desert community where the sun is hot, 
+						   the moon is beautiful, and mysterious lights pass 
+						   overhead while we all pretend to sleep. 
+						   Welcome to Night Vale.</p>
+						<div class="row">
+							<div class="col-lg-4">
+								<h5><span class="badge">1</span> Contributors</h5>
+								<button type="button" class="btn btn-default btn-lg comments">
+									<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
+								</button>
+							</div>
+							
+							<div class="col-lg-4 col-lg-offset-4">
+								<button type="button" class="btn btn-default btn-lg edit">
+									<span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
+								</button>
+								<button type="button" class="btn btn-default btn-lg edit">
+									<span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
+								</button>
+							</div>
+						</div>
+						
+						<ul class="list-group">
+							<div>
+								<blockquote>
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+									<footer><cite title="Source Title">@username</cite></footer>
+								</blockquote>
+							</div>
+						</ul>
+					</div>
+				</div>
+				<div class="panel panel-primary">
+					<div class="panel-heading">TITLE</div>
+					<div class="panel-body">
+						<p>A friendly desert community where the sun is hot, 
+						   the moon is beautiful, and mysterious lights pass 
+						   overhead while we all pretend to sleep. 
+						   Welcome to Night Vale.</p>
+						<div class="row">
+							<div class="col-lg-4">
+								<h5><span class="badge">1</span> Contributors</h5>
+								<button type="button" class="btn btn-default btn-lg comments">
 									<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
 								</button>
 							</div>
@@ -156,11 +239,8 @@
 				</div>
 			</div>
 			
-			<div class="col-lg-3" id="box">
-				
-			</div>
 		</div>
-	</div>
+		
 </body>
 </html>
 
@@ -168,9 +248,11 @@
 <script>
 	$(".list-group").hide();
 	$(document).ready(function(){
-		$("#comments").on("click", function(){
-			console.log("test");
-			$(".list-group").toggle();
+		$(".comments").on("click", function(){
+			var x = $(this).parent().parent().parent().parent().siblings().children(".panel-body").children(".list-group"); console.log(x);
+			var y = $(this).parent().parent().siblings(".list-group");
+			$(x).slideUp();
+			$(y).slideToggle();
 			$(this).children().toggleClass("glyphicon-chevron-down");
 			$(this).children().toggleClass("glyphicon-chevron-up");
 			console.log($(this).attr("class"));
