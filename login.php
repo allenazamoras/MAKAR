@@ -1,3 +1,6 @@
+<?php
+	$x = 0;
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -133,12 +136,12 @@
 								<div>
 									<form action="login_check.php" method="POST">
 										<div class="input-group space1">
-											<input name="email" type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
-											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
+											<input name="email" type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2" required>
+											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-envelope"></span></span>
 										</div>
-								
+										
 										<div class="input-group space2">
-											<input name="password" type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+											<input name="password" type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2" required>
 											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
 										</div>
 								
@@ -153,27 +156,27 @@
 								<div>
 									<form action="register.php" method="POST">
 										<div class="input-group space1">
-											<input name="name" type="text" class="form-control" placeholder="Full Name" aria-describedby="basic-addon2">
-											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-asterisk"></span></span>
-										</div>
-										
-										<div class="input-group space2">
-											<input name="username" type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon2">
-											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-asterisk"></span></span>
-										</div>
-							
-										<div class="input-group space2">
-											<input name="email" type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2">
+											<input name="name" type="text" class="form-control" placeholder="Full Name" aria-describedby="basic-addon2" required>
 											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-user"></span></span>
 										</div>
+										
+										<div class="input-group space2" id="run">
+											<input name="username" type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon2" required>
+											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-tags"></span></span>
+										</div>
+							
+										<div class="input-group space2" id="rem">
+											<input name="email" type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon2" required>
+											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-envelope"></span></span>
+										</div>
 								
-										<div class="input-group space2">
-											<input name="password" type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+										<div class="input-group space2" id="rpass">
+											<input name="password" type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2" required>
 											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
 										</div>
 								
-										<div class="input-group space2">
-											<input name="password2" type="text" class="form-control" placeholder="Do that one more time" aria-describedby="basic-addon2">
+										<div class="input-group space2" id="rpass2">
+											<input name="password2" type="text" class="form-control" placeholder="Do that one more time" aria-describedby="basic-addon2" required>
 											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"	></span></span>
 										</div>
 								
@@ -212,17 +215,14 @@
 		$(".s").hide();
 		
 		$(".sign").on("click",function(){
-			
 				$(".l").hide();
 				$(".s").show();
 		});	
 		
 		$(".log").on("click",function(){
-			
 				$(".s").hide();
 				$(".l").show();
 		});		
-			
 		
 	});
 </script>

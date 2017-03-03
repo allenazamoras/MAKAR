@@ -2,14 +2,13 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="dist/css/bootstrap.min.css">
+		<script src="jq/jquery.min.js"></script>
+		<script src="dist/js/bootstrap.min.js"></script>
 		<title>Makar</title>
 		<style>
 			body{
 				background-color: #fafafa;
 				margin: 0px;
-			}
-			h5{
-				color: gray;
 			}
 			.nav, .navbar-form, .btn{
 				display: inline-block;
@@ -44,8 +43,28 @@
 			.edit{
 				float: right;
 			}
+			.fix{
+				position: fixed;
+			}
+			.write{
+				width: 565px; !important
+			}
+			.featured{
+				display: block;
+				position: fixed;
+				width: 300px;
+				right: 40px;
+			}
+			.author{
+				color: #ffffff;
+			}
+			.contri{
+				color: gray;
+			}
 			#userinfo{
 				position: fixed;
+				width: 250px;
+				left: 40px;
 			}
 			#logo{
 				width: 150px;
@@ -103,24 +122,99 @@
 			</nav>
 		</div>
 		
-		<div class="row cont">
-			<div class="col-lg-3">
-				<div class="row">
-					<div class="col-lg-10 col-lg-offset-1">
-						<div class="thumbnail">
-							<img src="img/logo.png" alt="picture">
-								<div class="caption">
-									<h3>NAME</h3>
-									<h5>username</h5>
-								</div>
-						</div>
-					</div>
+		<div id="userinfo"> <!-- user info and actions -->
+			<div class="thumbnail">
+				<img src="img/logo.png" alt="picture">
+				<div class="caption">
+					<h3 name="fname">NAME</h3>
+					<h5 name="uname">username</h5>
+				</div>
+				<button type="button" class="btn btn-primary h4" data-toggle="modal" data-target="#write">Write</button>
+			</div>
+		</div>
+		<!--<div class="featured thumbnail">
+			<p>Post of the day</p>
+			<p>Writer of the Day</p>
+			<p>Most Contributed</p>
+			<p>Most Favorite</p>
+		</div>-->
+		<div class="featured">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h5 class="panel-title"><strong>Post of the Day</strong></h5>
+				</div>
+				<div class="panel-body">
+					<h5>Night Vale <small>by GlowCloud</small></h5>
 				</div>
 			</div>
-
-			<div class="col-lg-5">
+			
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h5 class="panel-title"><strong>Writer of the Day</strong></h5>
+				</div>
+				<div class="panel-body">
+					<h5>Cecil Baldwin</h5>
+				</div>
+			</div>
+			
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h5 class="panel-title"><strong>Most Contributed</strong></h5>
+				</div>
+				<div class="panel-body">
+					<h5>Night Vale <small>by GlowCloud</small></h5>
+				</div>
+			</div>
+			
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h5 class="panel-title"><strong>Most Favourites</strong></h5>
+				</div>
+				<div class="panel-body">
+					<h5>Night Vale <small>by GlowCloud</small></h5>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-5 col-lg-offset-3">
 				<div class="panel panel-primary">
-					<div class="panel-heading">TITLE</div>
+					<div class="panel-heading"><strong>TITLE</strong><small class="edit">by <a href="#" class="author">GlowCloud</a></small></div>
+						<div class="panel-body">
+							<p>A friendly desert community where the sun is hot, 
+							   the moon is beautiful, and mysterious lights pass 
+							   overhead while we all pretend to sleep. 
+							   Welcome to Night Vale.</p>
+							<div class="row">
+								<div class="col-lg-4">
+									<h5 class="contri"><span class="badge">1</span> Contributors</h5>
+									<button type="button" class="btn btn-default btn-lg comments">
+										<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
+									</button>
+								</div>
+								
+								<div class="col-lg-4 col-lg-offset-4">
+									<button type="button" class="btn btn-default btn-lg edit">
+										<span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
+									</button>
+									<button type="button" class="btn btn-default btn-lg edit" data-toggle="modal" data-target="#contribute">
+										<span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
+									</button>
+								</div>
+							</div>
+							
+							<ul class="list-group">
+								<div>
+									<blockquote>
+										<h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</h5>
+										<footer><cite title="Source Title">username</cite></footer>
+									</blockquote>
+								</div>
+							</ul>
+						</div>
+				</div>
+				<!-- copying  -->
+				<div class="panel panel-primary">
+					<div class="panel-heading"><strong>TITLE</strong><small class="edit">by <a href="#" class="author">GlowCloud</a></small></div>
 					<div class="panel-body">
 						<p>A friendly desert community where the sun is hot, 
 						   the moon is beautiful, and mysterious lights pass 
@@ -128,8 +222,8 @@
 						   Welcome to Night Vale.</p>
 						<div class="row">
 							<div class="col-lg-4">
-								<h5><span class="badge">1</span> Contributors</h5>
-								<button type="button" id="comments" class="btn btn-default btn-lg">
+								<h5 class="contri"><span class="badge">1</span> Contributors</h5>
+								<button type="button" class="btn btn-default btn-lg comments">
 									<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
 								</button>
 							</div>
@@ -138,7 +232,7 @@
 								<button type="button" class="btn btn-default btn-lg edit">
 									<span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
 								</button>
-								<button type="button" class="btn btn-default btn-lg edit">
+								<button type="button" class="btn btn-default btn-lg edit" data-toggle="modal" data-target="#contribute">
 									<span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
 								</button>
 							</div>
@@ -147,30 +241,95 @@
 						<ul class="list-group">
 							<div>
 								<blockquote>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-									<footer><cite title="Source Title">@username</cite></footer>
+									<h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</h5>
+									<footer><cite title="Source Title">username</cite></footer>
+								</blockquote>
+							</div>
+						</ul>
+					</div>
+				</div>
+				<div class="panel panel-primary">
+					<div class="panel-heading"><strong>TITLE</strong><small class="edit">by <a href="#" class="author">GlowCloud</a></small></div>
+					<div class="panel-body">
+						<p>A friendly desert community where the sun is hot, 
+						   the moon is beautiful, and mysterious lights pass 
+						   overhead while we all pretend to sleep. 
+						   Welcome to Night Vale.</p>
+						<div class="row">
+							<div class="col-lg-4">
+								<h5 class="contri"><span class="badge">1</span> Contributors</h5>
+								<button type="button" class="btn btn-default btn-lg comments">
+									<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
+								</button>
+							</div>
+							
+							<div class="col-lg-4 col-lg-offset-4">
+								<button type="button" class="btn btn-default btn-lg edit">
+									<span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
+								</button>
+								<button type="button" class="btn btn-default btn-lg edit" data-toggle="modal" data-target="#contribute">
+									<span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
+								</button>
+							</div>
+						</div>
+						
+						<ul class="list-group">
+							<div>
+								<blockquote>
+									<h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</h5>
+									<footer><cite title="Source Title">username</cite></footer>
 								</blockquote>
 							</div>
 						</ul>
 					</div>
 				</div>
 			</div>
-			
-			<div class="col-lg-3" id="box">
-				
+		</div>
+		<div id="write" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Title</h4>
+						<input name="wtitle" type="text" class="form-control write" required>
+					</div>
+					<div class="modal-body">
+						<textarea class="form-control write" rows="7"></textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success" data-dismiss="modal">Post</button>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
+		<div id="contribute" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 name="ctitle" class="modal-title">Title (database)</h4>
+					</div>
+					<div class="modal-body">
+						<textarea class="form-control write" rows="7"></textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success" data-dismiss="modal">Add (or something)</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
 </body>
 </html>
 
-<script src="jq/jquery.min.js"></script>
 <script>
 	$(".list-group").hide();
 	$(document).ready(function(){
-		$("#comments").on("click", function(){
-			console.log("test");
-			$(".list-group").toggle();
+		$(".comments").on("click", function(){
+			var x = $(this).parent().parent().parent().parent().siblings().children(".panel-body").children(".list-group"); console.log(x);
+			var y = $(this).parent().parent().siblings(".list-group");
+			$(x).slideUp();
+			$(y).slideToggle();
 			$(this).children().toggleClass("glyphicon-chevron-down");
 			$(this).children().toggleClass("glyphicon-chevron-up");
 			console.log($(this).attr("class"));
