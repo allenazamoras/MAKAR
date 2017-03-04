@@ -141,7 +141,7 @@
 										</div>
 										
 										<div class="input-group space2">
-											<input name="password" type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2" required>
+											<input name="password" type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon2" required>
 											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
 										</div>
 								
@@ -171,12 +171,12 @@
 										</div>
 								
 										<div class="input-group space2" id="rpass">
-											<input name="password" type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon2" required>
+											<input name="password" type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon2" required>
 											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"></span></span>
 										</div>
 								
 										<div class="input-group space2" id="rpass2">
-											<input name="password2" type="text" class="form-control" placeholder="Do that one more time" aria-describedby="basic-addon2" required>
+											<input name="password2" type="password" class="form-control" placeholder="Do that one more time" aria-describedby="basic-addon2" required>
 											<span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-link"	></span></span>
 										</div>
 								
