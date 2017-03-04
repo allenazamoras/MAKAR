@@ -81,6 +81,9 @@
 			#box{
 				border: 1px solid yellow;
 			}
+			a{
+				color: black;
+			}
 		</style>
 	</head>
 
@@ -105,7 +108,7 @@
 							
 							<div class="nav col-lg-2 col-lg-offset-3 col-md-offset-1" id="options">
 								<button type="button" class="btn btn-default btn-lg">
-									<span class="glyphicon glyphicon-user" aria-hidden="true" aria-label="User"></span>
+									<a href="profile.php"><span class="glyphicon glyphicon-user" aria-hidden="true" aria-label="User"></span></a>
 								</button>
 								
 								<button type="button" class="btn btn-default btn-lg">
