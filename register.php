@@ -39,6 +39,9 @@
 			$_SESSION["school"] = $row["school"];
 			$_SESSION["dob"] = $row["dob"];
 			
+			$sql2 = "INSERT INTO followers (user_id, follower_id) VALUES ('".$_SESSION["user_id"]."', '".$_SESSION["user_id"]."')";
+			$db2 = mysqli_query($conn, $sql2); 
+			
 			header("Location: homepage.php");
 		}else{
 			echo"<script>alert('PASSWORD does not match');

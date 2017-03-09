@@ -105,7 +105,7 @@
 					<h3 name="fname"><?php echo $_SESSION["name"];?></h3>
 					<h5 name="uname" class="contri"><?php echo $_SESSION["username"];?></h5>
 				</div>
-				<button type="button" class="btn btn-primary h4" data-toggle="modal" data-target="#write">Write</button>
+				<button type="button" class="btn btn-primary h4" data-toggle="modal" data-target="#writem" id="write">Write</button>
 			</div>
 		</div>
 	
@@ -160,26 +160,27 @@
 							$row = $post2->fetch_assoc();
 							echo '<div class="panel panel-primary">
 									<div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit">by <a href="#" class="author">'.$row["username"].'</a></small></div>
-										<div class="panel-body">
-											<p>'.$post["post"].'</p>
-											<div class="row">
-												<div class="col-lg-4">
-													<h5 class="contri"><span class="badge">'.$post["no_contri"].'</span> Contributors</h5>
-													<button type="button" class="btn btn-default btn-lg comments">
-														<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
-													</button>
-												</div>
-												
-												<div class="col-lg-4 col-lg-offset-4">
-													<input type="hidden" value="'.$post["post_id"].'">
-													<button type="button" class="btn btn-default btn-lg edit">
-														<span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
-													</button>
-													<button type="button" class="btn btn-default btn-lg edit" data-toggle="modal" data-target="#contribute">
-														<span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
-													</button>
-												</div>
+									
+									<div class="panel-body">
+										<p>'.$post["post"].'</p>
+										<div class="row">
+											<div class="col-lg-4">
+												<h5 class="contri"><span class="badge">'.$post["no_contri"].'</span> Contributors</h5>
+												<button type="button" class="btn btn-default btn-lg comments">
+													<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
+												</button>
 											</div>
+												
+											<div class="col-lg-4 col-lg-offset-4">
+												<input type="hidden" value="'.$post["post_id"].'" >
+												<button type="button" class="btn btn-default btn-lg edit">
+													<span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
+												</button>
+												<button type="button" class="btn btn-default btn-lg edit add_c" data-toggle="modal" data-target="#contribute">
+													<span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
+												</button>
+											</div>
+										</div>
 							
 											<ul class="list-group">';
 							$qcontri = "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC";
@@ -206,20 +207,23 @@
 					
 				?>
 			</div>	
-			<div id="write" class="modal fade" role="dialog">
+			<div id="writem" class="modal fade" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Title</h4>
-							<input name="wtitle" type="text" class="form-control write" required>
-						</div>
-						<div class="modal-body">
-							<textarea class="form-control write" rows="7"></textarea>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-success" data-dismiss="modal">Post</button>
-						</div>
+						<form method="POST" action="write.php">
+							<div class="modal-header">
+								<input type="hidden" value="">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Title</h4>
+								<input name="wtitle" type="text" class="form-control write" required>
+							</div>
+							<div class="modal-body">
+								<textarea name="wcontent" class="form-control write" rows="7"></textarea>
+							</div>
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-success">Post</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -228,13 +232,16 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 name="ctitle" class="modal-title"></h4>
+							<h4 name="ctitle" id="ctitle" class="modal-title"></h4>
 						</div>
 						<div class="modal-body">
-							<textarea class="form-control write" rows="7"></textarea>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-success" data-dismiss="modal">Add (or something)</button>
+							<form method="POST" action="contribute.php">
+								<input name="id" type="hidden" value="" id="id">
+								<textarea name="content" class="form-control write" rows="7"></textarea>
+								<div class="modal-footer">
+									<button type="submit" class="btn btn-success">Add (or something)</button>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -254,11 +261,14 @@
 			$(y).slideToggle();
 			$(this).children().toggleClass("glyphicon-chevron-down");
 			$(this).children().toggleClass("glyphicon-chevron-up");
-			console.log($(this).attr("class"));
 		});
 		
-		$(".edit").on("click", function(){
+		$(".add_c").on("click", function(){
+			var id = $(this).prev().prev().val();
+			var title = $(this).parent().parent().parent().prev().find("strong").text();
 			
+			$("#contribute #ctitle").text(title);
+			$("#contribute #id").val(id);
 		});
 	});
 </script>
