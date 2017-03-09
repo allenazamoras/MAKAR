@@ -3,6 +3,7 @@
 	if(!isset($_SESSION['user_id'])){
 		header("location: login.php");
 	}
+  require("connectdb.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -100,10 +101,15 @@
 			a{
 				color: black;
 			}
-        .panel-heading{
-            background-image: linear-gradient(#04519b,#044687 60%,#033769);
-            color: #fff !important; 
-        }
+      .panel-heading{
+          background-image: linear-gradient(#04519b,#044687 60%,#033769);
+          color: #fff !important; 
+      }
+      #prof_pic{
+        height: 200px;
+        width: 200px;
+        padding: 0;
+      }
     </style>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -126,17 +132,44 @@
     <!-- Page Content -->
     <div class="container">
   <div class="row">
-      <div class="col-sm-10"><h1>Papito</h1></div>
-      <div class="col-sm-2"><a href="/users" class="pull-right"><img title="profile image" class="img-circle img-responsive" src="http://www.gravatar.com/avatar/28fd20ccec6865e2d5f0e1f4446eb7bf?s=100"></a></div>
-    </div>
+      <div class="col-sm-8"><h1><?php echo $_SESSION['username']?></h1></div>
+      <div class="col-sm-4 pull-right" id="prof_pic">
+          <?php
+            $query = mysqli_query($conn,"SELECT * FROM users WHERE user_id='{$_SESSION['user_id']}'");
+            $row = mysqli_fetch_assoc($query);
+              if($row['profile_pic'] == ""){
+                echo "<img title='profile image' class='img-responsive' src='img/default.png' alt='Default Profile Pic'>";
+              } else {
+                echo "<img title='profile image' class='img-responsive' src='img/".$row['profile_pic']."' alt='Profile Pic'>";
+              }
+              echo "<br>";
+          ?>
+      </div>
+  </div>
     <div class="row">
       <div class="col-sm-3"><!--left col-->
               
           <ul class="list-group">
             <li class="list-group-item text-muted">Profile</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span> 2.13.2014</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Real name</strong></span> Joseph Doe</li>
+            <li class='list-group-item text-right'><span class='pull-left'><strong>Real name</strong></span><?php echo $_SESSION["name"]?></li>
+            <?php 
+            if(isset($_SESSION["email"])){
+              echo "<li class='list-group-item text-right'><span class='pull-left'><strong>Email</strong></span>{$_SESSION["email"]}</li>";
+            }
+            if(isset($_SESSION["school"])){
+              echo "<li class='list-group-item text-right'><span class='pull-left'><strong>School</strong></span>{$_SESSION["school"]}</li>";
+            }
+            if(isset($_SESSION["phone_no"])){
+              echo "<li class='list-group-item text-right'><span class='pull-left'><strong>Phone Number</strong></span>{$_SESSION["phone_no"]}</li>";
+            }
+            if(isset($_SESSION["address"])){
+              echo "<li class='list-group-item text-right'><span class='pull-left'><strong>Address</strong></span>{$_SESSION["address"]}</li>";
+            }
+            if(isset($_SESSION["school"])){
+              echo "<li class='list-group-item text-right'><span class='pull-left'><strong>Date of Birth</strong></span>{$_SESSION["dob"]}</li>";
+            }
             
+            ?>
           </ul> 
            
           <!-- NOTICE: if you want to use the fa classes, add <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">  they add icons -->  
@@ -277,15 +310,15 @@
                     </tr>
                   </tbody>
                 </table> -->
-                <hr>
-                <nav aria-label="Page navigation" class="col-md-4 col-md-offset-4 text-center">
+                 <hr>
+                <!-- <nav aria-label="Page navigation" class="col-md-4 col-md-offset-4 text-center">
                   <ul class="pagination">
                     <li class="page-item"><a class="page-link" href="#home" data-toggle="tab">Home</a></li>
                     <li class="page-item"><a class="page-link" href="#messages" data-toggle="tab">Messages</a></li>
                     <li class="page-item"><a class="page-link" href="#settings" data-toggle="tab">Settings</a></li>
                   </ul>
-                </nav>
-              </div><!--/table-resp-->
+                </nav> -->
+              </div>
               
               <hr>
               
@@ -338,64 +371,70 @@
              </div><!--/tab-pane-->
              <div class="tab-pane" id="settings">
                 
-                
+                  
                   <hr>
-                  <form class="form" action="##" method="post" id="registrationForm">
+                  <form class="form" action="updateinfo.php" method="post" id="registrationForm">
                       <div class="form-group">
                           
                           <div class="col-xs-6">
-                              <label for="first_name"><h4>First name</h4></label>
-                              <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any.">
+                              <label><h4>Username</h4></label>
+                              <input type="text" class="form-control" name="username" placeholder="enter a username" title="enter an awesome username">
                           </div>
                       </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                            <label for="last_name"><h4>Last name</h4></label>
-                              <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
-                          </div>
-                      </div>
-          
-                      <div class="form-group">
+                      <!-- to be added to db later -->
+          <!--        <div class="form-group">
                           
                           <div class="col-xs-6">
                               <label for="phone"><h4>Phone</h4></label>
                               <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">
                           </div>
                       </div>
-          
+
                       <div class="form-group">
                           <div class="col-xs-6">
                              <label for="mobile"><h4>Mobile</h4></label>
                               <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
                           </div>
                       </div>
+           -->
                       <div class="form-group">
                           
                           <div class="col-xs-6">
-                              <label for="email"><h4>Email</h4></label>
-                              <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
+                              <label><h4>Email</h4></label>
+                              <input type="email" class="form-control" name="email" placeholder="you@email.com" title="enter your email.">
                           </div>
                       </div>
                       <div class="form-group">
                           
                           <div class="col-xs-6">
-                              <label for="email"><h4>Location</h4></label>
-                              <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
+                              <label><h4>Address</h4></label>
+                              <input type="email" class="form-control" name="address" placeholder="somewhere" title="enter a location">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <div class="col-xs-6">
+                             <label><h4>School</h4></label>
+                              <input type="text" class="form-control" name="school" placeholder="school of cool" title="enter your mobile number if any.">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <div class="col-xs-6">
+                             <label><h4>Date of Birth</h4></label>
+                              <input type="text" class="form-control" name="dob" placeholder="date of birth" title="enter your mobile number if any.">
                           </div>
                       </div>
                       <div class="form-group">
                           
                           <div class="col-xs-6">
-                              <label for="password"><h4>Password</h4></label>
-                              <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
+                              <label><h4>New Password</h4></label>
+                              <input type="password" class="form-control" name="newpassword" placeholder="new password" title="enter your password.">
                           </div>
                       </div>
                       <div class="form-group">
                           
                           <div class="col-xs-6">
-                            <label for="password2"><h4>Verify</h4></label>
-                              <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">
+                            <label><h4>Verify Old Password</h4></label>
+                              <input type="password" class="form-control" name="oldpassword" placeholder="old password" title="enter your password2.">
                           </div>
                       </div>
                       <div class="form-group">
