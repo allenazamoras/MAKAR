@@ -1,5 +1,8 @@
 <?php
 	session_start();
+	if(!isset($_SESSION['user_id'])){
+		header("location: login.php");
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +15,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Bare - Start Bootstrap Template</title>
+    <title>Profile - MAKAR</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" type="text/css" href="dist/css/bootstrap.min.css">
@@ -115,7 +118,7 @@
 <body>
     <header>
     <!-- Navigation -->
-        <?php
+    <?php
 			require("navbar.php");
 		?>
     </header>
@@ -123,7 +126,7 @@
     <!-- Page Content -->
     <div class="container">
   <div class="row">
-      <div class="col-sm-10"><h1>Joeuser</h1></div>
+      <div class="col-sm-10"><h1>Papito</h1></div>
       <div class="col-sm-2"><a href="/users" class="pull-right"><img title="profile image" class="img-circle img-responsive" src="http://www.gravatar.com/avatar/28fd20ccec6865e2d5f0e1f4446eb7bf?s=100"></a></div>
     </div>
     <div class="row">
@@ -132,7 +135,6 @@
           <ul class="list-group">
             <li class="list-group-item text-muted">Profile</li>
             <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span> 2.13.2014</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Last seen</strong></span> Yesterday</li>
             <li class="list-group-item text-right"><span class="pull-left"><strong>Real name</strong></span> Joseph Doe</li>
             
           </ul> 
@@ -170,7 +172,7 @@
           <div class="tab-content">
             <div class="tab-pane active" id="home">
               <div class="table-responsive">
-                <table class="table table-hover">
+                <!-- <table class="table table-hover">
                   <thead>
                     <tr>
                       <th>#</th>
@@ -274,13 +276,15 @@
                       <td>Table cell</td>
                     </tr>
                   </tbody>
-                </table>
+                </table> -->
                 <hr>
-                <div class="row">
-                  <div class="col-md-4 col-md-offset-4 text-center">
-                    <ul class="pagination" id="myPager"></ul>
-                  </div>
-                </div>
+                <nav aria-label="Page navigation" class="col-md-4 col-md-offset-4 text-center">
+                  <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#home" data-toggle="tab">Home</a></li>
+                    <li class="page-item"><a class="page-link" href="#messages" data-toggle="tab">Messages</a></li>
+                    <li class="page-item"><a class="page-link" href="#settings" data-toggle="tab">Settings</a></li>
+                  </ul>
+                </nav>
               </div><!--/table-resp-->
               
               <hr>
