@@ -30,7 +30,7 @@
 			session_start();
 			$user = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
 			$row = mysqli_fetch_array($user);
-			
+			$_SESSION["user_id"] = $row["user_id"];
 			$_SESSION["name"] = $row["name"];
 			$_SESSION["username"] = $row["username"];
 			$_SESSION["no_followers"] = $row["no_followers"];

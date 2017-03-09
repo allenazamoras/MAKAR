@@ -13,7 +13,7 @@
 
 		if($password == $row['password']){
 			session_start();
-			
+			$_SESSION["user_id"] = $row["user_id"];
 			$_SESSION["name"] = $row["name"];
 			$_SESSION["username"] = $row["username"];
 			$_SESSION["no_followers"] = $row["no_followers"];

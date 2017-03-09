@@ -147,13 +147,16 @@
 			<div class="col-lg-5 col-lg-offset-3">
 				<?php
 					include_once "connectdb.php";
-					
-					$posts = mysqli_query($conn, "SELECT * FROM post WHERE author_name IN (SELECT user_name FROM followers WHERE follower_name='".$_SESSION["username"]."') ORDER BY pdate DESC");
+					$qpost = "SELECT * FROM post WHERE author_id IN (SELECT user_id FROM followers WHERE follower_id='".$_SESSION["user_id"]."') ORDER BY pdate DESC";
+					$posts = mysqli_query($conn, $qpost);
 					
 					if($posts->num_rows > 0){
 						while($post = $posts->fetch_assoc()){
+							$qpost2 = "SELECT username FROM users WHERE user_id='".$post["author_id"]."'";
+							$post2 = mysqli_query($conn, $qpost2);
+							$row = $post2->fetch_assoc();
 							echo '<div class="panel panel-primary">
-									<div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit">by <a href="#" class="author">'.$post["author_name"].'</a></small></div>
+									<div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit">by <a href="#" class="author">'.$row["username"].'</a></small></div>
 										<div class="panel-body">
 											<p>'.$post["post"].'</p>
 											<div class="row">
@@ -165,6 +168,7 @@
 												</div>
 												
 												<div class="col-lg-4 col-lg-offset-4">
+													<input type="hidden" value="'.$post["post_id"].'">
 													<button type="button" class="btn btn-default btn-lg edit">
 														<span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
 													</button>
@@ -175,13 +179,18 @@
 											</div>
 							
 											<ul class="list-group">';
-							$contri = mysqli_query($conn, "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC");
+							$qcontri = "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC";
+							$contri = mysqli_query($conn, $qcontri);
+						
 							if($contri->num_rows > 0){
 								while($contrib = $contri->fetch_assoc()){
+									$qcontri2 = "SELECT username FROM users WHERE user_id='".$contrib["author_id"]."'";
+									$contri2 = mysqli_query($conn, $qcontri2);
+									$fetch = $contri2->fetch_assoc();
 									echo'<div>
 											<blockquote>
 												<h5>'.$contrib["contribution"].'</h5>
-												<footer><cite title="Source Title">'.$contrib["author_name"].'</cite></footer>
+												<footer><cite title="Source Title">'.$fetch["username"].'</cite></footer>
 											</blockquote>
 										</div>';
 								}
@@ -216,7 +225,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 name="ctitle" class="modal-title">Title (database)</h4>
+							<h4 name="ctitle" class="modal-title"></h4>
 						</div>
 						<div class="modal-body">
 							<textarea class="form-control write" rows="7"></textarea>
@@ -231,7 +240,7 @@
 	</div>
 </body>
 </html>
-
+<script src="jq/jquery.min.js"></script>
 <script>
 	$(".list-group").hide();
 	$(document).ready(function(){
@@ -243,6 +252,10 @@
 			$(this).children().toggleClass("glyphicon-chevron-down");
 			$(this).children().toggleClass("glyphicon-chevron-up");
 			console.log($(this).attr("class"));
+		});
+		
+		$(".edit").on("click", function(){
+			
 		});
 	});
 </script>
