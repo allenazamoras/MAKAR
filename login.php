@@ -15,15 +15,6 @@
 				height: 100%;
 				z-index: 0;
 			}
-			.bg{
-				background-image: url("img/11.png");
-				filter: blur(5px);
-				-webkit-filter: blur(5px);
-				position: absolute;
-				z-index: 2;
-				width: 433px;
-				height: 600px;
-			}
 			#login-box{
 				margin-top: 50px;
 				border-radius: 3px;
@@ -115,15 +106,12 @@
             <div class="row">
             	<div id="login-box">
 					<div class="col-lg-4 col-lg-offset-2">
-						<div class="bg"></div>
-						<div id="desc">
 						<div>
 							<img src="img/logo2.png" id="logo">
 						</div>
 						<div>
-							<h4 class="words" id="words">A million dollars isn’t cool.</h4>
-							<h4 class="words" id="words2">You know what’s cool? A basilisk, the Arctic, silence, today's air quality, the policeman in the intersection, a bolo tie, Werner Herzog, that blinking red light in the night sky, and also writing. Welcome to Makar.</h4>
-						</div>
+							<div class="words h4" id="words">A million dollars isn’t cool.</div>
+							<div class="words h4" id="words2">You know what’s cool? A basilisk, the Arctic, silence, today's air quality, the policeman in the intersection, a bolo tie, Werner Herzog, that blinking red light in the night sky, and also writing. Welcome to Makar.</div>
 						</div>
 					</div>
 					<div class="col-lg-4" id="login">
