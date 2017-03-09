@@ -4,6 +4,8 @@
 
 -- --------------------------------------------------------
 
+CREATE DATABASE makar;
+USE makar;
 --
 -- Table structure for table `contributions`
 --
