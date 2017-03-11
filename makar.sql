@@ -4,6 +4,8 @@
 
 -- --------------------------------------------------------
 
+CREATE DATABASE makar;
+USE makar;
 --
 -- Table structure for table `contributions`
 --
@@ -101,7 +103,7 @@ CREATE TABLE `users` (
   `address` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
   `school` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
   `dob` date DEFAULT NULL,
-  `profile_pic` longblob
+  `profile_pic` varchar(50)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
