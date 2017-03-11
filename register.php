@@ -1,5 +1,5 @@
 <?php
-	include_once "connectdb.php";
+	require("connectdb.php");
 	
 	$name = $_POST["name"];
 	$username = $_POST["username"];
@@ -34,8 +34,6 @@
 			$_SESSION["email"] = $row["email"];
 			$_SESSION["name"] = $row["name"];
 			$_SESSION["username"] = $row["username"];
-			$_SESSION["no_followers"] = $row["no_followers"];
-			$_SESSION["phone_no"] = $row["phone_no"];
 			$_SESSION["address"] = $row["address"];
 			$_SESSION["school"] = $row["school"];
 			$_SESSION["dob"] = $row["dob"];

@@ -156,7 +156,7 @@
 		<div class="row">
 			<div class="col-lg-5 col-lg-offset-3">
 				<?php
-					include_once "connectdb.php";
+					require("connectdb.php");
 					$qpost = "SELECT * FROM post WHERE author_id IN (SELECT user_id FROM followers WHERE follower_id='".$_SESSION["user_id"]."') ORDER BY pdate DESC";
 					$posts = mysqli_query($conn, $qpost);
 					
@@ -308,25 +308,6 @@
 					$("#wbtn").prop("disabled", false);
 				}else{
 					$("#wbtn").prop("disabled", true);
-				}
-			});
-		});
-		
-		$("#search").keyup(function(){
-			$(".searchr").remove();
-			var data = $(this).val();
-			$.ajax({
-				url : "search.php",
-				type : "POST",
-				data : {search : data},
-				success: function(array){
-					if(array != 0){
-						console.log(array);
-						//$.each(JSON.parse(array), function(i, value){
-							//console.log(i+" : "+value)
-							//$("#dropsearch").append("<li class='searchr'><a href='#'><div>"+value+"</div><div>"+array["username"]+"</div></a></li>");
-						//});
-					}
 				}
 			});
 		});

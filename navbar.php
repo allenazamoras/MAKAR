@@ -10,11 +10,8 @@
 							</div>
 							
 							<div class="nav col-lg-3 col-lg-offset-2 col-md-offset-1">
-								<form class="navbar-form" role="search">
-									<input id="search" type="text" class="form-control" placeholder="Search">
-									<ul id="dropsearch">
-									
-									</ul>
+								<form method="POST" action="search.php" class="navbar-form" role="search">
+									<input name="search" id="search" type="text" class="form-control" placeholder="Search">
 								</form>
 							</div>
 							

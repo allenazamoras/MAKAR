@@ -1,5 +1,5 @@
 <?php 
-	include_once "connectdb.php";
+	require("connectdb.php");
 	
 	$email = $_POST["email"];
 	$password = $_POST["password"];
@@ -23,7 +23,7 @@
 			$_SESSION["school"] = $row["school"];
 			$_SESSION["dob"] = $row["dob"];
 			
-			header("Location: homepage.php?");
+			header("Location: homepage.php?id=".$_SESSION["user_id"]);
 		}else{
 			header("Location: login.php?");
 		}
