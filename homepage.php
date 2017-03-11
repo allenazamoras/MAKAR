@@ -16,6 +16,13 @@
 				background-color: #fafafa;
 				margin: 0px;
 			}
+			ul{
+				list-style-type: none;
+			}
+			li{
+				text-decoration: none;
+				color: black;
+			}
 			.nav, .navbar-form, .btn{
 				display: inline-block;
 			}
@@ -212,16 +219,16 @@
 					<div class="modal-content">
 						<form method="POST" action="write.php">
 							<div class="modal-header">
-								<input type="hidden" value="">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
 								<h4 class="modal-title">Title</h4>
 								<input name="wtitle" type="text" class="form-control write" required>
 							</div>
 							<div class="modal-body">
-								<textarea name="wcontent" class="form-control write" rows="7"></textarea>
+								<textarea name="wcontent" class="form-control write" id="wcontent" rows="7"></textarea>
 							</div>
 							<div class="modal-footer">
-								<button type="submit" class="btn btn-success">Post</button>
+								<h5 class="contri" id="wmax">170</h5>
+								<button type="submit" class="btn btn-success" disabled="disabled" id="wbtn">Post</button>
 							</div>
 						</form>
 					</div>
@@ -237,9 +244,10 @@
 						<div class="modal-body">
 							<form method="POST" action="contribute.php">
 								<input name="id" type="hidden" value="" id="id">
-								<textarea name="content" class="form-control write" rows="7"></textarea>
+								<textarea name="content" class="form-control write" id="ccontent" rows="7"></textarea>
 								<div class="modal-footer">
-									<button type="submit" class="btn btn-success">Add (or something)</button>
+									<h5 class="contri" id="cmax">170</h5>
+									<button type="submit" class="btn btn-success" disabled="disabled" id="cbtn">Contribute</button>
 								</div>
 							</form>
 						</div>
@@ -253,6 +261,8 @@
 <script src="jq/jquery.min.js"></script>
 <script>
 	$(".list-group").hide();
+	$("#cbtn").prop("disabled", false);
+	$("#wbtn").prop("disabled", false);
 	$(document).ready(function(){
 		$(".comments").on("click", function(){
 			var x = $(this).parent().parent().parent().parent().siblings().children(".panel-body").children(".list-group"); console.log(x);
@@ -269,6 +279,48 @@
 			
 			$("#contribute #ctitle").text(title);
 			$("#contribute #id").val(id);
+			
+			$("#ccontent").keyup(function(){
+				var clen = $(this).val().length;
+				$("#cmax").text(170-clen);
+				if(clen <= 170){
+					$("#cbtn").prop("disabled", false);
+				}else{
+					$("#cbtn").prop("disabled", true);
+				}
+			});
+			
+		});
+		
+		$("#wcontent").on("click", function(){
+			$(this).keyup(function(){
+				var wlen = $(this).val().length;
+				$("#wmax").text(170-wlen);
+				if(wlen <= 170){
+					$("#wbtn").prop("disabled", false);
+				}else{
+					$("#wbtn").prop("disabled", true);
+				}
+			});
+		});
+		
+		$("#search").keyup(function(){
+			$(".searchr").remove();
+			var data = $(this).val();
+			$.ajax({
+				url : "search.php",
+				type : "POST",
+				data : {search : data},
+				success: function(array){
+					if(array != 0){
+						console.log(array);
+						//$.each(JSON.parse(array), function(i, value){
+							//console.log(i+" : "+value)
+							//$("#dropsearch").append("<li class='searchr'><a href='#'><div>"+value+"</div><div>"+array["username"]+"</div></a></li>");
+						//});
+					}
+				}
+			});
 		});
 	});
 </script>

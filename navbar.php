@@ -12,6 +12,9 @@
 							<div class="nav col-lg-3 col-lg-offset-2 col-md-offset-1">
 								<form class="navbar-form" role="search">
 									<input id="search" type="text" class="form-control" placeholder="Search">
+									<ul id="dropsearch">
+									
+									</ul>
 								</form>
 							</div>
 							
