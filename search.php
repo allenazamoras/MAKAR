@@ -164,7 +164,7 @@
 						if($rows->num_rows > 0){
 							while($row = $rows->fetch_assoc()){
 								echo"<div class='panel panel-default'>
-										<a href='#' style='color:black; text-decoration:none;'>
+										<a href='profile.php' style='color:black; text-decoration:none;'>
 										<div class='panel-body'>
 											<div class='media'>
 												<input type='hidden' value='".$row["user_id"]."'>
