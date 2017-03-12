@@ -23,7 +23,7 @@
 
     <!-- Custom CSS -->
     <style>
-        body{
+        	body{
 				background-color: #fafafa;
 				margin: 0px;
 			}
@@ -108,6 +108,9 @@
         width: 200px;
         padding: 0;
       }
+      .white{
+        color: white;
+      }
     </style>
 
 </head>
@@ -132,7 +135,7 @@
       <div class="row">
           <div class="col-sm-8" id="username"><h1><?php echo $row['username']?></h1></div>
           <div class="col-sm-4 pull-right" id="prof_pic">
-              <?phps
+              <?php
                   if($row['profile_pic'] == ""){
                     echo "<img title='profile image' class='img-responsive' src='img/default.png' alt='Default Profile Pic'>";
                   } else {
@@ -218,6 +221,63 @@
                     </nav> -->
                     <h4>Recent Activity</h4>
                     <hr>
+				   	<?php
+                      $qpost = "SELECT * FROM post WHERE author_id='{$id}' ORDER BY pdate DESC";
+                      $posts = mysqli_query($conn, $qpost);
+                      
+                      if($posts->num_rows > 0){
+                        while($post = $posts->fetch_assoc()){
+                          $qpost2 = "SELECT username FROM users WHERE user_id='".$post["author_id"]."'";
+                          $post2 = mysqli_query($conn, $qpost2);
+                          $row = $post2->fetch_assoc();
+                          echo '<div class="panel panel-primary">
+                              <div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit white"><span class="glyphicon glyphicon-remove remove" aria-hidden="true" aria-label="down"></span></small></div>
+                              
+                              <div class="panel-body">
+                                <p>'.$post["post"].'</p>
+                                <div class="row">
+                                  <div class="col-lg-4">
+                                    <h5 class="contri"><span class="badge">'.$post["no_contri"].'</span> Contributors</h5>
+                                    <button type="button" class="btn btn-default btn-lg comments">
+                                      <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
+                                    </button>
+                                  </div>
+                                    
+                                  <div class="col-lg-4 col-lg-offset-4 editing">
+                                    <input type="hidden" value="'.$post["post_id"].'" >
+                                    <button type="button" class="btn btn-default btn-lg edit add_f">
+                                      <span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-lg edit add_c" data-toggle="modal" data-target="#contribute">
+                                      <span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
+                                    </button>
+                                  </div>
+                                </div>
+                          
+                                  <ul class="list-group contri">';
+                          $qcontri = "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC";
+                          $contri = mysqli_query($conn, $qcontri);
+                        
+                          if($contri->num_rows > 0){
+                            while($contrib = $contri->fetch_assoc()){
+                              $qcontri2 = "SELECT username FROM users WHERE user_id='".$contrib["author_id"]."'";
+                              $contri2 = mysqli_query($conn, $qcontri2);
+                              $fetch = $contri2->fetch_assoc();
+                              echo'<div>
+                                  <blockquote>
+                                    <h5>'.$contrib["contribution"].'</h5>
+                                    <footer><cite title="Source Title">'.$fetch["username"].'</cite></footer>
+                                  </blockquote>
+                                </div>';
+                            }
+                          }
+                          echo"</ul>
+                            </div>
+                            </div>";
+                        }
+                      }
+                      
+                    ?>
                </div><!--/tab-pane-->
                <div class="tab-pane" id="messages">
                  
@@ -241,28 +301,11 @@
                     <hr>
                     <form class="form updateinfo" action="updateinfo.php" method="post" id="updateform">
                         <div class="form-group">
-                            
                             <div class="col-xs-6">
                                 <label><h4>Username</h4></label>
                                 <input type="text" class="form-control" name="username" placeholder="enter a username" title="enter an awesome username.">
                             </div>
                         </div>
-                        <!-- to be added to db later -->
-                        <!-- <div class="form-group">
-                            
-                            <div class="col-xs-6">
-                                <label for="phone"><h4>Phone</h4></label>
-                                <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                               <label for="mobile"><h4>Mobile</h4></label>
-                                <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
-                            </div>
-                        </div> -->
-            
                         <div class="form-group">
                             <div class="col-xs-6">
                                 <label><h4>Email</h4></label>
@@ -287,18 +330,6 @@
                                 <input type="date" class="form-control" name="dob" title="when were you born?">
                             </div>
                         </div> 
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label><h4>New Password</h4></label>
-                                <input type="password" class="form-control" name="newpassword" placeholder="new password" title="enter a new password if you don't like your old one.">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                              <label><h4>Verify Old Password</h4></label>
-                                <input type="password" class="form-control" name="oldpassword" placeholder="old password" title="enter your old password. For old time's sake.">
-                            </div> 
-                        </div>
                         <div class="form-group">
                              <div class="col-xs-12">
                                   <br>
@@ -325,7 +356,46 @@
                     </form>
                </div><!--/tab-pane-->
             </div><!--/tab-content-->
-
+			<div id="writem" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <form method="POST" action="write.php">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Title</h4>
+                      <input name="wtitle" type="text" class="form-control write" required>
+                    </div>
+                    <div class="modal-body">
+                      <textarea name="wcontent" class="form-control write" id="wcontent" rows="7"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                      <h5 class="contri" id="wmax">170</h5>
+                      <button type="submit" class="btn btn-success" disabled="disabled" id="wbtn">Post</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div> <!--writem-->
+            <div id="contribute" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 name="ctitle" id="ctitle" class="modal-title"></h4>
+                  </div>
+                  <div class="modal-body">
+                    <form method="POST" action="contribute.php">
+                      <input name="id" type="hidden" value="" id="id">
+                      <textarea name="content" class="form-control write" id="ccontent" rows="7"></textarea>
+                      <div class="modal-footer">
+                        <h5 class="contri" id="cmax">170</h5>
+                        <button type="submit" class="btn btn-success" disabled="disabled" id="cbtn">Contribute</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>  <!--contribute-->
         </div><!--/col-9-->
       </div><!--/row-->
     </div><!--/.container-->
@@ -338,36 +408,101 @@
 
     <!-- <script src="jq/update.js"></script> -->
     <script type="text/javascript">
-      $('form.updateinfo').on('submit',function(){
-        var that = $(this),
-          url = that.attr('action'); 
-          type = that.attr('method'); 
-          data = {};
+      $(document).ready(function(){
+        $(".contri").hide();
+        $(".comments").on("click", function(){
+          var contribution_sibs = $(this).parent().parent().parent().parent().siblings().children(".panel-body").children(".list-group"); console.log(contribution_sibs);
+          var contribution_curr = $(this).parent().parent().siblings(".list-group"); console.log(contribution_curr);
 
-          that.find('[name]').each(function(index,value){
-           var that = $(this),
-             name = that.attr('name'),
-             value = that.val();
-           data[name] = value;
+          $(contribution_sibs).slideUp();
+          $(contribution_curr).slideToggle();
+
+          var chevron_sibs = $(contribution_sibs).siblings(".row").children(".col-lg-4").children(".comments").children(); console.log(chevron_sibs);
+          var chevron_curr = $(this).children(); console.log(chevron_curr);
+
+          $(chevron_sibs).addClass("glyphicon-chevron-down");
+          $(chevron_sibs).removeClass("glyphicon-chevron-up");
+          $(chevron_curr).toggleClass("glyphicon-chevron-down");
+          $(chevron_curr).toggleClass("glyphicon-chevron-up");
+          console.log($(this).attr("class"));
+        });
+
+        $('form.updateinfo').on('submit',function(){
+          var that = $(this),
+            url = that.attr('action'); 
+            type = that.attr('method'); 
+            data = {};
+
+            that.find('[name]').each(function(index,value){
+             var that = $(this),
+               name = that.attr('name'),
+               value = that.val();
+             data[name] = value;
+            });
+
+            $.ajax({
+             url: url,
+             type: type,
+             data: data,
+             dataType: "json",
+             success: function(response){
+               alert("User Information Updated!");
+               document.getElementById("updateform").reset();
+
+               $('#username').children('h1').text(response.username);
+               $('#email').html("<span class='pull-left'><strong>Email</strong></span>"+response.email);
+               $('#school').html("<span class='pull-left'><strong>School</strong></span>"+response.school);
+               $('#address').html("<span class='pull-left'><strong>Address</strong></span>"+response.address);
+               $('#dob').html("<span class='pull-left'><strong>Date of Birth</strong></span>"+response.dob);
+             }
+            });
+          return false;
+        });
+
+        $(".add_c").on("click", function(){
+          var id = $(this).prev().prev().val();
+          var title = $(this).parent().parent().parent().prev().find("strong").text();
+          
+          $("#contribute #ctitle").text(title);
+          $("#contribute #id").val(id);
+          
+          $("#ccontent").keyup(function(){
+            var clen = $(this).val().length;
+            $("#cmax").text(170-clen);
+            if(clen <= 170){
+              $("#cbtn").prop("disabled", false);
+            }else{
+              $("#cbtn").prop("disabled", true);
+            }
           });
+          
+        });
+    
+        $(".add_f").on("click", function(){
+          var fav = $(this).children("span");
+          fav.toggleClass("glyphicon-star-empty");
+          fav.toggleClass("glyphicon-star");
+          if(fav.hasClass("glyphicon-star")){
+            alert("I have been loved");
+          }else{
+            alert("I have been hated");
+          }
+        });
 
-          $.ajax({
-           url: url,
-           type: type,
-           data: data,
-           dataType: "json",
-           success: function(response){
-             alert("User Information Updated!");
-             document.getElementById("updateform").reset();
+        $(".remove").on("click", function(){
+          var id = $(this).parent().parent().next().children(".row").children(".editing").children("input").val(); console.log(id);
+          var post = $(this).parent().parent().parent();
+          post.hide('slow', function(){ post.remove(); });
 
-             $('#username').children('h1').text(response.username);
-             $('#email').html("<span class='pull-left'><strong>Email</strong></span>"+response.email);
-             $('#school').html("<span class='pull-left'><strong>School</strong></span>"+response.school);
-             $('#address').html("<span class='pull-left'><strong>Address</strong></span>"+response.address);
-             $('#dob').html("<span class='pull-left'><strong>Date of Birth</strong></span>"+response.dob);
-           }
-          });
-        return false;
+           $.ajax({
+             url: "deletePost.php",
+             type: "POST",
+             data: {post_id : id},
+             success: function(response){
+               alert(response);
+             }
+            });
+        });
       });
     </script>
 
