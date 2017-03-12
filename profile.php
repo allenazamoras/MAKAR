@@ -116,18 +116,23 @@
     <header>
     <!-- Navigation -->
     <?php
-			require("navbar.php");
-		?>
+		require("navbar.php");
+		if(isset($_GET['id'])){
+      		$id = $_GET['id'];
+      	}else{
+      		$id = $_SESSION['user_id'];
+      	}
+        $query = mysqli_query($conn,"SELECT * FROM users WHERE user_id='{$id}'");
+        $row = mysqli_fetch_assoc($query);
+	?>
     </header>
 
     <!-- Page Content -->
     <div class="container">
       <div class="row">
-          <div class="col-sm-8" id="username"><h1><?php echo $_SESSION['username']?></h1></div>
+          <div class="col-sm-8" id="username"><h1><?php echo $row['username']?></h1></div>
           <div class="col-sm-4 pull-right" id="prof_pic">
-              <?php
-                $query = mysqli_query($conn,"SELECT * FROM users WHERE user_id='{$_SESSION['user_id']}'");
-                $row = mysqli_fetch_assoc($query);
+              <?phps
                   if($row['profile_pic'] == ""){
                     echo "<img title='profile image' class='img-responsive' src='img/default.png' alt='Default Profile Pic'>";
                   } else {
@@ -142,22 +147,22 @@
                 
             <ul class="list-group">
               <li class="list-group-item text-muted">Profile</li>
-              <li class='list-group-item text-right' id="name"><span class='pull-left'><strong>Real name</strong></span><?php echo $_SESSION["name"]?></li>
+              <li class='list-group-item text-right' id="name"><span class='pull-left'><strong>Real name</strong></span><?php echo $row["name"]?></li>
               <?php 
-              if($_SESSION["email"]!=""){
-                echo "<li class='list-group-item text-right' id='email'><span class='pull-left'><strong>Email</strong></span>{$_SESSION["email"]}</li>";
+              if($row["email"]!=""){
+                echo "<li class='list-group-item text-right' id='email'><span class='pull-left'><strong>Email</strong></span>{$row["email"]}</li>";
               }
-              if($_SESSION["school"]!=""){
-                echo "<li class='list-group-item text-right' id='school'><span class='pull-left'><strong>School</strong></span>{$_SESSION["school"]}</li>";
+              if($row["school"]!=""){
+                echo "<li class='list-group-item text-right' id='school'><span class='pull-left'><strong>School</strong></span>{$row["school"]}</li>";
               }
-              if($_SESSION["phone_no"]!=""){
-                echo "<li class='list-group-item text-right' id='phone_no'><span class='pull-left'><strong>Phone Number</strong></span>{$_SESSION["phone_no"]}</li>";
+              if($row["phone_no"]!=""){
+                echo "<li class='list-group-item text-right' id='phone_no'><span class='pull-left'><strong>Phone Number</strong></span>{$row["phone_no"]}</li>";
               }
-              if($_SESSION["address"]!=""){
-                echo "<li class='list-group-item text-right' id='address'><span class='pull-left'><strong>Address</strong></span>{$_SESSION["address"]}</li>";
+              if($row["address"]!=""){
+                echo "<li class='list-group-item text-right' id='address'><span class='pull-left'><strong>Address</strong></span>{$row["address"]}</li>";
               }
-              if($_SESSION["dob"]!="" && $_SESSION["dob"]!="0000-00-00"){
-                echo "<li class='list-group-item text-right' id='dob'><span class='pull-left'><strong>Date of Birth</strong></span>{$_SESSION["dob"]}</li>";
+              if($row["dob"]!="" && $row["dob"]!="0000-00-00"){
+                echo "<li class='list-group-item text-right' id='dob'><span class='pull-left'><strong>Date of Birth</strong></span>{$row["dob"]}</li>";
               }
               
               ?>
@@ -175,14 +180,14 @@
               <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li> -->
               <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span>
                 <?php
-                  $postquery = mysqli_query($conn,"SELECT COUNT(post_id) FROM post WHERE author_id='{$_SESSION['user_id']}'");
+                  $postquery = mysqli_query($conn,"SELECT COUNT(post_id) FROM post WHERE author_id='{$row['user_id']}'");
                   $postcount = mysqli_fetch_row($postquery);
                   echo $postcount[0];
                 ?>
               </li>
               <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span>
                 <?php 
-                  echo (($_SESSION["no_followers"]=="")? "0" : "{$_SESSION["no_followers"]}") 
+                  echo (($row["no_followers"]=="")? "0" : "{$row["no_followers"]}") 
                 ?>
               </li>
             </ul>     
