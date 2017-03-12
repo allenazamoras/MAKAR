@@ -499,7 +499,7 @@
              type: "POST",
              data: {post_id : id},
              success: function(response){
-               alert(response);
+               
              }
             });
         });
