@@ -31,12 +31,6 @@
 			$user = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
 			$row = mysqli_fetch_array($user);
 			$_SESSION["user_id"] = $row["user_id"];
-			$_SESSION["email"] = $row["email"];
-			$_SESSION["name"] = $row["name"];
-			$_SESSION["username"] = $row["username"];
-			$_SESSION["address"] = $row["address"];
-			$_SESSION["school"] = $row["school"];
-			$_SESSION["dob"] = $row["dob"];
 			
 			$sql2 = "INSERT INTO followers (user_id, follower_id) VALUES ('".$_SESSION["user_id"]."', '".$_SESSION["user_id"]."')";
 			$db2 = mysqli_query($conn, $sql2); 

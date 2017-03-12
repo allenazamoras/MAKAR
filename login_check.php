@@ -14,14 +14,6 @@
 		if($password == $row['password']){
 			session_start();
 			$_SESSION["user_id"] = $row["user_id"];
-			$_SESSION["email"] = $row["email"];
-			$_SESSION["name"] = $row["name"];
-			$_SESSION["username"] = $row["username"];
-			$_SESSION["no_followers"] = $row["no_followers"];
-			$_SESSION["phone_no"] = $row["phone_no"];
-			$_SESSION["address"] = $row["address"];
-			$_SESSION["school"] = $row["school"];
-			$_SESSION["dob"] = $row["dob"];
 			
 			header("Location: homepage.php?id=".$_SESSION["user_id"]);
 		}else{
