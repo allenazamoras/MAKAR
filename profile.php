@@ -155,9 +155,6 @@
               if($row["school"]!=""){
                 echo "<li class='list-group-item text-right' id='school'><span class='pull-left'><strong>School</strong></span>{$row["school"]}</li>";
               }
-              if($row["phone_no"]!=""){
-                echo "<li class='list-group-item text-right' id='phone_no'><span class='pull-left'><strong>Phone Number</strong></span>{$row["phone_no"]}</li>";
-              }
               if($row["address"]!=""){
                 echo "<li class='list-group-item text-right' id='address'><span class='pull-left'><strong>Address</strong></span>{$row["address"]}</li>";
               }
