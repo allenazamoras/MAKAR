@@ -14,6 +14,8 @@
 		if($password == $row['password']){
 			session_start();
 			$_SESSION["user_id"] = $row["user_id"];
+			$_SESSION["name"] = $row["name"];
+			$_SESSION["username"] = $row["username"];
 			
 			header("Location: homepage.php?id=".$_SESSION["user_id"]);
 		}else{

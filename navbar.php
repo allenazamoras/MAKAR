@@ -20,9 +20,29 @@
 									<a href="profile.php"><span class="glyphicon glyphicon-user" aria-hidden="true" aria-label="User"></span></a>
 								</button>
 								
-								<button type="button" class="btn btn-default btn-lg">
-									<span class="glyphicon glyphicon-globe" aria-hidden="true" aria-label="Notifications"></span>
-								</button>
+								<div class="dropdown" style="display:inline;">
+									<button type="button" class="btn btn-default btn-lg dropdown-toggle" id="notif" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-globe" aria-hidden="true" aria-label="Notifications"></span>
+									</button>
+									<ul class="dropdown-menu" aria-labelledby="notif">
+										<?php
+											require("connectdb.php");
+											
+											$n = "SELECT notification FROM notify WHERE user_id='".$_SESSION["user_id"]."' and nread='0'";
+											$fetch = mysqli_query($conn, $n);
+											
+											if($fetch->num_rows > 0){
+												echo"<style>#notif{color:red;}</style>";
+												while($notif = $fetch->fetch_assoc()){
+													echo "<li class='licontent'>".$notif["notification"]."</li><li role='separator' class='divider'></li>";
+												}
+												require("turnoffn.php");
+											}else{
+												echo"<li class='licontent'>Nothing new so far</li>";
+											}
+										?>
+									</ul>
+								</div>
 								
 								<button type="button" class="btn btn-default btn-lg">
 									<a href="logout.php"><span class="glyphicon glyphicon-off" aria-hidden="true" aria-label="Log-out"></span></a>

@@ -74,6 +74,19 @@
 			.contri{
 				color: gray;
 			}
+			.dropdown-menu {
+				margin-top: 18px;
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+				left: 50%;
+				right: auto;
+				text-align: left;
+				transform: translate(-50%, 0);
+			}
+			.licontent{
+				width: 200px;
+				padding: 5px;
+			}
 			#userinfo{
 				position: fixed;
 				width: 250px;
@@ -167,7 +180,7 @@
 							$row = $post2->fetch_assoc();
 							echo '<div class="panel panel-primary">
 									<div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit">by <a href="#" class="author">'.$row["username"].'</a></small></div>
-									
+									<input type="hidden" value="'.$post["author_id"].'">
 									<div class="panel-body">
 										<p>'.$post["post"].'</p>
 										<div class="row">
@@ -237,20 +250,22 @@
 			<div id="contribute" class="modal fade" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 name="ctitle" id="ctitle" class="modal-title"></h4>
-						</div>
-						<div class="modal-body">
-							<form method="POST" action="contribute.php">
+						<form method="POST" action="contribute.php">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 name="ctitle" id="ctitle" class="modal-title"></h4>
+								<input name="aid" type="hidden" value="" id="aid">
+							</div>
+						
+							<div class="modal-body">
 								<input name="id" type="hidden" value="" id="id">
 								<textarea name="content" class="form-control write" id="ccontent" rows="7"></textarea>
 								<div class="modal-footer">
 									<h5 class="contri" id="cmax">170</h5>
 									<button type="submit" class="btn btn-success" disabled="disabled" id="cbtn">Contribute</button>
 								</div>
-							</form>
-						</div>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>	
@@ -283,11 +298,13 @@
 		
 		$(".add_c").on("click", function(){
 			var id = $(this).prev().prev().val();
-			var title = $(this).parent().parent().parent().prev().find("strong").text();
-			
+			var title = $(this).parent().parent().parent().prev().prev().find("strong").text();
+			var a_id = $(this).parent().parent().parent().prev().val();
+
 			$("#contribute #ctitle").text(title);
 			$("#contribute #id").val(id);
-			
+			$("#contribute #aid").val(a_id);
+
 			$("#ccontent").keyup(function(){
 				var clen = $(this).val().length;
 				$("#cmax").text(170-clen);
@@ -310,6 +327,10 @@
 					$("#wbtn").prop("disabled", true);
 				}
 			});
+		});
+		
+		$("#notif").on("click", function(){
+			$(this).css("color", "black");
 		});
 	});
 </script>
