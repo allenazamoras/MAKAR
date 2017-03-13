@@ -3,7 +3,7 @@
 	require("connectdb.php");
 	
 	$id = $_POST["id"];
-	$content = $_POST["content"];
+	$content = addslashes($_POST["content"]);
 	$aid = $_POST["aid"];
 	
 	$fetcht = "SELECT post_title FROM post WHERE post_id='".$id."'";

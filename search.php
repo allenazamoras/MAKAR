@@ -157,7 +157,7 @@
 					<?php
 						require("connectdb.php");
 						
-						$search = $_POST["search"];
+						$search = addslashes($_POST["search"]);
 						$squery = "SELECT * FROM users WHERE name LIKE '%".$search."%'";
 						$rows = mysqli_query($conn, $squery);
 						

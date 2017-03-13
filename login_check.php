@@ -1,8 +1,8 @@
 <?php 
 	require("connectdb.php");
 	
-	$email = $_POST["email"];
-	$password = $_POST["password"];
+	$email = addslashes($_POST["email"]);
+	$password = addslashes($_POST["password"]);
 	
 	$user = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
 	

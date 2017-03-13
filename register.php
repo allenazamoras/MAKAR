@@ -1,11 +1,11 @@
 <?php
 	require("connectdb.php");
 	
-	$name = $_POST["name"];
-	$username = $_POST["username"];
-	$email = $_POST["email"];
-	$password = $_POST["password"];
-	$password2 = $_POST["password2"];
+	$name = addslashes($_POST["name"]);
+	$username = addslashes($_POST["username"]);
+	$email = addslashes($_POST["email"]);
+	$password = addslashes($_POST["password"]);
+	$password2 = addslashes($_POST["password2"]);
 	
 	$udup = "SELECT username FROM users WHERE username = '$username'";
 	$check1 = mysqli_query($conn, $udup);

@@ -79,6 +79,15 @@
 			.contri{
 				color: gray;
 			}
+			.dropdown-menu {
+				margin-top: 18px;
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+				left: 50%;
+				right: auto;
+				text-align: left;
+				transform: translate(-50%, 0);
+			}
 			#userinfo{
 				
 			}

@@ -177,9 +177,10 @@
 						while($post = $posts->fetch_assoc()){
 							$qpost2 = "SELECT username FROM users WHERE user_id='".$post["author_id"]."'";
 							$post2 = mysqli_query($conn, $qpost2);
+							
 							$row = $post2->fetch_assoc();
 							echo '<div class="panel panel-primary">
-									<div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit">by <a href="#" class="author">'.$row["username"].'</a></small></div>
+									<div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit">by '.$row["username"].'</small></div>
 									<input type="hidden" value="'.$post["author_id"].'">
 									<div class="panel-body">
 										<p>'.$post["post"].'</p>
@@ -193,7 +194,7 @@
 												
 											<div class="col-lg-4 col-lg-offset-4">
 												<input type="hidden" value="'.$post["post_id"].'" >
-												<button type="button" class="btn btn-default btn-lg edit">
+												<button type="button" class="btn btn-default btn-lg edit favourite" value="">
 													<span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
 												</button>
 												<button type="button" class="btn btn-default btn-lg edit add_c" data-toggle="modal" data-target="#contribute">
@@ -202,7 +203,16 @@
 											</div>
 										</div>
 							
-											<ul class="list-group">';
+										<ul class="list-group">';
+											
+							$qfave = "SELECT * FROM favourite WHERE user_id='".$_SESSION["user_id"]."' and post_id='".$post["post_id"]."'";
+							$fave = mysqli_query($conn, $qfave);
+				
+							if($fave->num_rows > 0){
+								echo '<script>$("input[value='.$post["post_id"].']").next().val('.$post["post_id"].').toString();</script>
+									  <style>button[value="'.$post["post_id"].'"]{color: yellow;}</style>';
+							}
+							
 							$qcontri = "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC";
 							$contri = mysqli_query($conn, $qcontri);
 						
@@ -315,6 +325,38 @@
 				}
 			});
 			
+		});
+		
+		$(".favourite").on("click", function(){
+			var n = $(this).prev().val();
+			
+			if($(this).css("color") == "rgb(0, 0, 0)"){
+				$(this).css("color", "yellow");
+				$.ajax({
+					url: "afave.php",
+					data: {post_id : n},
+					type: "POST",
+					success: function(rfav){
+						if(rfav == 1){
+							alert("Post has favouriteded(what? yeah i'm as confused as you are. . .)");
+						}
+					}
+				});
+			}else{
+				$(this).css("color", "black");
+				$.ajax({
+					url: "dfave.php",
+					data: {post_id : n},
+					type: "POST",
+					success: function(rfav){
+						if(rfav == 1){
+							alert("Post de-favourited(is that is even a word?)");
+						}else{
+							alert(rfav);
+						}
+					}
+				});
+			}
 		});
 		
 		$("#wcontent").on("click", function(){
