@@ -23,6 +23,9 @@
 				text-decoration: none;
 				color: black;
 			}
+			.search-img{
+				height: 50px;
+			}
 			.nav, .navbar-form, .btn{
 				display: inline-block;
 			}
@@ -169,7 +172,7 @@
 											<div class='media'>
 												<input type='hidden' value='".$row["user_id"]."'>
 												<div class='media-left media-middle'>
-													<img class='media-object' src='".$row["profile_pic"]."'>
+													<img class='media-object search-img' src=img/'".$row["profile_pic"]."'>
 												</div>
 												<div class='media-body'>
 													<h4>".$row["name"]."</h4>
