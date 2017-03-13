@@ -7,12 +7,12 @@
 	if($_POST["username"]!=""){
 		$username = $_POST["username"];
 	}else{
-		$username = $curr['username'];
+		$username = $curr["username"];
 	}
 	if($_POST["email"]!=""){
 		$email = $_POST["email"];
 	}else{
-		$email = $curr['email'];
+		$email = $curr["email"];
 	}
 	if($_POST["address"]!=""){
 		$address = $_POST["address"];
@@ -24,13 +24,28 @@
 	}else{
 		$school = $curr["school"]; 
 	}
-	if($_POST['dob']!=""){
+	if($_POST["dob"]!=""){
 		$dob = 	$_POST["dob"];
 	}else{
 		$dob = 	$curr["dob"];
 	}
+	if($_POST["about"]!=""){
+		$about = $_POST["about"];
+	}else{
+		$about = $curr["about"];
+	}
 
-	$query = "UPDATE users SET username='{$username}', email='{$email}', address='{$address}', school='{$school}', dob='{$dob}' WHERE user_id = '{$_SESSION['user_id']}'";
+	if($_POST['newpassword']!=""){
+		if($curr["password"]==$_POST['oldpassword']){
+			$password = $_POST['newpassword'];
+		}else{
+			$password = $curr["password"];
+		}
+	}else{
+		$password = $curr["password"];
+	} 
+
+	$query = "UPDATE users SET username='{$username}', email='{$email}', address='{$address}', school='{$school}', dob='{$dob}', about='{$about}', password='{$password}' WHERE user_id = '{$_SESSION['user_id']}'";
 	$update = mysqli_query($conn, $query);
 
 	$_SESSION["username"] = $username;
@@ -43,40 +58,4 @@
 	}
 
 	echo json_encode($set);
-	// $newpassword = $_POST['newpassword'];
-	// $oldpassword = $_POST['oldpassword'];
-
-	
-	// $passquery = "SELECT password FROM users WHERE username='{$_SESSION['username']}'";
-	// $resultpass = mysqli_query($conn,$passquery);
-	// if($row = mysqli_fetch_assoc($resultpass)){
-	// 	if($row['password']==$oldpassword){
-	// 		$password = $newpassword;
-	// 	}else{
-	// 		$password = $row['password'];
-	// 		echo"<script>alert('PASSWORD does not match');</script>";
-	// 	}
-	// }else{
-	// 	echo "<script>alert('error: query failed');</script>";
-	// }
-
-	// // //$password;
-
-	// $udup = "SELECT username FROM users WHERE username = '$username'";
-	// $check1 = mysqli_query($conn, $udup);
-	
-	// $edup = "SELECT email FROM users WHERE email = '$email'";
-	// $check2 = mysqli_query($conn, $edup);
-
-	// $query = "UPDATE users SET username='".$username."', email='".$email."', address='".$address."', school='".$school."', dob='".$dob."', password='".$password."' WHERE user_id = '$username'";
-	
-	// //window.location.href='profile.php';
-	// if(mysqli_num_rows($check1) > 0){
-	// 	echo"<script>alert('USERNAME already exist');</script>";
-	// }else if(filter_var($email, FILTER_VALIDATE_EMAIL) === false){
-	// 	echo"<script>alert('EMAIL is not valid');</script>";
-	// }else if(mysqli_num_rows($check2) > 0){
-	// 	echo"<script>alert('EMAIL already exist');</script>";
-	// }else{
-	// }
 ?>
