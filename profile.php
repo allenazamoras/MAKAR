@@ -22,6 +22,7 @@
     <link rel="stylesheet" type="text/css" href="dist/css/bootstrap.min.css">
 
     <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/animate.css">
     <style>
         	body{
 				background-color: #fafafa;
@@ -116,290 +117,300 @@
 </head>
 
 <body>
-    <header>
-    <!-- Navigation -->
-    <?php
-		require("navbar.php");
-		if(isset($_GET['id'])){
-      		$id = $_GET['id'];
-      	}else{
-      		$id = $_SESSION['user_id'];
-      	}
-        $query = mysqli_query($conn,"SELECT * FROM users WHERE user_id='{$id}'");
-        $row = mysqli_fetch_assoc($query);
-	?>
-    </header>
-
-    <!-- Page Content -->
-    <div class="container">
-      <div class="row">
-          <div class="col-sm-8" id="username"><h1><?php echo $row['username']?></h1></div>
-          <div class="col-sm-4 pull-right" id="prof_pic">
-              <?php
-                  if($row['profile_pic'] == ""){
-                    echo "<img title='profile image' class='img-responsive' src='img/default.png' alt='Default Profile Pic'>";
-                  } else {
-                    echo "<img title='profile image' class='img-responsive img-thumbnail' src='img/".$row['profile_pic']."' alt='Profile Pic'>";
-                  }
-                  echo "<br>";
-              ?>
-          </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-3"><!--left col-->
-                
-            <ul class="list-group">
-              <li class="list-group-item text-muted">Profile</li>
-              <li class='list-group-item text-right' id="name"><span class='pull-left'><strong>Real name</strong></span><?php echo $row["name"]?></li>
-              <?php 
-              if($row["email"]!=""){
-                echo "<li class='list-group-item text-right' id='email'><span class='pull-left'><strong>Email</strong></span>{$row["email"]}</li>";
-              }
-              if($row["school"]!=""){
-                echo "<li class='list-group-item text-right' id='school'><span class='pull-left'><strong>School</strong></span>{$row["school"]}</li>";
-              }
-              if($row["address"]!=""){
-                echo "<li class='list-group-item text-right' id='address'><span class='pull-left'><strong>Address</strong></span>{$row["address"]}</li>";
-              }
-              if($row["dob"]!="" && $row["dob"]!="0000-00-00"){
-                echo "<li class='list-group-item text-right' id='dob'><span class='pull-left'><strong>Date of Birth</strong></span>{$row["dob"]}</li>";
-              }
-              
-              ?>
-            </ul> 
-             
-            <!-- NOTICE: if you want to use the fa classes, add <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">  they add icons -->  
-            <div class="panel panel-default">
-              <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i></div>
-              <div class="panel-body"><a href="http://bootply.com">bootply.com</a></div>
-            </div>
-            
-            <ul class="list-group">
-              <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
-              <!-- <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
-              <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li> -->
-              <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span>
+    <div class='container-fluid'>
+      <!-- Navigation -->
+      <?php
+  		require("navbar.php");
+  		if(isset($_GET['id'])){
+        		$id = $_GET['id'];
+        	}else{
+        		$id = $_SESSION['user_id'];
+        	}
+          $query = mysqli_query($conn,"SELECT * FROM users WHERE user_id='{$id}'");
+          $row = mysqli_fetch_assoc($query);
+  	  ?>
+      <!-- Page Content -->
+      <div class="container animated fadeIn">
+        <div class="row">
+            <div class="col-sm-8" id="username"><h1><?php echo $row['username']?></h1></div>
+            <div class="col-sm-4 pull-right" id="prof_pic">
                 <?php
-                  $postquery = mysqli_query($conn,"SELECT COUNT(post_id) FROM post WHERE author_id='{$row['user_id']}'");
-                  $postcount = mysqli_fetch_row($postquery);
-                  echo $postcount[0];
+                    if($row['profile_pic'] == ""){
+                      echo "<img title='profile image' class='img-responsive' src='img/default.png' alt='Default Profile Pic'>";
+                    } else {
+                      echo "<img title='profile image' class='img-responsive img-thumbnail' src='img/".$row['profile_pic']."' alt='Profile Pic'>";
+                    }
+                    echo "<br>";
                 ?>
-              </li>
-              <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span>
-                <?php 
-                  echo (($row["no_followers"]=="")? "0" : "{$row["no_followers"]}") 
-                ?>
-              </li>
-            </ul>     
-                 
-            <div class="panel panel-default">
-              <div class="panel-heading">Social Media</div>
-              <div class="panel-body">
-                <i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i class="fa fa-twitter fa-2x"></i> <i class="fa fa-pinterest fa-2x"></i> <i class="fa fa-google-plus fa-2x"></i>
-              </div>
             </div>
-            
-        </div><!--/col-3-->
-        <div class="col-sm-9">
-            
-            <ul class="nav nav-tabs" id="myTab">
-              <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
-              <li><a href="#messages" data-toggle="tab">Messages</a></li>
-              <li><a href="#update" data-toggle="tab">Update Information</a></li>
-            </ul>
-                
-            <div class="tab-content">
-               <div class="tab-pane active" id="home">
-                
-                   <hr>
-                    <!-- <nav aria-label="Page navigation" class="col-md-4 col-md-offset-4 text-center">
-                      <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#home" data-toggle="tab">Home</a></li>
-                        <li class="page-item"><a class="page-link" href="#messages" data-toggle="tab">Messages</a></li>
-                        <li class="page-item"><a class="page-link" href="#update" data-toggle="tab">update</a></li>
-                      </ul>
-                    </nav> -->
-                    <h4>Recent Activity</h4>
-                    <hr>
-				   	<?php
-                      $qpost = "SELECT * FROM post WHERE author_id='{$id}' ORDER BY pdate DESC";
-                      $posts = mysqli_query($conn, $qpost);
-                      
-                      if($posts->num_rows > 0){
-                        while($post = $posts->fetch_assoc()){
-                          $qpost2 = "SELECT username FROM users WHERE user_id='".$post["author_id"]."'";
-                          $post2 = mysqli_query($conn, $qpost2);
-                          $row = $post2->fetch_assoc();
-                          echo '<div class="panel panel-primary">
-                              <div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit white"><span class="glyphicon glyphicon-remove remove" aria-hidden="true" aria-label="down"></span></small></div>
-                              
-                              <div class="panel-body">
-                                <p>'.$post["post"].'</p>
-                                <div class="row">
-                                  <div class="col-lg-4">
-                                    <h5 class="contri"><span class="badge">'.$post["no_contri"].'</span> Contributors</h5>
-                                    <button type="button" class="btn btn-default btn-lg comments">
-                                      <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
-                                    </button>
-                                  </div>
-                                    
-                                  <div class="col-lg-4 col-lg-offset-4 editing">
-                                    <input type="hidden" value="'.$post["post_id"].'" >
-                                    <button type="button" class="btn btn-default btn-lg edit add_f">
-                                      <span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default btn-lg edit add_c" data-toggle="modal" data-target="#contribute">
-                                      <span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
-                                    </button>
-                                  </div>
-                                </div>
-                          
-                                  <ul class="list-group contri">';
-                          $qcontri = "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC";
-                          $contri = mysqli_query($conn, $qcontri);
-                        
-                          if($contri->num_rows > 0){
-                            while($contrib = $contri->fetch_assoc()){
-                              $qcontri2 = "SELECT username FROM users WHERE user_id='".$contrib["author_id"]."'";
-                              $contri2 = mysqli_query($conn, $qcontri2);
-                              $fetch = $contri2->fetch_assoc();
-                              echo'<div>
-                                  <blockquote>
-                                    <h5>'.$contrib["contribution"].'</h5>
-                                    <footer><cite title="Source Title">'.$fetch["username"].'</cite></footer>
-                                  </blockquote>
-                                </div>';
-                            }
-                          }
-                          echo"</ul>
-                            </div>
-                            </div>";
+        </div>
+        <div class="row">
+          <div class="col-sm-3"><!--left col-->
+                  
+              <ul class="list-group">
+                <li class="list-group-item text-muted">Profile</li>
+                <li class='list-group-item text-right' id="name"><span class='pull-left'><strong>Real name</strong></span><?php echo $row["name"]?></li>
+                <li class='list-group-item text-right' id='email'><span class='pull-left'><strong>Email</strong></span>
+                  <?php if($row["email"]!=""){
+                          echo $row["email"];
+                        }else{
+                          echo "&nbsp;&nbsp;&nbsp;&nbsp;";
                         }
-                      }
+                  ?>
+                </li>
+                <li class='list-group-item text-right' id='school'><span class='pull-left'><strong>School</strong></span>
+                  <?php if($row["school"]!=""){
+                          echo $row["school"];
+                        }else{
+                          echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+                        }
+                  ?>
+                </li>
+                <li class='list-group-item text-right' id='address'><span class='pull-left'><strong>Address</strong></span>
+                  <?php if($row["address"]!=""){
+                          echo $row["address"];
+                        }else{
+                          echo "&nbsp;&nbsp;&nbsp;&nbsp;"; 
+                        }
+                  ?>
+                </li>
+                <li class='list-group-item text-right' id='dob'><span class='pull-left'><strong>Date of Birth</strong></span>
+                  <?php if($row["dob"]!="" && $row["dob"]!="0000-00-00"){
+                          echo $row["dob"];
+                        }else{
+                          echo "&nbsp;&nbsp;&nbsp;&nbsp;"; 
+                        }
+                  ?>
+                </li>
+              </ul> 
+               
+              <!-- NOTICE: if you want to use the fa classes, add <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">  they add icons --> 
+              <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"> 
+              <div class="panel panel-default">
+                <div class="panel-heading">Something About Me<i class="fa fa-link fa-1x"></i></div>
+                <div class="panel-body"></div>
+              </div>
+              
+              <ul class="list-group">
+                <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
+                <!-- <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li> -->
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span>
+                  <?php
+                    $postquery = mysqli_query($conn,"SELECT COUNT(post_id) FROM post WHERE author_id='{$row['user_id']}'");
+                    $postcount = mysqli_fetch_row($postquery);
+                    echo $postcount[0];
+                  ?>
+                </li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span>
+                  <?php 
+                    $followerquery = mysqli_query($conn,"SELECT COUNT(follower_id) FROM followers WHERE user_id='{$row['user_id']}'");
+                    $followercount = mysqli_fetch_row($followerquery);
+                    echo $followercount[0];
+                  ?>
+                </li>
+              </ul>     
+          </div><!--/col-3-->
+          <div class="col-sm-9">
+              
+              <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
+                <li><a href="#messages" data-toggle="tab">Messages</a></li>
+                <li><a href="#update" data-toggle="tab">Update Information</a></li>
+              </ul>
+                  
+              <div class="tab-content">
+                 <div class="tab-pane active" id="home">
+                  
+                     <hr>
+                      <!-- <nav aria-label="Page navigation" class="col-md-4 col-md-offset-4 text-center">
+                        <ul class="pagination">
+                          <li class="page-item"><a class="page-link" href="#home" data-toggle="tab">Home</a></li>
+                          <li class="page-item"><a class="page-link" href="#messages" data-toggle="tab">Messages</a></li>
+                          <li class="page-item"><a class="page-link" href="#update" data-toggle="tab">update</a></li>
+                        </ul>
+                      </nav> -->
+                      <h4>Recent Activity</h4>
+                      <hr>
+  				   	<?php
+                        $qpost = "SELECT * FROM post WHERE author_id='{$id}' ORDER BY pdate DESC";
+                        $posts = mysqli_query($conn, $qpost);
+                        
+                        if($posts->num_rows > 0){
+                          while($post = $posts->fetch_assoc()){
+                            $qpost2 = "SELECT username FROM users WHERE user_id='".$post["author_id"]."'";
+                            $post2 = mysqli_query($conn, $qpost2);
+                            $row = $post2->fetch_assoc();
+                            echo '<div class="panel panel-primary">
+                                <div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit white"><span class="glyphicon glyphicon-remove remove" aria-hidden="true" aria-label="down"></span></small></div>
+                                
+                                <div class="panel-body">
+                                  <p>'.$post["post"].'</p>
+                                  <div class="row">
+                                    <div class="col-lg-4">
+                                      <h5 class="contri"><span class="badge">'.$post["no_contri"].'</span> Contributors</h5>
+                                      <button type="button" class="btn btn-default btn-lg comments">
+                                        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
+                                      </button>
+                                    </div>
+                                      
+                                    <div class="col-lg-4 col-lg-offset-4 editing">
+                                      <input type="hidden" value="'.$post["post_id"].'" >
+                                      <button type="button" class="btn btn-default btn-lg edit add_f">
+                                        <span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
+                                      </button>
+                                      <button type="button" class="btn btn-default btn-lg edit add_c" data-toggle="modal" data-target="#contribute">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
+                                      </button>
+                                    </div>
+                                  </div>
+                            
+                                    <ul class="list-group contri">';
+                            $qcontri = "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC";
+                            $contri = mysqli_query($conn, $qcontri);
+                          
+                            if($contri->num_rows > 0){
+                              while($contrib = $contri->fetch_assoc()){
+                                $qcontri2 = "SELECT username FROM users WHERE user_id='".$contrib["author_id"]."'";
+                                $contri2 = mysqli_query($conn, $qcontri2);
+                                $fetch = $contri2->fetch_assoc();
+                                echo'<div>
+                                    <blockquote>
+                                      <h5>'.$contrib["contribution"].'</h5>
+                                      <footer><cite title="Source Title">'.$fetch["username"].'</cite></footer>
+                                    </blockquote>
+                                  </div>';
+                              }
+                            }
+                            echo"</ul>
+                              </div>
+                              </div>";
+                          }
+                        }
+                        
+                      ?>
+                 </div><!--/tab-pane-->
+                 <div class="tab-pane" id="messages">
+                   
+                   <h2></h2>
+                   
+                   <ul class="list-group">
+                      <li class="list-group-item text-muted">Inbox</li>
+                      <li class="list-group-item text-right"><a href="#" class="pull-left">Here is your a link to the latest summary report from the..</a> 2.13.2014</li>
+                      <li class="list-group-item text-right"><a href="#" class="pull-left">Hi Joe, There has been a request on your account since that was..</a> 2.11.2014</li>
+                      <li class="list-group-item text-right"><a href="#" class="pull-left">Nullam sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
+                      <li class="list-group-item text-right"><a href="#" class="pull-left">Thllam sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
+                      <li class="list-group-item text-right"><a href="#" class="pull-left">Wesm sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
+                      <li class="list-group-item text-right"><a href="#" class="pull-left">For therepien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
+                      <li class="list-group-item text-right"><a href="#" class="pull-left">Also we, havesapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
+                      <li class="list-group-item text-right"><a href="#" class="pull-left">Swedish chef is assaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
                       
-                    ?>
-               </div><!--/tab-pane-->
-               <div class="tab-pane" id="messages">
-                 
-                 <h2></h2>
-                 
-                 <ul class="list-group">
-                    <li class="list-group-item text-muted">Inbox</li>
-                    <li class="list-group-item text-right"><a href="#" class="pull-left">Here is your a link to the latest summary report from the..</a> 2.13.2014</li>
-                    <li class="list-group-item text-right"><a href="#" class="pull-left">Hi Joe, There has been a request on your account since that was..</a> 2.11.2014</li>
-                    <li class="list-group-item text-right"><a href="#" class="pull-left">Nullam sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                    <li class="list-group-item text-right"><a href="#" class="pull-left">Thllam sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                    <li class="list-group-item text-right"><a href="#" class="pull-left">Wesm sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                    <li class="list-group-item text-right"><a href="#" class="pull-left">For therepien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                    <li class="list-group-item text-right"><a href="#" class="pull-left">Also we, havesapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                    <li class="list-group-item text-right"><a href="#" class="pull-left">Swedish chef is assaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                    
-                  </ul> 
-                 
-               </div><!--/tab-pane-->
-               <div class="tab-pane" id="update">
-                    <hr>
-                    <form class="form updateinfo" action="updateinfo.php" method="post" id="updateform">
+                    </ul> 
+                   
+                 </div><!--/tab-pane-->
+                 <div class="tab-pane" id="update">
+                      <hr>
+                      <form class="form updateinfo" action="updateinfo.php" method="post" id="updateform">
+                          <div class="form-group">
+                              <div class="col-xs-6">
+                                  <label><h4>Username</h4></label>
+                                  <input type="text" class="form-control" name="username" placeholder="enter a username" title="enter an awesome username.">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <div class="col-xs-6">
+                                  <label><h4>Email</h4></label>
+                                  <input type="email" class="form-control" name="email" placeholder="you@email.com" title="enter your email and not somebody else's.">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <div class="col-xs-6">
+                                  <label><h4>Address</h4></label>
+                                  <input type="text" class="form-control" name="address" placeholder="somewhere" title="enter a location.">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <div class="col-xs-6">
+                                 <label><h4>School</h4></label>
+                                  <input type="text" class="form-control" name="school" placeholder="school of cool" title="what school did you go to?">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <div class="col-xs-6">
+                                 <label><h4>Date of Birth</h4></label>
+                                  <input type="date" class="form-control" name="dob" title="when were you born?">
+                              </div>
+                          </div> 
+                          <div class="form-group">
+                               <div class="col-xs-12">
+                                    <br>
+                                    <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                                    <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
+                                </div>
+                          </div>
+                      </form>
+
+                      <hr><br><br>
+                      <form class="form updateprofpic" action="updateprofpic.php" method="post" enctype="multipart/form-data" id="updateprofpicform">
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label><h4>Username</h4></label>
-                                <input type="text" class="form-control" name="username" placeholder="enter a username" title="enter an awesome username.">
+                                <label><h4>Upload a Profile Picture</h4></label>
+                                <input type="file" name="file">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label><h4>Email</h4></label>
-                                <input type="email" class="form-control" name="email" placeholder="you@email.com" title="enter your email and not somebody else's.">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label><h4>Address</h4></label>
-                                <input type="text" class="form-control" name="address" placeholder="somewhere" title="enter a location.">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                               <label><h4>School</h4></label>
-                                <input type="text" class="form-control" name="school" placeholder="school of cool" title="what school did you go to?">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                               <label><h4>Date of Birth</h4></label>
-                                <input type="date" class="form-control" name="dob" title="when were you born?">
-                            </div>
-                        </div> 
                         <div class="form-group">
                              <div class="col-xs-12">
                                   <br>
-                                  <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
-                                  <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
+                                  <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i>Upload</button>
                               </div>
                         </div>
-                    </form>
-
-                    <hr><br><br>
-                    <form class="form updateprofpic" action="updateprofpic.php" method="post" enctype="multipart/form-data" id="updateprofpicform">
-                      <div class="form-group">
-                          <div class="col-xs-6">
-                              <label><h4>Upload a Profile Picture</h4></label>
-                              <input type="file" name="file">
-                          </div>
+                      </form>
+                 </div><!--/tab-pane-->
+              </div><!--/tab-content-->
+  			<div id="writem" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <form method="POST" action="write.php">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Title</h4>
+                        <input name="wtitle" type="text" class="form-control write" required>
                       </div>
-                      <div class="form-group">
-                           <div class="col-xs-12">
-                                <br>
-                                <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i>Upload</button>
-                            </div>
+                      <div class="modal-body">
+                        <textarea name="wcontent" class="form-control write" id="wcontent" rows="7"></textarea>
+                      </div>
+                      <div class="modal-footer">
+                        <h5 class="contri" id="wmax">170</h5>
+                        <button type="submit" class="btn btn-success" disabled="disabled" id="wbtn">Post</button>
                       </div>
                     </form>
-               </div><!--/tab-pane-->
-            </div><!--/tab-content-->
-			<div id="writem" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <form method="POST" action="write.php">
+                  </div>
+                </div>
+              </div> <!--writem-->
+              <div id="contribute" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                  <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">Title</h4>
-                      <input name="wtitle" type="text" class="form-control write" required>
+                      <h4 name="ctitle" id="ctitle" class="modal-title"></h4>
                     </div>
                     <div class="modal-body">
-                      <textarea name="wcontent" class="form-control write" id="wcontent" rows="7"></textarea>
+                      <form method="POST" action="contribute.php">
+                        <input name="id" type="hidden" value="" id="id">
+                        <textarea name="content" class="form-control write" id="ccontent" rows="7"></textarea>
+                        <div class="modal-footer">
+                          <h5 class="contri" id="cmax">170</h5>
+                          <button type="submit" class="btn btn-success" disabled="disabled" id="cbtn">Contribute</button>
+                        </div>
+                      </form>
                     </div>
-                    <div class="modal-footer">
-                      <h5 class="contri" id="wmax">170</h5>
-                      <button type="submit" class="btn btn-success" disabled="disabled" id="wbtn">Post</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div> <!--writem-->
-            <div id="contribute" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 name="ctitle" id="ctitle" class="modal-title"></h4>
-                  </div>
-                  <div class="modal-body">
-                    <form method="POST" action="contribute.php">
-                      <input name="id" type="hidden" value="" id="id">
-                      <textarea name="content" class="form-control write" id="ccontent" rows="7"></textarea>
-                      <div class="modal-footer">
-                        <h5 class="contri" id="cmax">170</h5>
-                        <button type="submit" class="btn btn-success" disabled="disabled" id="cbtn">Contribute</button>
-                      </div>
-                    </form>
                   </div>
                 </div>
-              </div>
-            </div>  <!--contribute-->
-        </div><!--/col-9-->
-      </div><!--/row-->
-    </div><!--/.container-->
-
+              </div>  <!--contribute-->
+          </div><!--/col-9-->
+        </div><!--/row-->
+      </div><!--/.container-->
+    </div><!--/container-fluid-->
     <!-- jQuery Version 1.11.1 -->
     <script src="jq/jquery.min.js"></script>
 
@@ -435,8 +446,8 @@
 
             that.find('[name]').each(function(index,value){
              var that = $(this),
-               name = that.attr('name'),
-               value = that.val();
+               name = that.attr('name'), 
+               value = that.val(); 
              data[name] = value;
             });
 
@@ -448,7 +459,7 @@
              success: function(response){
                alert("User Information Updated!");
                document.getElementById("updateform").reset();
-
+               console.log(response);
                $('#username').children('h1').text(response.username);
                $('#email').html("<span class='pull-left'><strong>Email</strong></span>"+response.email);
                $('#school').html("<span class='pull-left'><strong>School</strong></span>"+response.school);
@@ -483,9 +494,9 @@
           fav.toggleClass("glyphicon-star-empty");
           fav.toggleClass("glyphicon-star");
           if(fav.hasClass("glyphicon-star")){
-            alert("I have been loved");
+            
           }else{
-            alert("I have been hated");
+            
           }
         });
 
