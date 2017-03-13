@@ -1,44 +1,39 @@
 <?php
 	session_start();
 	include_once "connectdb.php";
+	$user = mysqli_query($conn, "SELECT * FROM users WHERE user_id='".$_SESSION['user_id']."'");
+	$curr = mysqli_fetch_array($user);
+
 	if($_POST["username"]!=""){
 		$username = $_POST["username"];
 	}else{
-		$username = $_SESSION['username'];
+		$username = $curr['username'];
 	}
 	if($_POST["email"]!=""){
 		$email = $_POST["email"];
 	}else{
-		$email = $_SESSION['email'];
+		$email = $curr['email'];
 	}
 	if($_POST["address"]!=""){
 		$address = $_POST["address"];
 	}else{
-		$address = $_SESSION["address"]; 
+		$address = $curr["address"]; 
 	}
 	if($_POST["school"]!=""){
 		$school = $_POST["school"]; 
 	}else{
-		$school = $_SESSION["school"]; 
+		$school = $curr["school"]; 
 	}
 	if($_POST['dob']!=""){
 		$dob = 	$_POST["dob"];
 	}else{
-		$dob = 	$_SESSION["dob"];
+		$dob = 	$curr["dob"];
 	}
 
-	$query = "UPDATE users SET username='".$username."', email='".$email."', address='".$address."', school='".$school."', dob='".$dob."' WHERE user_id = '".$_SESSION['user_id']."'"; 
+	$query = "UPDATE users SET username='{$username}', email='{$email}', address='{$address}', school='{$school}', dob='{$dob}' WHERE user_id = '{$_SESSION['user_id']}'";
 	$update = mysqli_query($conn, $query);
-	
-	$user = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
-	$row = mysqli_fetch_array($user);
 
-	$_SESSION["username"] = $row["username"]; 
-	$_SESSION["email"] = $row["email"];		
-	$_SESSION["address"] = $row["address"];	
-	$_SESSION["school"] = $row["school"];	
-	$_SESSION["dob"] = $row["dob"];			
-
+	$_SESSION["username"] = $username;
 
 	$query = "SELECT * FROM users WHERE user_id='".$_SESSION['user_id']."'";
 	$result2 = mysqli_query($conn,$query);
