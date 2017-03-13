@@ -188,7 +188,7 @@
               <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"> 
               <div class="panel panel-default">
                 <div class="panel-heading">Something About Me<i class="fa fa-link fa-1x"></i></div>
-                <div class="panel-body"></div>
+                <div class="panel-body" id="about"><?php echo $row["about"] ?></div>
               </div>
               
               <ul class="list-group">
@@ -295,17 +295,8 @@
                    <h2></h2>
                    
                    <ul class="list-group">
-                      <li class="list-group-item text-muted">Inbox</li>
-                      <li class="list-group-item text-right"><a href="#" class="pull-left">Here is your a link to the latest summary report from the..</a> 2.13.2014</li>
-                      <li class="list-group-item text-right"><a href="#" class="pull-left">Hi Joe, There has been a request on your account since that was..</a> 2.11.2014</li>
-                      <li class="list-group-item text-right"><a href="#" class="pull-left">Nullam sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                      <li class="list-group-item text-right"><a href="#" class="pull-left">Thllam sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                      <li class="list-group-item text-right"><a href="#" class="pull-left">Wesm sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                      <li class="list-group-item text-right"><a href="#" class="pull-left">For therepien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                      <li class="list-group-item text-right"><a href="#" class="pull-left">Also we, havesapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                      <li class="list-group-item text-right"><a href="#" class="pull-left">Swedish chef is assaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                      
-                    </ul> 
+                      <!-- notification -->
+                   </ul> 
                    
                  </div><!--/tab-pane-->
                  <div class="tab-pane" id="update">
@@ -342,10 +333,28 @@
                               </div>
                           </div> 
                           <div class="form-group">
+                              <div class="col-xs-6">
+                                 <label><h4>About Me</h4></label>
+                                  <textarea class="form-control" rows="4" cols="50" name="about" placeholder="Say Something About Yourself"></textarea>
+                              </div>
+                          </div> 
+                          <div class="form-group">
+                              <div class="col-xs-6">
+                                 <label><h4>New Password</h4></label>
+                                  <input type="password" class="form-control" name="newpassword" placeholder="enter a new password" title="things change. passwords too">
+                              </div>
+                          </div> 
+                          <div class="form-group">
+                              <div class="col-xs-6">
+                                 <label><h4>Old Password</h4></label>
+                                  <input type="password" class="form-control" name="oldpassword" placeholder="enter your old password" title="for old time's sake pal">
+                              </div>
+                          </div> 
+                          <div class="form-group">
                                <div class="col-xs-12">
                                     <br>
-                                    <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
-                                    <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
+                                    <button class="btn btn-md btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                                    <button class="btn btn-md" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
                                 </div>
                           </div>
                       </form>
@@ -361,7 +370,7 @@
                         <div class="form-group">
                              <div class="col-xs-12">
                                   <br>
-                                  <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i>Upload</button>
+                                  <button class="btn btn-md btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i>Upload</button>
                               </div>
                         </div>
                       </form>
@@ -447,7 +456,7 @@
             that.find('[name]').each(function(index,value){
              var that = $(this),
                name = that.attr('name'), 
-               value = that.val(); 
+               value = that.val(); console.log(name+" "+value);
              data[name] = value;
             });
 
@@ -461,10 +470,24 @@
                document.getElementById("updateform").reset();
                console.log(response);
                $('#username').children('h1').text(response.username);
+               if(response.school==""){
+                  response.school = "&nbsp";
+               }
+               if(response.address==""){
+                  response.address = "&nbsp";
+               }
+               if(response.dob=="0000-00-00"){
+                  response.dob = "&nbsp";
+               }
+               if(response.about==""){
+                  response.about = "MEEEEEP";
+               }
                $('#email').html("<span class='pull-left'><strong>Email</strong></span>"+response.email);
                $('#school').html("<span class='pull-left'><strong>School</strong></span>"+response.school);
                $('#address').html("<span class='pull-left'><strong>Address</strong></span>"+response.address);
                $('#dob').html("<span class='pull-left'><strong>Date of Birth</strong></span>"+response.dob);
+               $('#about').html(response.about);
+               console.log(response.about);
              }
             });
           return false;
@@ -501,18 +524,21 @@
         });
 
         $(".remove").on("click", function(){
-          var id = $(this).parent().parent().next().children(".row").children(".editing").children("input").val(); console.log(id);
-          var post = $(this).parent().parent().parent();
-          post.hide('slow', function(){ post.remove(); });
+          var conf = confirm("Are you sure you want to delete this post?");
+          if(conf){
+            var id = $(this).parent().parent().next().children(".row").children(".editing").children("input").val(); console.log(id);
+            var post = $(this).parent().parent().parent();
+            post.hide('slow', function(){ post.remove(); });
 
-           $.ajax({
-             url: "deletePost.php",
-             type: "POST",
-             data: {post_id : id},
-             success: function(response){
-               
-             }
-            });
+             $.ajax({
+               url: "deletePost.php",
+               type: "POST",
+               data: {post_id : id},
+               success: function(response){
+                 
+               }
+              });
+          }
         });
       });
     </script>
