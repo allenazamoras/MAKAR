@@ -194,7 +194,7 @@
 												
 											<div class="col-lg-4 col-lg-offset-4">
 												<input type="hidden" value="'.$post["post_id"].'" >
-												<button type="button" class="btn btn-default btn-lg edit favourite" value="">
+												<button style="color: rgb(0, 0, 0);" type="button" class="btn btn-default btn-lg edit favourite" value="">
 													<span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
 												</button>
 												<button type="button" class="btn btn-default btn-lg edit add_c" data-toggle="modal" data-target="#contribute">
