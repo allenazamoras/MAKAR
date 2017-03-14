@@ -90,6 +90,10 @@
 			.favourite, .glyphicon-star-empty{
 				color: rgb(0, 0, 0);
 			}
+			.panel-heading,.btn-primary{
+		    		background-image: linear-gradient(#04519b,#044687 60%,#033769);
+		  		color: #fff !important; 
+		    	}
 			#userinfo{
 				position: fixed;
 				width: 250px;
