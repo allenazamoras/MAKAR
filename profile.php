@@ -109,7 +109,7 @@
 			a{
 				color: black;
 			}
-      .panel-heading{
+      .panel-heading,.btn-primary{
           background-image: linear-gradient(#04519b,#044687 60%,#033769);
           color: #fff !important; 
       }
@@ -141,7 +141,20 @@
       <!-- Page Content -->
       <div class="container animated fadeIn">
         <div class="row">
-            <div class="col-sm-8" id="username"><h1><?php echo $row['username']?></h1></div>
+            <div class="col-sm-8" id="username"><h1><?php echo $row['username']?></h1>
+              <?php 
+                if($id!=$_SESSION["user_id"]){ 
+                  echo "<button class='btn btn-primary follow'>";
+                  $followquery = mysqli_query($conn,"SELECT COUNT(*) AS existing FROM followers WHERE user_id={$id} AND`follower_id`={$_SESSION['user_id']}");
+                  $followcheck = mysqli_fetch_assoc($followquery);
+                  if($followcheck['existing']==0){
+                    echo "Follow</button>";
+                  }else{
+                    echo "Unfollow</button>";
+                  } 
+                }
+              ?>
+            </div>
             <div class="col-sm-4 pull-right" id="prof_pic">
                 <?php
                     if($row['profile_pic'] == ""){
@@ -202,8 +215,14 @@
               
               <ul class="list-group">
                 <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
-                <!-- <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li> -->
+                <!-- <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>-->
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Favourites</strong></span>
+                  <?php 
+                    $favouritequery = mysqli_query($conn,"SELECT COUNT(post_id) FROM favourite WHERE user_id='{$row['user_id']}'");
+                    $favouritecount = mysqli_fetch_row($favouritequery);
+                    echo $favouritecount[0];
+                  ?>
+                </li> 
                 <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span>
                   <?php
                     $postquery = mysqli_query($conn,"SELECT COUNT(post_id) FROM post WHERE author_id='{$row['user_id']}'");
@@ -211,11 +230,11 @@
                     echo $postcount[0];
                   ?>
                 </li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span>
+                <li class="list-group-item text-right" id="followers"><span class="pull-left"><strong>Followers</strong></span>
                   <?php 
                     $followerquery = mysqli_query($conn,"SELECT COUNT(follower_id) FROM followers WHERE user_id='{$row['user_id']}'");
                     $followercount = mysqli_fetch_row($followerquery);
-                    echo $followercount[0];
+                    echo ($followercount[0]-1);
                   ?>
                 </li>
               </ul>     
@@ -223,13 +242,12 @@
           <div class="col-sm-9">
               
               <ul class="nav nav-tabs" id="myTab">
-                <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
-                <li><a href="#messages" data-toggle="tab">Messages</a></li>
-                <li><a href="#update" data-toggle="tab">Update Information</a></li>
-              </ul>
-                  
+                <li class="active"><a href="#post" data-toggle="tab">Posts</a></li>
+                <li><a href="#notification" <?php if($id!=$_SESSION["user_id"]){ echo "class='hidden'"; } ?> data-toggle="tab">Notifications</a></li>
+                <li><a href="#update" <?php if($id!=$_SESSION["user_id"]){ echo "class='hidden'"; } ?> data-toggle="tab">Update Information</a></li>
+              </ul>    
               <div class="tab-content">
-                 <div class="tab-pane active" id="home">
+                 <div class="tab-pane active" id="post">
                   
                      <hr>
                       <!-- <nav aria-label="Page navigation" class="col-md-4 col-md-offset-4 text-center">
@@ -241,7 +259,7 @@
                       </nav> -->
                       <h4>Recent Activity</h4>
                       <hr>
-  				   	<?php
+  				   	  <?php
                         $qpost = "SELECT * FROM post WHERE author_id='{$id}' ORDER BY pdate DESC";
                         $posts = mysqli_query($conn, $qpost);
                         
@@ -251,7 +269,9 @@
                             $post2 = mysqli_query($conn, $qpost2);
                             $row = $post2->fetch_assoc();
                             echo '<div class="panel panel-primary">
-                                <div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit white"><span class="glyphicon glyphicon-remove remove" aria-hidden="true" aria-label="down"></span></small></div>
+                                <div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit white"><span class="glyphicon glyphicon-remove remove ';
+                            if($id!=$_SESSION["user_id"]){ echo 'hidden"'; }else{ echo '"'; }
+                            echo 'aria-hidden="true" aria-label="down"></span></small></div>
                                 
                                 <div class="panel-body">
                                   <p>'.$post["post"].'</p>
@@ -295,15 +315,31 @@
                               </div>
                               </div>";
                           }
+                        }else{
+                          echo "We've Come up Empty... Not much action here";
                         }
                         
                       ?>
                  </div><!--/tab-pane-->
-                 <div class="tab-pane" id="messages">
+                 <div class="tab-pane" id="notification">
                    
                    <h2></h2>
-                   
                    <ul class="list-group">
+                      <?php
+                      require("connectdb.php");
+                      
+                      $n = "SELECT notification FROM notify WHERE user_id='".$_SESSION["user_id"]."'";
+                      $fetch = mysqli_query($conn, $n);
+                      
+                      if($fetch->num_rows > 0){
+                        while($notif = $fetch->fetch_assoc()){
+                          echo "<li class='list-group-item'>".$notif["notification"]."</li>";
+                        }
+                        require("turnoffn.php");
+                      }else{
+                        echo"<li class='licontent'>Nothing new so far</li>";
+                      }
+                    ?>
                       <!-- notification -->
                    </ul> 
                    
@@ -456,6 +492,31 @@
           console.log($(this).attr("class"));
         });
 
+        $(".follow").on("click", function(){
+          
+          if($(this).text()=="Follow"){
+            $(this).text("Unfollow");
+            $.ajax({
+              url: "follow.php",
+              data: {user_id : <?php echo $id;?>},
+              type: "POST",
+              success: function(response){
+                $('#followers').html("<span class='pull-left'><strong>Followers</strong></span>"+response);
+              }
+            });
+          }else{
+            $(this).text("Follow");
+            $.ajax({
+              url: "unfollow.php",
+              data: {user_id : <?php echo $id;?>},
+              type: "POST",
+              success: function(response){
+                $('#followers').html("<span class='pull-left'><strong>Followers</strong></span>"+response);
+              }
+            });
+          }
+        });
+
         $('form.updateinfo').on('submit',function(){
           var that = $(this),
             url = that.attr('action'); 
@@ -489,7 +550,7 @@
                   response.dob = "&nbsp";
                }
                if(response.about==""){
-                  response.about = "MEEEEEP";
+                  response.about = "&nbsp";
                }
                $('#email').html("<span class='pull-left'><strong>Email</strong></span>"+response.email);
                $('#school').html("<span class='pull-left'><strong>School</strong></span>"+response.school);
@@ -526,14 +587,14 @@
           fav.toggleClass("glyphicon-star-empty");
           fav.toggleClass("glyphicon-star");
           if(fav.hasClass("glyphicon-star")){
-            
+            fav.css("color","yellow");
           }else{
-            
+            fav.css("color","black");
           }
         });
 
         $(".remove").on("click", function(){
-          var conf = confirm("Are you sure you want to delete this post?");
+          var conf = confirm("Are you sure you want to delete this post? You might miss it :(");
           if(conf){
             var id = $(this).parent().parent().next().children(".row").children(".editing").children("input").val(); console.log(id);
             var post = $(this).parent().parent().parent();
