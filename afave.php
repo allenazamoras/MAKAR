@@ -7,8 +7,12 @@
 	require("connectdb.php");
 	
 	$id = $_POST["post_id"];
+	//$_aid = $_POST["author_id"];
+	//$title = $_POST["title"];
 	
 	$qfave = "INSERT INTO favourite (user_id, post_id) VALUES ('".$_SESSION["user_id"]."', '".$id."')";
+	//$nfave = "INSERT INTO notify (user_id, notification) VALUES ('".$aid."', 'Someone favourited your post: ".$title."')";
+	
 	$fave = mysqli_query($conn, $qfave);
 	
 	if($fave){
