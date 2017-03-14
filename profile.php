@@ -223,7 +223,7 @@
                     echo $favouritecount[0];
                   ?>
                 </li> 
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span>
+                <li class="list-group-item text-right" id="posts"><span class="pull-left"><strong>Posts</strong></span>
                   <?php
                     $postquery = mysqli_query($conn,"SELECT COUNT(post_id) FROM post WHERE author_id='{$row['user_id']}'");
                     $postcount = mysqli_fetch_row($postquery);
@@ -603,9 +603,10 @@
              $.ajax({
                url: "deletePost.php",
                type: "POST",
-               data: {post_id : id},
+               data: {post_id : id,
+                      user_id : <?php echo $id; ?>},
                success: function(response){
-                 
+                 $('#posts').html("<span class='pull-left'><strong>Posts</strong></span>"+response);
                }
               });
           }
