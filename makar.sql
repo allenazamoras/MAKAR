@@ -151,8 +151,8 @@ CREATE TABLE `users` (
   `address` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
   `school` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
   `dob` date DEFAULT NULL,
-  `about` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
-  `profile_pic` varchar(50) CHARACTER SET utf8 DEFAULT NULL
+  `about` varchar(150) CHARACTER SET utf8 DEFAULT NULL,
+  `profile_pic` varchar(50) CHARACTER SET utf8 DEFAULT 'default.png'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -236,34 +236,34 @@ ALTER TABLE `users`
 -- Constraints for table `contributions`
 --
 ALTER TABLE `contributions`
-  ADD CONSTRAINT `contributions_ibfk_2` FOREIGN KEY (`author_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `contributions_ibfk_3` FOREIGN KEY (`post_id`) REFERENCES `post` (`post_id`);
+  ADD CONSTRAINT `contributions_ibfk_2` FOREIGN KEY (`author_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `contributions_ibfk_3` FOREIGN KEY (`post_id`) REFERENCES `post` (`post_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `favourite`
 --
 ALTER TABLE `favourite`
-  ADD CONSTRAINT `fk2_fav` FOREIGN KEY (`post_id`) REFERENCES `post` (`post_id`),
-  ADD CONSTRAINT `fk_fav` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+  ADD CONSTRAINT `fk2_fav` FOREIGN KEY (`post_id`) REFERENCES `post` (`post_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_fav` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `followers`
 --
 ALTER TABLE `followers`
-  ADD CONSTRAINT `followers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `followers_ibfk_2` FOREIGN KEY (`follower_id`) REFERENCES `users` (`user_id`);
+  ADD CONSTRAINT `followers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `followers_ibfk_2` FOREIGN KEY (`follower_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `notify`
 --
 ALTER TABLE `notify`
-  ADD CONSTRAINT `fk_notify` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+  ADD CONSTRAINT `fk_notify` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `post`
 --
 ALTER TABLE `post`
-  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `users` (`user_id`);
+  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

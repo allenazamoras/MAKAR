@@ -3,7 +3,7 @@
 	
 	$email = addslashes($_POST["email"]);
 	$password = addslashes($_POST["password"]);
-	
+	$password = md5($password);
 	$user = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
 	
 	if(!$user){

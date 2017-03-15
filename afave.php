@@ -16,7 +16,7 @@
 	$fave = mysqli_query($conn, $qfave);
 	$nfave = mysqli_query($conn, $nfave);
 	
-	if($fave){
+	if($fave && $nfave){
 		echo json_encode(1);
 	}else{
 		echo json_encode(0);

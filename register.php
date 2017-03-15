@@ -24,6 +24,7 @@
 					 window.location.href='login.php';</script>";
 	}else{
 		if($password == $password2){
+			$password = md5($password);
 			$sql = "INSERT INTO users (name, username, email, password) VALUES ('$name', '$username', '$email', '$password')";
 			$db = mysqli_query($conn, $sql);
 			

@@ -172,7 +172,7 @@
 											<div class='media'>
 												<input type='hidden' value='".$row["user_id"]."'>
 												<div class='media-left media-middle'>
-													<img class='media-object search-img' src=img/'".$row["profile_pic"]."'>
+													<img class='media-object search-img' src='img/".$row["profile_pic"]."'>
 												</div>
 												<div class='media-body'>
 													<h4>".$row["name"]."</h4>

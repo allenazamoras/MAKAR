@@ -24,8 +24,10 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/animate.css">
     <style>
-        	body{
-				background-color: #fafafa;
+			body{
+				background-image: url("img/website-background.jpg"); 
+				background-attachment: fixed;
+				background-size: cover;   
 				margin: 0px;
 			}
 			.nav, .navbar-form, .btn{
@@ -109,7 +111,7 @@
 			a{
 				color: black;
 			}
-      .panel-heading{
+      .panel-heading,.btn-primary{
           background-image: linear-gradient(#04519b,#044687 60%,#033769);
           color: #fff !important; 
       }
@@ -120,6 +122,8 @@
       }
       .white{
         color: white;
+      }.glyphicon-star{
+        color: rgb(0, 0, 0);
       }
     </style>
 
@@ -141,7 +145,20 @@
       <!-- Page Content -->
       <div class="container animated fadeIn">
         <div class="row">
-            <div class="col-sm-8" id="username"><h1><?php echo $row['username']?></h1></div>
+            <div class="col-sm-8" id="username"><h1><?php echo $row['username']?></h1>
+              <?php 
+                if($id!=$_SESSION["user_id"]){ 
+                  echo "<button class='btn btn-primary follow'>";
+                  $followquery = mysqli_query($conn,"SELECT COUNT(*) AS existing FROM followers WHERE user_id={$id} AND`follower_id`={$_SESSION['user_id']}");
+                  $followcheck = mysqli_fetch_assoc($followquery);
+                  if($followcheck['existing']==0){
+                    echo "Follow</button>";
+                  }else{
+                    echo "Unfollow</button>";
+                  } 
+                }
+              ?>
+            </div>
             <div class="col-sm-4 pull-right" id="prof_pic">
                 <?php
                     if($row['profile_pic'] == ""){
@@ -202,20 +219,26 @@
               
               <ul class="list-group">
                 <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
-                <!-- <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li> -->
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span>
+                <!-- <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>-->
+                <li class="list-group-item text-right" id="favourites"><span class="pull-left"><strong>Favourites</strong></span>
+                  <?php 
+                    $favouritequery = mysqli_query($conn,"SELECT COUNT(post_id) FROM favourite WHERE user_id='{$row['user_id']}'");
+                    $favouritecount = mysqli_fetch_row($favouritequery);
+                    echo $favouritecount[0];
+                  ?>
+                </li> 
+                <li class="list-group-item text-right" id="posts"><span class="pull-left"><strong>Posts</strong></span>
                   <?php
                     $postquery = mysqli_query($conn,"SELECT COUNT(post_id) FROM post WHERE author_id='{$row['user_id']}'");
                     $postcount = mysqli_fetch_row($postquery);
                     echo $postcount[0];
                   ?>
                 </li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span>
+                <li class="list-group-item text-right" id="followers"><span class="pull-left"><strong>Followers</strong></span>
                   <?php 
                     $followerquery = mysqli_query($conn,"SELECT COUNT(follower_id) FROM followers WHERE user_id='{$row['user_id']}'");
                     $followercount = mysqli_fetch_row($followerquery);
-                    echo $followercount[0];
+                    echo ($followercount[0]-1);
                   ?>
                 </li>
               </ul>     
@@ -223,13 +246,12 @@
           <div class="col-sm-9">
               
               <ul class="nav nav-tabs" id="myTab">
-                <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
-                <li><a href="#messages" data-toggle="tab">Messages</a></li>
-                <li><a href="#update" data-toggle="tab">Update Information</a></li>
-              </ul>
-                  
+                <li class="active"><a href="#post" data-toggle="tab">Posts</a></li>
+                <li><a href="#notification" <?php if($id!=$_SESSION["user_id"]){ echo "class='hidden'"; } ?> data-toggle="tab">Notifications</a></li>
+                <li><a href="#update" <?php if($id!=$_SESSION["user_id"]){ echo "class='hidden'"; } ?> data-toggle="tab">Update Information</a></li>
+              </ul>    
               <div class="tab-content">
-                 <div class="tab-pane active" id="home">
+                 <div class="tab-pane active" id="post">
                   
                      <hr>
                       <!-- <nav aria-label="Page navigation" class="col-md-4 col-md-offset-4 text-center">
@@ -241,76 +263,102 @@
                       </nav> -->
                       <h4>Recent Activity</h4>
                       <hr>
-  				   	<?php
-                        $qpost = "SELECT * FROM post WHERE author_id='{$id}' ORDER BY pdate DESC";
-                        $posts = mysqli_query($conn, $qpost);
-                        
-                        if($posts->num_rows > 0){
-                          while($post = $posts->fetch_assoc()){
-                            $qpost2 = "SELECT username FROM users WHERE user_id='".$post["author_id"]."'";
-                            $post2 = mysqli_query($conn, $qpost2);
-                            $row = $post2->fetch_assoc();
-                            echo '<div class="panel panel-primary">
-                                <div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit white"><span class="glyphicon glyphicon-remove remove" aria-hidden="true" aria-label="down"></span></small></div>
-                                
-                                <div class="panel-body">
-                                  <p>'.$post["post"].'</p>
-                                  <div class="row">
-                                    <div class="col-lg-4">
-                                      <h5 class="contri"><span class="badge">'.$post["no_contri"].'</span> Contributors</h5>
-                                      <button type="button" class="btn btn-default btn-lg comments">
-                                        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
-                                      </button>
-                                    </div>
-                                      
-                                    <div class="col-lg-4 col-lg-offset-4 editing">
-                                      <input type="hidden" value="'.$post["post_id"].'" >
-                                      <button type="button" class="btn btn-default btn-lg edit add_f">
-                                        <span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
-                                      </button>
-                                      <button type="button" class="btn btn-default btn-lg edit add_c" data-toggle="modal" data-target="#contribute">
-                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
-                                      </button>
-                                    </div>
-                                  </div>
-                            
-                                    <ul class="list-group contri">';
-                            $qcontri = "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC";
-                            $contri = mysqli_query($conn, $qcontri);
-                          
-                            if($contri->num_rows > 0){
-                              while($contrib = $contri->fetch_assoc()){
-                                $qcontri2 = "SELECT username FROM users WHERE user_id='".$contrib["author_id"]."'";
-                                $contri2 = mysqli_query($conn, $qcontri2);
-                                $fetch = $contri2->fetch_assoc();
-                                echo'<div>
-                                    <blockquote>
-                                      <h5>'.$contrib["contribution"].'</h5>
-                                      <footer><cite title="Source Title">'.$fetch["username"].'</cite></footer>
-                                    </blockquote>
-                                  </div>';
-                              }
-                            }
-                            echo"</ul>
+  				   	 <?php
+                  require("connectdb.php");
+                  $qpost = "SELECT * FROM post WHERE author_id='{$id}' ORDER BY pdate DESC";
+                  $posts = mysqli_query($conn, $qpost);
+                  
+                  if($posts->num_rows > 0){
+                    while($post = $posts->fetch_assoc()){
+                      $qpost2 = "SELECT username FROM users WHERE user_id='".$post["author_id"]."'";
+                      $post2 = mysqli_query($conn, $qpost2);
+                      
+                      $row = $post2->fetch_assoc();
+                      echo '<div class="panel panel-primary">
+                              <div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit white"><span class="glyphicon glyphicon-remove remove" aria-hidden="true" aria-label="down"></span></small>
                               </div>
-                              </div>";
-                          }
+                              <input type="hidden" value="'.$post["author_id"].'">
+                              <div class="panel-body">
+                            <p>'.$post["post"].'</p>
+                            <div class="row">
+                              <div class="col-lg-4">
+                                <h5 class="contri"><span class="badge">'.$post["no_contri"].'</span> Contributors</h5>
+                                <button type="button" class="btn btn-default btn-lg comments">
+                                  <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
+                                </button>
+                              </div>
+                                
+                              <div class="col-lg-4 col-lg-offset-4 editing">
+                                <input type="hidden" value="'.$post["post_id"].'">
+                                <button type="button" class="btn btn-default btn-lg edit favourite">
+                                  <span class="glyphicon glyphicon-star" aria-hidden="true" aria-label="favourite" id="i'.$post["post_id"].'"></span>
+                                </button>
+                                <button type="button" class="btn btn-default btn-lg edit add_c" data-toggle="modal" data-target="#contribute">
+                                  <span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
+                                </button>
+                              </div>
+                            </div>
+                      
+                            <ul class="list-group contributionpane">';
+                              
+                      $qfave = "SELECT * FROM favourite WHERE user_id='".$_SESSION["user_id"]."' and post_id='".$post["post_id"]."'";
+                      $fave = mysqli_query($conn, $qfave);
+                
+                      if($fave->num_rows > 0){
+                        $x = $post["post_id"];
+                        echo '<style>span[id=i'.$post["post_id"].']{color: yellow;}</style>'; 
+                      }
+              
+                      $qcontri = "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC";
+                      $contri = mysqli_query($conn, $qcontri);
+                    
+                      if($contri->num_rows > 0){
+                        while($contrib = $contri->fetch_assoc()){
+                          $qcontri2 = "SELECT username FROM users WHERE user_id='".$contrib["author_id"]."'";
+                          $contri2 = mysqli_query($conn, $qcontri2);
+                          $fetch = $contri2->fetch_assoc();
+                          echo'<div>
+                              <blockquote>
+                                <h5>'.$contrib["contribution"].'</h5>
+                                <footer><cite title="Source Title">'.$fetch["username"].'</cite></footer>
+                              </blockquote>
+                            </div>';
                         }
-                        
-                      ?>
+                      }
+                      echo"</ul>
+                        </div>
+                        </div>";
+                    }
+                  }
+                  
+                ?>
                  </div><!--/tab-pane-->
-                 <div class="tab-pane" id="messages">
+                 <div class="tab-pane" id="notification">
                    
                    <h2></h2>
-                   
                    <ul class="list-group">
+                      <?php
+                      require("connectdb.php");
+                      
+                      $n = "SELECT notification FROM notify WHERE user_id='".$_SESSION["user_id"]."'";
+                      $fetch = mysqli_query($conn, $n);
+                      
+                      if($fetch->num_rows > 0){
+                        while($notif = $fetch->fetch_assoc()){
+                          echo "<li class='list-group-item'>".$notif["notification"]."</li>";
+                        }
+                        require("turnoffn.php");
+                      }else{
+                        echo"<li class='licontent'>Nothing new so far</li>";
+                      }
+                    ?>
                       <!-- notification -->
                    </ul> 
                    
                  </div><!--/tab-pane-->
                  <div class="tab-pane" id="update">
                       <hr>
-                      <form class="form updateinfo" action="updateinfo.php" method="post" id="updateform">
+                      <form class="form updateinfo" action="updateinfo.php" method="post" id="updateform" autocomplete="off">
                           <div class="form-group">
                               <div class="col-xs-6">
                                   <label><h4>Username</h4></label>
@@ -388,7 +436,7 @@
   			<div id="writem" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                   <div class="modal-content">
-                    <form method="POST" action="write.php">
+                    <form method="POST" action="write.php" autocomplete="off">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Title</h4>
@@ -408,23 +456,25 @@
               <div id="contribute" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                   <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 name="ctitle" id="ctitle" class="modal-title"></h4>
-                    </div>
-                    <div class="modal-body">
-                      <form method="POST" action="contribute.php">
+                    <form method="POST" action="contribute.php" autocomplete="off">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 name="ctitle" id="ctitle" class="modal-title"></h4>
+                        <input name="aid" type="hidden" value="" id="aid">
+                      </div>
+                    
+                      <div class="modal-body">
                         <input name="id" type="hidden" value="" id="id">
                         <textarea name="content" class="form-control write" id="ccontent" rows="7"></textarea>
                         <div class="modal-footer">
                           <h5 class="contri" id="cmax">170</h5>
                           <button type="submit" class="btn btn-success" disabled="disabled" id="cbtn">Contribute</button>
                         </div>
-                      </form>
-                    </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
-              </div>  <!--contribute-->
+              </div> <!--contribute-->
           </div><!--/col-9-->
         </div><!--/row-->
       </div><!--/.container-->
@@ -438,7 +488,9 @@
     <!-- <script src="jq/update.js"></script> -->
     <script type="text/javascript">
       $(document).ready(function(){
-        $(".contri").hide();
+        $(".contributionpane").hide();
+        $("#cbtn").prop("disabled", false);
+        $("#wbtn").prop("disabled", false);
         $(".comments").on("click", function(){
           var contribution_sibs = $(this).parent().parent().parent().parent().siblings().children(".panel-body").children(".list-group"); console.log(contribution_sibs);
           var contribution_curr = $(this).parent().parent().siblings(".list-group"); console.log(contribution_curr);
@@ -454,6 +506,31 @@
           $(chevron_curr).toggleClass("glyphicon-chevron-down");
           $(chevron_curr).toggleClass("glyphicon-chevron-up");
           console.log($(this).attr("class"));
+        });
+
+        $(".follow").on("click", function(){
+          
+          if($(this).text()=="Follow"){
+            $(this).text("Unfollow");
+            $.ajax({
+              url: "follow.php",
+              data: {user_id : <?php echo $id;?>},
+              type: "POST",
+              success: function(response){
+                $('#followers').html("<span class='pull-left'><strong>Followers</strong></span>"+response);
+              }
+            });
+          }else{
+            $(this).text("Follow");
+            $.ajax({
+              url: "unfollow.php",
+              data: {user_id : <?php echo $id;?>},
+              type: "POST",
+              success: function(response){
+                $('#followers').html("<span class='pull-left'><strong>Followers</strong></span>"+response);
+              }
+            });
+          }
         });
 
         $('form.updateinfo').on('submit',function(){
@@ -489,7 +566,7 @@
                   response.dob = "&nbsp";
                }
                if(response.about==""){
-                  response.about = "MEEEEEP";
+                  response.about = "&nbsp";
                }
                $('#email').html("<span class='pull-left'><strong>Email</strong></span>"+response.email);
                $('#school').html("<span class='pull-left'><strong>School</strong></span>"+response.school);
@@ -502,13 +579,17 @@
           return false;
         });
 
+        // PLACE IN AJAX $("#prof_pic").html("<img title='profile image' class='img-responsive' src='img/"+response+"'>");
+
         $(".add_c").on("click", function(){
           var id = $(this).prev().prev().val();
-          var title = $(this).parent().parent().parent().prev().find("strong").text();
-          
+          var title = $(this).parent().parent().parent().prev().prev().find("strong").text();
+          var a_id = $(this).parent().parent().parent().prev().val();
+
           $("#contribute #ctitle").text(title);
           $("#contribute #id").val(id);
-          
+          $("#contribute #aid").val(a_id);
+
           $("#ccontent").keyup(function(){
             var clen = $(this).val().length;
             $("#cmax").text(170-clen);
@@ -521,30 +602,65 @@
           
         });
     
-        $(".add_f").on("click", function(){
-          var fav = $(this).children("span");
-          fav.toggleClass("glyphicon-star-empty");
-          fav.toggleClass("glyphicon-star");
-          if(fav.hasClass("glyphicon-star")){
-            
+        // $(".add_f").on("click", function(){
+        //   var fav = $(this).children("span");
+        //   fav.toggleClass("glyphicon-star-empty");
+        //   fav.toggleClass("glyphicon-star");
+        //   if(fav.hasClass("glyphicon-star")){
+        //     fav.css("color","yellow");
+        //   }else{
+        //     fav.css("color","black");
+        //   }
+        // });
+
+        $(".favourite").on("click", function(){
+          var n = $(this).prev().val();
+          var faid = $(this).parent().parent().parent().prev().val();
+          var ftitle = $(this).parent().parent().parent().prev().prev().find("strong").text();
+          
+          if($(this).children().css("color") == "rgb(0, 0, 0)"){
+            $(this).children().css("color", "rgb(255, 255, 0)");
+            // $(this).children().toggleClass("glyphicon-star-empty");
+            // $(this).children().toggleClass("glyphicon-star");
+            $.ajax({
+              url: "afave.php",
+              data: {post_id : n,
+                     user_id : <?php echo $_SESSION['user_id']; ?>},
+              type: "POST",
+              success: function(response){
+                $('#favourites').html("<span class='pull-left'><strong>Favourites</strong></span>"+response);
+              }
+            });
           }else{
-            
+            $(this).children().css("color", "rgb(0, 0, 0)");
+            // $(this).children().toggleClass("glyphicon-star-empty");
+            // $(this).children().toggleClass("glyphicon-star");
+            $.ajax({
+              url: "dfave.php",
+              data: {post_id : n,
+                     user_id : <?php echo $_SESSION['user_id']; ?>},
+              type: "POST",
+              success: function(response){
+                  $('#favourites').html("<span class='pull-left'><strong>Favourites</strong></span>"+response);
+                }
+            });
           }
         });
-
+        
         $(".remove").on("click", function(){
-          var conf = confirm("Are you sure you want to delete this post?");
+          var conf = confirm("Are you sure you want to delete this post? You might miss it :(");
           if(conf){
-            var id = $(this).parent().parent().next().children(".row").children(".editing").children("input").val(); console.log(id);
+            var id = $(this).parent().parent().next().next().children(".row").children(".editing").children("input").val(); console.log(id); 
             var post = $(this).parent().parent().parent();
             post.hide('slow', function(){ post.remove(); });
 
              $.ajax({
                url: "deletePost.php",
                type: "POST",
-               data: {post_id : id},
+               data: {post_id : id,
+                      user_id : <?php echo $id; ?>},
                success: function(response){
-                 
+                 $('#posts').html("<span class='pull-left'><strong>Posts</strong></span>"+response);
                }
               });
           }
