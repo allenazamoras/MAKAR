@@ -151,7 +151,7 @@ CREATE TABLE `users` (
   `address` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
   `school` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
   `dob` date DEFAULT NULL,
-  `about` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `about` varchar(150) CHARACTER SET utf8 DEFAULT NULL,
   `profile_pic` varchar(50) CHARACTER SET utf8 DEFAULT 'default.png'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
