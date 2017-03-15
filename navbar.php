@@ -30,7 +30,7 @@
 											$fetch = mysqli_query($conn, $n);
 											
 											if($fetch->num_rows > 0){
-												echo"<style>#notif{color:red;}</style>";
+												echo"<style>#notif{color:yellow;}</style>";
 												while($notif = $fetch->fetch_assoc()){
 													echo "<li class='licontent'>".$notif["notification"]."</li><li role='separator' class='divider'></li>";
 												}
