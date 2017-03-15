@@ -24,9 +24,10 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/animate.css">
     <style>
-      body{
-				/*background-color: #fafafa;*/
-        background-image: url("img/website-background.jpg");    
+			body{
+				background-image: url("img/website-background.jpg"); 
+				background-attachment: fixed;
+				background-size: cover;   
 				margin: 0px;
 			}
 			.nav, .navbar-form, .btn{
