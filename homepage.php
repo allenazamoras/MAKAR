@@ -13,7 +13,7 @@
 		<title>Makar</title>
 		<style>
 			body{
-				background-color: #fafafa;
+				background-image: url("img/website-background.jpg"); 
 				margin: 0px;
 			}
 			ul{
@@ -87,13 +87,16 @@
 				width: 200px;
 				padding: 5px;
 			}
-			.favourite, .glyphicon-star-empty{
+			.glyphicon-star{
 				color: rgb(0, 0, 0);
 			}
 			.panel-heading,.btn-primary{
-		    		background-image: linear-gradient(#04519b,#044687 60%,#033769);
+		   		background-image: linear-gradient(#04519b,#044687 60%,#033769);
 		  		color: #fff !important; 
-		    	}
+		    }
+			.glyphicon-remove{
+				color: rgb(149, 149, 149);
+			}
 			#userinfo{
 				position: fixed;
 				width: 250px;
@@ -200,9 +203,9 @@
 											</div>
 												
 											<div class="col-lg-4 col-lg-offset-4">
-												<input type="hidden" value="'.$post["post_id"].'" >
-												<button type="button" class="btn btn-default btn-lg edit favourite" value="">
-													<span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
+												<input type="hidden" value="'.$post["post_id"].'">
+												<button type="button" class="btn btn-default btn-lg edit favourite">
+													<span class="glyphicon glyphicon glyphicon-star" aria-hidden="true" aria-label="favourite" id="i'.$post["post_id"].'"></span>
 												</button>
 												<button type="button" class="btn btn-default btn-lg edit add_c" data-toggle="modal" data-target="#contribute">
 													<span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
@@ -216,10 +219,10 @@
 							$fave = mysqli_query($conn, $qfave);
 				
 							if($fave->num_rows > 0){
-								echo '<script>$("input[value='.$post["post_id"].']").next().val('.$post["post_id"].').toString();</script>
-									  <style>button[value="'.$post["post_id"].'"]:first-child{color: yellow;}</style>';
+								$x = $post["post_id"];
+								echo '<style>span[id=i'.$post["post_id"].']{color: rgb(255, 204, 70);}</style>';	
 							}
-							
+			
 							$qcontri = "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC";
 							$contri = mysqli_query($conn, $qcontri);
 						
@@ -229,10 +232,17 @@
 									$contri2 = mysqli_query($conn, $qcontri2);
 									$fetch = $contri2->fetch_assoc();
 									echo'<div>
-											<blockquote>
-												<h5>'.$contrib["contribution"].'</h5>
+											<blockquote>';
+											//PLEASE COPY THIS SHIT :)
+											if($_SESSION["user_id"] == $contrib["author_id"]){
+												echo'<input type="hidden" value='.$contrib["contribution_id"].'>
+													<button type="button" class="btn btn-default btn-xs pull-right delete_c">
+														<span class="glyphicon glyphicon-remove" aria-hidden="true" aria-label="remove"></span>
+													</button>';	
+											}
+									echo		'<h5>'.$contrib["contribution"].'</h5> 
 												<footer><cite title="Source Title">'.$fetch["username"].'</cite></footer>
-											</blockquote>
+										</blockquote>
 										</div>';
 								}
 							}
@@ -338,32 +348,20 @@
 			var n = $(this).prev().val();
 			var faid = $(this).parent().parent().parent().prev().val();
 			var ftitle = $(this).parent().parent().parent().prev().prev().find("strong").text();
-			
+			console.log(faid);
 			if($(this).children().css("color") == "rgb(0, 0, 0)"){
-				$(this).children().css("color", "rgb(255, 255, 0)");
+				$(this).children().css("color", "rgb(255, 204, 70)");
 				$.ajax({
 					url: "afave.php",
 					data: {post_id : n},
-					type: "POST",
-					success: function(rfav){
-						if(rfav == 1){
-							alert("Post favouriteded (what? yeah i'm as confused as you are. . .)");
-						}
-					}
+					type: "POST"
 				});
 			}else{
 				$(this).children().css("color", "rgb(0, 0, 0)");
 				$.ajax({
 					url: "dfave.php",
 					data: {post_id : n},
-					type: "POST",
-					success: function(rfav){
-						if(rfav == 1){
-							alert("Post de-favourited (is that is even a word?)");
-						}else{
-							alert(rfav);
-						}
-					}
+					type: "POST"
 				});
 			}
 		});
@@ -382,6 +380,26 @@
 		
 		$("#notif").on("click", function(){
 			$(this).css("color", "black");
+		});
+		//PLEASE COPY THIS SHIT :)
+		$(".delete_c").on("click", function(){
+			var conf = confirm("Are you sure you want to delete this post? You might miss it :(");
+			if(conf){
+				var contrid = $(this).prev().val();
+				var postid = $(this).parent().parent().parent().prev().children().find("input").val();
+				var contribution = $(this).parent().parent();
+				var data = {contr_id : contrid, post_id : postid };
+				$.ajax({
+					url: "deleteContribution.php",
+					type: "POST",
+					data: data,
+					success: function(no_contri){
+						console.log(no_contri);
+						contribution.hide('slow', function(){ contribution.remove(); });
+						$(this).parent().parent().parent().parent().children().children().find("h5").text(no_contri);
+					}
+				});
+			}
 		});
 	});
 </script>
