@@ -10,10 +10,9 @@
 	
 	$post = "SELECT * FROM post WHERE author_id='".$_SESSION["user_id"]."' AND post_id=MAX(post_id)";
 	$fetch = mysqli_query($conn, $post);
-	$row = mysqli_fetch_array($fetch, MYSQLI_NUM);
-	$array[] = $row;
+	$array = mysqli_fetch_row($fetch);
 	
-	echo json_encode($array);
+	echo $array[0];
 	//if($insert){
 		//return json_encode(array("success" => 1));
 	//}

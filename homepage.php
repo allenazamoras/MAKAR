@@ -326,7 +326,6 @@
 				url: "write.php",
 				type: "POST",
 				data: data,
-				datatype: "json",
 				success: function(post){
 					console.log(post);
 				}
