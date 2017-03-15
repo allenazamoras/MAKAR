@@ -24,8 +24,9 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/animate.css">
     <style>
-        	body{
-				background-color: #fafafa;
+      body{
+				/*background-color: #fafafa;*/
+        background-image: url("img/website-background.jpg");    
 				margin: 0px;
 			}
 			.nav, .navbar-form, .btn{
@@ -120,6 +121,8 @@
       }
       .white{
         color: white;
+      }.glyphicon-star{
+        color: rgb(0, 0, 0);
       }
     </style>
 
@@ -216,7 +219,7 @@
               <ul class="list-group">
                 <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
                 <!-- <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>-->
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Favourites</strong></span>
+                <li class="list-group-item text-right" id="favourites"><span class="pull-left"><strong>Favourites</strong></span>
                   <?php 
                     $favouritequery = mysqli_query($conn,"SELECT COUNT(post_id) FROM favourite WHERE user_id='{$row['user_id']}'");
                     $favouritecount = mysqli_fetch_row($favouritequery);
@@ -259,67 +262,75 @@
                       </nav> -->
                       <h4>Recent Activity</h4>
                       <hr>
-  				   	  <?php
-                        $qpost = "SELECT * FROM post WHERE author_id='{$id}' ORDER BY pdate DESC";
-                        $posts = mysqli_query($conn, $qpost);
-                        
-                        if($posts->num_rows > 0){
-                          while($post = $posts->fetch_assoc()){
-                            $qpost2 = "SELECT username FROM users WHERE user_id='".$post["author_id"]."'";
-                            $post2 = mysqli_query($conn, $qpost2);
-                            $row = $post2->fetch_assoc();
-                            echo '<div class="panel panel-primary">
-                                <div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit white"><span class="glyphicon glyphicon-remove remove ';
-                            if($id!=$_SESSION["user_id"]){ echo 'hidden"'; }else{ echo '"'; }
-                            echo 'aria-hidden="true" aria-label="down"></span></small></div>
-                                
-                                <div class="panel-body">
-                                  <p>'.$post["post"].'</p>
-                                  <div class="row">
-                                    <div class="col-lg-4">
-                                      <h5 class="contri"><span class="badge">'.$post["no_contri"].'</span> Contributors</h5>
-                                      <button type="button" class="btn btn-default btn-lg comments">
-                                        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
-                                      </button>
-                                    </div>
-                                      
-                                    <div class="col-lg-4 col-lg-offset-4 editing">
-                                      <input type="hidden" value="'.$post["post_id"].'" >
-                                      <button type="button" class="btn btn-default btn-lg edit add_f">
-                                        <span class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="favourite"></span>
-                                      </button>
-                                      <button type="button" class="btn btn-default btn-lg edit add_c" data-toggle="modal" data-target="#contribute">
-                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
-                                      </button>
-                                    </div>
-                                  </div>
-                            
-                                    <ul class="list-group contri">';
-                            $qcontri = "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC";
-                            $contri = mysqli_query($conn, $qcontri);
-                          
-                            if($contri->num_rows > 0){
-                              while($contrib = $contri->fetch_assoc()){
-                                $qcontri2 = "SELECT username FROM users WHERE user_id='".$contrib["author_id"]."'";
-                                $contri2 = mysqli_query($conn, $qcontri2);
-                                $fetch = $contri2->fetch_assoc();
-                                echo'<div>
-                                    <blockquote>
-                                      <h5>'.$contrib["contribution"].'</h5>
-                                      <footer><cite title="Source Title">'.$fetch["username"].'</cite></footer>
-                                    </blockquote>
-                                  </div>';
-                              }
-                            }
-                            echo"</ul>
+  				   	 <?php
+                  require("connectdb.php");
+                  $qpost = "SELECT * FROM post WHERE author_id='{$id}' ORDER BY pdate DESC";
+                  $posts = mysqli_query($conn, $qpost);
+                  
+                  if($posts->num_rows > 0){
+                    while($post = $posts->fetch_assoc()){
+                      $qpost2 = "SELECT username FROM users WHERE user_id='".$post["author_id"]."'";
+                      $post2 = mysqli_query($conn, $qpost2);
+                      
+                      $row = $post2->fetch_assoc();
+                      echo '<div class="panel panel-primary">
+                              <div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit white"><span class="glyphicon glyphicon-remove remove" aria-hidden="true" aria-label="down"></span></small>
                               </div>
-                              </div>";
-                          }
-                        }else{
-                          echo "We've Come up Empty... Not much action here";
+                              <input type="hidden" value="'.$post["author_id"].'">
+                              <div class="panel-body">
+                            <p>'.$post["post"].'</p>
+                            <div class="row">
+                              <div class="col-lg-4">
+                                <h5 class="contri"><span class="badge">'.$post["no_contri"].'</span> Contributors</h5>
+                                <button type="button" class="btn btn-default btn-lg comments">
+                                  <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
+                                </button>
+                              </div>
+                                
+                              <div class="col-lg-4 col-lg-offset-4 editing">
+                                <input type="hidden" value="'.$post["post_id"].'">
+                                <button type="button" class="btn btn-default btn-lg edit favourite">
+                                  <span class="glyphicon glyphicon-star" aria-hidden="true" aria-label="favourite" id="i'.$post["post_id"].'"></span>
+                                </button>
+                                <button type="button" class="btn btn-default btn-lg edit add_c" data-toggle="modal" data-target="#contribute">
+                                  <span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
+                                </button>
+                              </div>
+                            </div>
+                      
+                            <ul class="list-group contributionpane">';
+                              
+                      $qfave = "SELECT * FROM favourite WHERE user_id='".$_SESSION["user_id"]."' and post_id='".$post["post_id"]."'";
+                      $fave = mysqli_query($conn, $qfave);
+                
+                      if($fave->num_rows > 0){
+                        $x = $post["post_id"];
+                        echo '<style>span[id=i'.$post["post_id"].']{color: yellow;}</style>'; 
+                      }
+              
+                      $qcontri = "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC";
+                      $contri = mysqli_query($conn, $qcontri);
+                    
+                      if($contri->num_rows > 0){
+                        while($contrib = $contri->fetch_assoc()){
+                          $qcontri2 = "SELECT username FROM users WHERE user_id='".$contrib["author_id"]."'";
+                          $contri2 = mysqli_query($conn, $qcontri2);
+                          $fetch = $contri2->fetch_assoc();
+                          echo'<div>
+                              <blockquote>
+                                <h5>'.$contrib["contribution"].'</h5>
+                                <footer><cite title="Source Title">'.$fetch["username"].'</cite></footer>
+                              </blockquote>
+                            </div>';
                         }
-                        
-                      ?>
+                      }
+                      echo"</ul>
+                        </div>
+                        </div>";
+                    }
+                  }
+                  
+                ?>
                  </div><!--/tab-pane-->
                  <div class="tab-pane" id="notification">
                    
@@ -346,7 +357,7 @@
                  </div><!--/tab-pane-->
                  <div class="tab-pane" id="update">
                       <hr>
-                      <form class="form updateinfo" action="updateinfo.php" method="post" id="updateform">
+                      <form class="form updateinfo" action="updateinfo.php" method="post" id="updateform" autocomplete="off">
                           <div class="form-group">
                               <div class="col-xs-6">
                                   <label><h4>Username</h4></label>
@@ -424,7 +435,7 @@
   			<div id="writem" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                   <div class="modal-content">
-                    <form method="POST" action="write.php">
+                    <form method="POST" action="write.php" autocomplete="off">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Title</h4>
@@ -444,23 +455,25 @@
               <div id="contribute" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                   <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 name="ctitle" id="ctitle" class="modal-title"></h4>
-                    </div>
-                    <div class="modal-body">
-                      <form method="POST" action="contribute.php">
+                    <form method="POST" action="contribute.php" autocomplete="off">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 name="ctitle" id="ctitle" class="modal-title"></h4>
+                        <input name="aid" type="hidden" value="" id="aid">
+                      </div>
+                    
+                      <div class="modal-body">
                         <input name="id" type="hidden" value="" id="id">
                         <textarea name="content" class="form-control write" id="ccontent" rows="7"></textarea>
                         <div class="modal-footer">
                           <h5 class="contri" id="cmax">170</h5>
                           <button type="submit" class="btn btn-success" disabled="disabled" id="cbtn">Contribute</button>
                         </div>
-                      </form>
-                    </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
-              </div>  <!--contribute-->
+              </div> <!--contribute-->
           </div><!--/col-9-->
         </div><!--/row-->
       </div><!--/.container-->
@@ -474,7 +487,9 @@
     <!-- <script src="jq/update.js"></script> -->
     <script type="text/javascript">
       $(document).ready(function(){
-        $(".contri").hide();
+        $(".contributionpane").hide();
+        $("#cbtn").prop("disabled", false);
+        $("#wbtn").prop("disabled", false);
         $(".comments").on("click", function(){
           var contribution_sibs = $(this).parent().parent().parent().parent().siblings().children(".panel-body").children(".list-group"); console.log(contribution_sibs);
           var contribution_curr = $(this).parent().parent().siblings(".list-group"); console.log(contribution_curr);
@@ -563,13 +578,17 @@
           return false;
         });
 
+        // PLACE IN AJAX $("#prof_pic").html("<img title='profile image' class='img-responsive' src='img/"+response+"'>");
+
         $(".add_c").on("click", function(){
           var id = $(this).prev().prev().val();
-          var title = $(this).parent().parent().parent().prev().find("strong").text();
-          
+          var title = $(this).parent().parent().parent().prev().prev().find("strong").text();
+          var a_id = $(this).parent().parent().parent().prev().val();
+
           $("#contribute #ctitle").text(title);
           $("#contribute #id").val(id);
-          
+          $("#contribute #aid").val(a_id);
+
           $("#ccontent").keyup(function(){
             var clen = $(this).val().length;
             $("#cmax").text(170-clen);
@@ -582,21 +601,55 @@
           
         });
     
-        $(".add_f").on("click", function(){
-          var fav = $(this).children("span");
-          fav.toggleClass("glyphicon-star-empty");
-          fav.toggleClass("glyphicon-star");
-          if(fav.hasClass("glyphicon-star")){
-            fav.css("color","yellow");
+        // $(".add_f").on("click", function(){
+        //   var fav = $(this).children("span");
+        //   fav.toggleClass("glyphicon-star-empty");
+        //   fav.toggleClass("glyphicon-star");
+        //   if(fav.hasClass("glyphicon-star")){
+        //     fav.css("color","yellow");
+        //   }else{
+        //     fav.css("color","black");
+        //   }
+        // });
+
+        $(".favourite").on("click", function(){
+          var n = $(this).prev().val();
+          var faid = $(this).parent().parent().parent().prev().val();
+          var ftitle = $(this).parent().parent().parent().prev().prev().find("strong").text();
+          
+          if($(this).children().css("color") == "rgb(0, 0, 0)"){
+            $(this).children().css("color", "rgb(255, 255, 0)");
+            // $(this).children().toggleClass("glyphicon-star-empty");
+            // $(this).children().toggleClass("glyphicon-star");
+            $.ajax({
+              url: "afave.php",
+              data: {post_id : n,
+                     user_id : <?php echo $_SESSION['user_id']; ?>},
+              type: "POST",
+              success: function(response){
+                $('#favourites').html("<span class='pull-left'><strong>Favourites</strong></span>"+response);
+              }
+            });
           }else{
-            fav.css("color","black");
+            $(this).children().css("color", "rgb(0, 0, 0)");
+            // $(this).children().toggleClass("glyphicon-star-empty");
+            // $(this).children().toggleClass("glyphicon-star");
+            $.ajax({
+              url: "dfave.php",
+              data: {post_id : n,
+                     user_id : <?php echo $_SESSION['user_id']; ?>},
+              type: "POST",
+              success: function(response){
+                  $('#favourites').html("<span class='pull-left'><strong>Favourites</strong></span>"+response);
+                }
+            });
           }
         });
-
+        
         $(".remove").on("click", function(){
           var conf = confirm("Are you sure you want to delete this post? You might miss it :(");
           if(conf){
-            var id = $(this).parent().parent().next().children(".row").children(".editing").children("input").val(); console.log(id);
+            var id = $(this).parent().parent().next().next().children(".row").children(".editing").children("input").val(); console.log(id); 
             var post = $(this).parent().parent().parent();
             post.hide('slow', function(){ post.remove(); });
 
