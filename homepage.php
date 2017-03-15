@@ -267,7 +267,7 @@
 						</div>
 						<div class="modal-footer">
 							<h5 class="contri" id="wmax">170</h5>
-							<button type="submit" class="btn btn-success" disabled="disabled" id="wbtn">Post</button>
+							<button type="button" class="btn btn-success" disabled="disabled" id="wbtn" data-dismiss="modal">Post</button>
 						</div>
 					</div>
 				</div>
@@ -326,8 +326,9 @@
 				url: "write.php",
 				type: "POST",
 				data: data,
-				success: function(retval){
-					console.log(retval);
+				datatype: "json",
+				success: function(post){
+					console.log(post);
 				}
 			});
 			
@@ -363,14 +364,7 @@
 				$.ajax({
 					url: "afave.php",
 					type: "POST",
-					data: data,
-					success: function(ret){
-						if(ret == 1){
-							console.log("notif success");
-						}else{
-							console.log("notif fail :(");
-						}
-					}
+					data: data
 				});
 			}else{
 				$(this).children().css("color", "rgb(0, 0, 0)");
