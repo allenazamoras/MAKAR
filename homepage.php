@@ -144,40 +144,44 @@
 		<div class="featured">
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<h5 class="panel-title"><strong>Post of the Day</strong></h5>
-				</div>
-				<div class="panel-body">
-					<h5>Night Vale <small>by GlowCloud</small></h5>
-				</div>
-			</div>
-			
-			<div class="panel panel-info">
-				<div class="panel-heading">
 					<h5 class="panel-title"><strong>Writer of the Day</strong></h5>
 				</div>
 				<div class="panel-body">
-					<h5>Cecil Baldwin</h5>
+					<?php 
+						$wodquery = mysqli_query($conn,"SELECT U.username, COUNT(P.post_id) AS postCount FROM users AS U INNER JOIN post AS P ON U.user_id = P.author_id WHERE P.pdate > DATE_SUB(NOW(), INTERVAL 1 DAY) GROUP BY U.username ORDER BY COUNT(P.post_id) DESC LIMIT 1");
+						$wod = mysqli_fetch_assoc($wodquery);
+						echo "<h5>".$wod['username']."</h5>";
+					?>
 				</div>
 			</div>
 			
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<h5 class="panel-title"><strong>Most Contributed</strong></h5>
+					<h5 class="panel-title"><strong>Most Contributed Post</strong></h5>
 				</div>
 				<div class="panel-body">
-					<h5>Night Vale <small>by GlowCloud</small></h5>
+					<?php 
+						$mostcontriquery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND (SELECT MAX(no_contri) FROM post)");
+						$mostcontri = mysqli_fetch_assoc($mostcontriquery);
+						echo $mostcontri['post_title']." by ".$mostcontri['author_id'];
+					?>
 				</div>
 			</div>
 			
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<h5 class="panel-title"><strong>Most Favourites</strong></h5>
+					<h5 class="panel-title"><strong>Most Favourited Post</strong></h5>
 				</div>
 				<div class="panel-body">
+					<?php 
+						$mostfavequery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND (SELECT MAX(no_fave) FROM post)");
+						$mostfave = mysqli_fetch_assoc($mostfavequery);
+						echo "<h5>".$mostfave['post_title']." <small>by ".$mostfave['author_id']."</small></h5>";
+					?>
 					<h5>Night Vale <small>by GlowCloud</small></h5>
 				</div>
 			</div>
-		</div>
+		</div><!-- /.featured -->
 		<div class="row">
 			<div class="col-lg-5 col-lg-offset-3">
 				<?php
