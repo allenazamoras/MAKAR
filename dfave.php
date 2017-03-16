@@ -11,9 +11,7 @@
 	$qfave = "DELETE FROM favourite WHERE user_id=".$_SESSION["user_id"]." and post_id=".$id;
 	$fave = mysqli_query($conn, $qfave);
 	
-	if($fave){
-		echo json_encode(1);
-	}else{
-		echo json_encode(0);
-	}
+	$favouritequery = mysqli_query($conn,"SELECT COUNT(post_id) FROM favourite WHERE user_id='{$_POST['user_id']}'");
+    $favouritecount = mysqli_fetch_row($favouritequery);
+   	echo ($favouritecount[0]);
 ?>
