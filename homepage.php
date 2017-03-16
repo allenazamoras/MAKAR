@@ -144,42 +144,50 @@
 		<div class="featured">
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<h5 class="panel-title"><strong>Post of the Day</strong></h5>
-				</div>
-				<div class="panel-body">
-					<h5>Night Vale <small>by GlowCloud</small></h5>
-				</div>
-			</div>
-			
-			<div class="panel panel-info">
-				<div class="panel-heading">
 					<h5 class="panel-title"><strong>Writer of the Day</strong></h5>
 				</div>
 				<div class="panel-body">
-					<h5>Cecil Baldwin</h5>
+					<?php 
+						$wodquery = mysqli_query($conn,"SELECT U.username, COUNT(P.post_id) AS postCount FROM users AS U INNER JOIN post AS P ON U.user_id = P.author_id WHERE P.pdate > DATE_SUB(NOW(), INTERVAL 1 DAY) GROUP BY U.username ORDER BY COUNT(P.post_id) DESC LIMIT 1");
+						$wod = mysqli_fetch_assoc($wodquery);
+						echo "<h5>".$wod['username']."</h5>";
+					?>
 				</div>
 			</div>
 			
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<h5 class="panel-title"><strong>Most Contributed</strong></h5>
+					<h5 class="panel-title"><strong>Most Contributed Post</strong></h5>
 				</div>
 				<div class="panel-body">
-					<h5>Night Vale <small>by GlowCloud</small></h5>
+					<?php 
+						$mostcontriquery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND (SELECT MAX(no_contri) FROM post)");
+						$mostcontri = mysqli_fetch_assoc($mostcontriquery);
+						$authorOfPost = mysqli_query($conn,"SELECT username FROM users WHERE user_id='{$mostcontri['author_id']}'");
+						$author = mysqli_fetch_assoc($authorOfPost);
+						echo "<h5>".$mostcontri['post_title']." <small>by ".$author['username']."</small></h5>";
+					?>
 				</div>
 			</div>
 			
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<h5 class="panel-title"><strong>Most Favourites</strong></h5>
+					<h5 class="panel-title"><strong>Most Favourited Post</strong></h5>
 				</div>
 				<div class="panel-body">
+					<?php 
+						$mostfavequery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND (SELECT MAX(no_fave) FROM post)");
+						$mostfave = mysqli_fetch_assoc($mostfavequery);
+						$authorOfPost = mysqli_query($conn,"SELECT username FROM users WHERE user_id='{$mostfave['author_id']}'");
+						$author = mysqli_fetch_assoc($authorOfPost);
+						echo "<h5>".$mostfave['post_title']." <small>by ".$author['username']."</small></h5>";
+					?>
 					<h5>Night Vale <small>by GlowCloud</small></h5>
 				</div>
 			</div>
-		</div>
+		</div><!-- /.featured -->
 		<div class="row">
-			<div class="col-lg-5 col-lg-offset-3">
+			<div class="col-lg-5 col-lg-offset-3 posts">
 				<?php
 					require("connectdb.php");
 					$qpost = "SELECT * FROM post WHERE author_id IN (SELECT user_id FROM followers WHERE follower_id='".$_SESSION["user_id"]."') ORDER BY pdate DESC";
@@ -275,22 +283,19 @@
 			<div id="contribute" class="modal fade" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
-						<form method="POST" action="contribute.php">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 name="ctitle" id="ctitle" class="modal-title"></h4>
-								<input name="aid" type="hidden" value="" id="aid">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 name="ctitle" id="ctitle" class="modal-title"></h4>
+							<input name="aid" type="hidden" value="" id="aid">
+						</div>
+						<div class="modal-body">
+							<input name="id" type="hidden" value="" id="id">
+							<textarea name="content" class="form-control write" id="ccontent" rows="7"></textarea>
+							<div class="modal-footer">
+								<h5 class="contri" id="cmax">170</h5>
+								<button type="button" class="btn btn-success" disabled="disabled" id="cbtn" data-dismiss="modal">Contribute</button>
 							</div>
-						
-							<div class="modal-body">
-								<input name="id" type="hidden" value="" id="id">
-								<textarea name="content" class="form-control write" id="ccontent" rows="7"></textarea>
-								<div class="modal-footer">
-									<h5 class="contri" id="cmax">170</h5>
-									<button type="submit" class="btn btn-success" disabled="disabled" id="cbtn">Contribute</button>
-								</div>
-							</div>
-						</form>
+						</div>
 					</div>
 				</div>
 			</div>	
@@ -326,8 +331,28 @@
 				url: "write.php",
 				type: "POST",
 				data: data,
+				dataType: "json",
 				success: function(post){
-					console.log(post);
+					$(".posts").prepend('<div class="panel panel-primary"><div class="panel-heading"><strong>'+post.post_title+'</strong><small class="edit">by <?php echo $_SESSION["username"];?></small></div><input type="hidden" value="'+post.author_id+'"><div class="panel-body"><p>'+post.post+'</p><div class="row"><div class="col-lg-4"><h5 class="contri"><span class="badge">'+post.no_contri+'</span> Contributors</h5><button type="button" class="btn btn-default btn-lg comments"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span></button></div><div class="col-lg-4 col-lg-offset-4"><input type="hidden" value="'+post.post_id+'"><button type="button" class="btn btn-default btn-lg edit favourite"><span class="glyphicon glyphicon glyphicon-star" aria-hidden="true" aria-label="favourite" id="i'+post.post_id+'"></span></button><button type="button" class="btn btn-default btn-lg edit add_c" data-toggle="modal" data-target="#contribute"><span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span></button></div></div><ul class="list-group"></ul></div></div>');
+				}
+			});
+			
+		});
+		
+		$("#cbtn").on("click", function(){
+			var pid = $(this).parent().prev().prev().val();
+			var aid = $(this).parent().parent().prev().children().next().next().val();
+			var ccontent = $(this).parent().prev().val();
+			var data = {post_id : pid, author_id : aid, contribution : ccontent};
+			$.ajax({
+				url: "contribute.php",
+				type: "POST",
+				data: data,
+				dataType: "json",
+				success: function(contribute){
+					$(".panel-primary .panel-body .col-lg-offset-4 [value="+pid+"]").parent().parent().next().append('<div><blockquote><input type="hidden" value='+contribute.contribution_id+'><button type="button" class="btn btn-default btn-xs pull-right delete_c"><span class="glyphicon glyphicon-remove" aria-hidden="true" aria-label="remove"></span></button><h5>'+contribute.contribution+'</h5> <footer><cite title="Source Title"><?php echo $_SESSION["username"];?></cite></footer></blockquote></div>');
+					var x = $(".panel-primary .panel-body .col-lg-offset-4 [value="+pid+"]").parent().prev().children().find(".badge").text();
+					$(".panel-primary .panel-body .col-lg-offset-4 [value="+pid+"]").parent().prev().children().find(".badge").text(parseInt(x)+1);
 				}
 			});
 			

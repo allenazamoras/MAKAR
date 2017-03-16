@@ -1,4 +1,8 @@
 <?php
+	session_start();
+	if(!isset($_SESSION["user_id"])){
+		header("Location: login.php");
+	}
 	require("connectdb.php");
 	$deleteContribution = mysqli_query($conn,"DELETE FROM contributions WHERE post_id='{$_POST['post_id']}'");
 	$deletePost = mysqli_query($conn,"DELETE FROM post WHERE post_id='{$_POST['post_id']}'");

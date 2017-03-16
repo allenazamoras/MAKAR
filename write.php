@@ -1,5 +1,8 @@
 <?php
 	session_start();
+	if(!isset($_SESSION["user_id"])){
+		header("Location: login.php");
+	}
 	require("connectdb.php");
 	
 	$title = addslashes($_POST["wtitle"]);
@@ -8,11 +11,13 @@
 	$postin = "INSERT INTO post (post_title, post, author_id) VALUES ('$title', '$content', '".$_SESSION["user_id"]."')";
 	$insert = mysqli_query($conn, $postin);
 	
-	$post = "SELECT * FROM post WHERE author_id='".$_SESSION["user_id"]."' AND post_id=MAX(post_id)";
+	$post = "SELECT * FROM post WHERE post_id=(SELECT MAX(post_id) FROM post WHERE author_id='".$_SESSION["user_id"]."')";
 	$fetch = mysqli_query($conn, $post);
-	$array = mysqli_fetch_row($fetch);
+	$array = mysqli_fetch_assoc($fetch);
 	
-	echo $array[0];
+	if($array){
+		echo json_encode($array);
+	}
 	//if($insert){
 		//return json_encode(array("success" => 1));
 	//}

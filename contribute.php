@@ -1,10 +1,13 @@
 <?php
 	session_start();
+	if(!isset($_SESSION["user_id"])){
+		header("Location: login.php");
+	}
 	require("connectdb.php");
 	
-	$id = $_POST["id"];
-	$content = addslashes($_POST["content"]);
-	$aid = $_POST["aid"];
+	$id = $_POST["post_id"];
+	$content = addslashes($_POST["contribution"]);
+	$aid = $_POST["author_id"];
 	
 	$fetcht = "SELECT post_title FROM post WHERE post_id='".$id."'";
 	$titleq = mysqli_query($conn, $fetcht);
@@ -18,9 +21,13 @@
 	$update = mysqli_query($conn, $contriup);
 	$notify = mysqli_query($conn, $notif);
 	
-	if($insert && update){
-		header("location: homepage.php");
+	$contri = "SELECT * FROM contributions WHERE contribution_id=(SELECT MAX(contribution_id) FROM contributions WHERE author_id='".$_SESSION["user_id"]."')";
+	$fetch = mysqli_query($conn, $contri);
+	$array = mysqli_fetch_assoc($fetch);
+	
+	if($array){
+		echo json_encode($array);
 	}else{
-		echo"<script>alert('ERROR');</script>";
+		echo json_encode(0);
 	}
 ?>
