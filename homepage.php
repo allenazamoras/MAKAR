@@ -163,15 +163,8 @@
 					<?php 
 						$mostcontriquery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND (SELECT MAX(no_contri) FROM post)");
 						$mostcontri = mysqli_fetch_assoc($mostcontriquery);
-<<<<<<< HEAD
 						$authorOfPost = mysqli_query($conn,"SELECT username FROM users WHERE user_id='{$mostcontri['author_id']}'");
 						$author = mysqli_fetch_assoc($authorOfPost);
-=======
-
-						$authorOfPost = mysqli_query($conn,"SELECT username FROM users WHERE user_id='{$mostcontri['author_id']}'");
-						$author = mysqli_fetch_assoc($authorOfPost);
-
->>>>>>> ca36836058c4e1714abcafe1a26eedb72ef91617
 						echo "<h5>".$mostcontri['post_title']." <small>by ".$author['username']."</small></h5>";
 					?>
 				</div>
@@ -185,15 +178,8 @@
 					<?php 
 						$mostfavequery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND (SELECT MAX(no_fave) FROM post)");
 						$mostfave = mysqli_fetch_assoc($mostfavequery);
-<<<<<<< HEAD
 						$authorOfPost = mysqli_query($conn,"SELECT username FROM users WHERE user_id='{$mostfave['author_id']}'");
 						$author = mysqli_fetch_assoc($authorOfPost);
-=======
-
-						$authorOfPost = mysqli_query($conn,"SELECT username FROM users WHERE user_id='{$mostfave['author_id']}'");
-						$author = mysqli_fetch_assoc($authorOfPost);
-
->>>>>>> ca36836058c4e1714abcafe1a26eedb72ef91617
 						echo "<h5>".$mostfave['post_title']." <small>by ".$author['username']."</small></h5>";
 					?>
 					<h5>Night Vale <small>by GlowCloud</small></h5>
