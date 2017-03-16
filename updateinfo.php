@@ -30,14 +30,14 @@
 		$dob = 	$curr["dob"];
 	}
 	if($_POST["about"]!=""){
-		$about = $_POST["about"];
+		$about = addslashes($_POST["about"]);
 	}else{
 		$about = $curr["about"];
 	}
 
 	if($_POST['newpassword']!=""){
-		if($curr["password"]==$_POST['oldpassword']){
-			$password = $_POST['newpassword'];
+		if($curr["password"]==md5($_POST['oldpassword'])){
+			$password = md5($_POST['newpassword']);
 		}else{
 			$password = $curr["password"];
 		}
