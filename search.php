@@ -13,7 +13,9 @@
 		<title>Makar</title>
 		<style>
 			body{
-				background-color: #fafafa;
+				background-image: url("img/website-background.jpg"); 
+				background-attachment: fixed;
+				background-size: cover;
 				margin: 0px;
 			}
 			ul{
@@ -22,9 +24,6 @@
 			li{
 				text-decoration: none;
 				color: black;
-			}
-			.search-img{
-				height: 50px;
 			}
 			.nav, .navbar-form, .btn{
 				display: inline-block;
@@ -76,6 +75,32 @@
 			}
 			.contri{
 				color: gray;
+			}
+			.dropdown-menu {
+				margin-top: 18px;
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+				left: 50%;
+				right: auto;
+				text-align: left;
+				transform: translate(-50%, 0);
+			}
+			.licontent{
+				width: 200px;
+				padding: 5px;
+			}
+			.glyphicon-star{
+				color: rgb(0, 0, 0);
+			}
+			.panel-heading,.btn-primary{
+		   		background-image: linear-gradient(#04519b,#044687 60%,#033769);
+		  		color: #fff !important; 
+		    }
+			.glyphicon-remove{
+				color: rgb(149, 149, 149);
+			}
+			.search-img{
+				height: 50px;
 			}
 			#userinfo{
 				position: fixed;
