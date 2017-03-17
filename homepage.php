@@ -205,14 +205,14 @@
 									<div class="panel-body">
 										<p>'.$post["post"].'</p>
 										<div class="row">
-											<div class="col-lg-4">
+											<div class="col-lg-4 expand">
 												<h5 class="contri"><span class="badge">'.$post["no_contri"].'</span> Contributors</h5>
 												<button type="button" class="btn btn-default btn-lg comments">
 													<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
 												</button>
 											</div>
 												
-											<div class="col-lg-4 col-lg-offset-4">
+											<div class="col-lg-4 col-lg-offset-4 es">
 												<input type="hidden" value="'.$post["post_id"].'">
 												<button type="button" class="btn btn-default btn-lg edit favourite">
 													<span class="glyphicon glyphicon glyphicon-star" aria-hidden="true" aria-label="favourite" id="i'.$post["post_id"].'"></span>
@@ -327,6 +327,7 @@
 			var ptitle = $(this).parent().prev().prev().children().siblings(".write").val();
 			var pcontent = $(this).parent().prev().children().val();
 			var data = {wtitle : ptitle, wcontent : pcontent};
+			
 			$.ajax({
 				url: "write.php",
 				type: "POST",
@@ -357,8 +358,7 @@
 			});
 			
 		});
-		
-		$(".add_c").on("click", function(){
+		$(".row").on("click", ".add_c", function(){
 			var id = $(this).prev().prev().val();
 			var title = $(this).parent().parent().parent().prev().prev().find("strong").text();
 			var a_id = $(this).parent().parent().parent().prev().val();
@@ -374,10 +374,9 @@
 					$("#cbtn").prop("disabled", true);
 				}
 			});
-			
 		});
 		
-		$(".favourite").on("click", function(){
+		$(".row").on("click", ".favourite", function(){
 			var n = $(this).prev().val();
 			var faid = $(this).parent().parent().parent().prev().val();
 			var ftitle = $(this).parent().parent().parent().prev().prev().find("strong").text();
@@ -416,7 +415,7 @@
 			$(this).css("color", "black");
 		});
 		
-		$(".delete_c").on("click", function(){
+		$(".row").on("click", ".delete_c", function(){
 			var conf = confirm("Are you sure you want to delete this post? You might miss it :(");
 			if(conf){
 				var contrid = $(this).prev().val();
