@@ -222,9 +222,14 @@
                 <!-- <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>-->
                 <li class="list-group-item text-right" id="favourites"><span class="pull-left"><strong>Favourites</strong></span>
                   <?php 
-                    $favouritequery = mysqli_query($conn,"SELECT COUNT(post_id) FROM favourite WHERE user_id='{$row['user_id']}'");
-                    $favouritecount = mysqli_fetch_row($favouritequery);
-                    echo $favouritecount[0];
+                    $userpostsquery = mysqli_query($conn,"SELECT post_id FROM post WHERE author_id='{$row['user_id']}'");
+                    $totalfaves = 0;
+                    while($userposts = mysqli_fetch_assoc($userpostsquery)){
+                      $favequery = mysqli_query($conn,"SELECT COUNT(post_id) AS faves FROM favourite WHERE post_id='{$userposts['post_id']}'");
+                      $fave = mysqli_fetch_assoc($favequery);
+                      $totalfaves += $fave['faves'];
+                    }
+                    echo $totalfaves;
                   ?>
                 </li> 
                 <li class="list-group-item text-right" id="posts"><span class="pull-left"><strong>Posts</strong></span>
@@ -270,12 +275,12 @@
                   
                   if($posts->num_rows > 0){
                     while($post = $posts->fetch_assoc()){
-                      $qpost2 = "SELECT username FROM users WHERE user_id='".$post["author_id"]."'";
-                      $post2 = mysqli_query($conn, $qpost2);
-                      
-                      $row = $post2->fetch_assoc();
                       echo '<div class="panel panel-primary">
-                              <div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit white"><span class="glyphicon glyphicon-remove remove" aria-hidden="true" aria-label="down"></span></small>
+                              <div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit white ';
+
+                      if($id!=$_SESSION["user_id"]){ echo "hidden"; }
+
+                      echo '"><span class="glyphicon glyphicon-remove remove" aria-hidden="true" aria-label="down"></span></small>
                               </div>
                               <input type="hidden" value="'.$post["author_id"].'">
                               <div class="panel-body">
@@ -620,12 +625,13 @@
           
           if($(this).children().css("color") == "rgb(0, 0, 0)"){
             $(this).children().css("color", "rgb(255, 255, 0)");
+            console.log(<?php echo $row['user_id']; ?>+"\n"+n);
             // $(this).children().toggleClass("glyphicon-star-empty");
             // $(this).children().toggleClass("glyphicon-star");
             $.ajax({
               url: "afave.php",
               data: {post_id : n,
-                     user_id : <?php echo $_SESSION['user_id']; ?>},
+                     user_id : <?php echo $row['user_id']; ?>},
               type: "POST",
               success: function(response){
                 $('#favourites').html("<span class='pull-left'><strong>Favourites</strong></span>"+response);
@@ -638,7 +644,7 @@
             $.ajax({
               url: "dfave.php",
               data: {post_id : n,
-                     user_id : <?php echo $_SESSION['user_id']; ?>},
+                     user_id : <?php echo $row['user_id']; ?>},
               type: "POST",
               success: function(response){
                   $('#favourites').html("<span class='pull-left'><strong>Favourites</strong></span>"+response);
