@@ -3,11 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 14, 2017 at 01:07 PM
+-- Generation Time: Mar 17, 2017 at 02:03 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 7.0.8
-CREATE DATABASE makar;
-USE makar;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -50,7 +48,8 @@ INSERT INTO `contributions` (`contribution_id`, `post_id`, `contribution`, `auth
 (7, 1, 'Well, logic would tell you that it''s you!', 1, '2017-03-13 14:36:49'),
 (8, 1, 'But then Once Upon a Time, there was no ''you''.', 1, '2017-03-13 14:37:11'),
 (9, 1, 'Therefore, Once Upon a Time, you weren''t a thing.', 1, '2017-03-13 14:37:33'),
-(10, 1, 'The End.\r\n\r\nGreat Story.\r\n\r\n10/10.\r\n\r\nWoohoo!', 1, '2017-03-13 14:38:02');
+(10, 1, 'The End.\r\n\r\nGreat Story.\r\n\r\n10/10.\r\n\r\nWoohoo!', 1, '2017-03-13 14:38:02'),
+(11, 1, 'Noice noice. 10/10', 2, '2017-03-15 23:15:01');
 
 -- --------------------------------------------------------
 
@@ -62,6 +61,14 @@ CREATE TABLE `favourite` (
   `user_id` int(11) DEFAULT NULL,
   `post_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `favourite`
+--
+
+INSERT INTO `favourite` (`user_id`, `post_id`) VALUES
+(2, 1),
+(1, 1);
 
 -- --------------------------------------------------------
 
@@ -83,7 +90,8 @@ INSERT INTO `followers` (`user_id`, `follower_id`) VALUES
 (2, 1),
 (1, 1),
 (2, 2),
-(3, 3);
+(3, 3),
+(3, 2);
 
 -- --------------------------------------------------------
 
@@ -111,6 +119,32 @@ INSERT INTO `notify` (`user_id`, `notification`, `nread`) VALUES
 (1, 'Someone contributed to your post: Once Upon a Time', '1'),
 (1, 'Someone contributed to your post: Once Upon a Time', '1'),
 (1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone favourited your post: Once Upon a Time', '1'),
+(1, 'Someone favourited your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone favourited your post: Once Upon a Time', '1'),
+(1, 'Someone favourited your post: Once Upon a Time', '1'),
+(1, 'Someone favourited your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
+(1, 'Someone contributed to your post: Once Upon a Time', '1'),
 (1, 'Someone contributed to your post: Once Upon a Time', '1');
 
 -- --------------------------------------------------------
@@ -124,7 +158,6 @@ CREATE TABLE `post` (
   `post_title` varchar(70) CHARACTER SET utf8 DEFAULT NULL,
   `post` varchar(170) CHARACTER SET utf8 DEFAULT NULL,
   `no_contri` int(11) DEFAULT '0',
-  `no_fave` int(11) DEFAULT NULL,
   `author_id` int(11) DEFAULT NULL,
   `pdate` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -133,8 +166,8 @@ CREATE TABLE `post` (
 -- Dumping data for table `post`
 --
 
-INSERT INTO `post` (`post_id`, `post_title`, `post`, `no_contri`, `no_fave`, `author_id`, `pdate`) VALUES
-(1, 'Once Upon a Time', 'Once upon a time, time wasnt a thing.', 10, NULL, 1, '2017-03-13 14:23:35');
+INSERT INTO `post` (`post_id`, `post_title`, `post`, `no_contri`, `author_id`, `pdate`) VALUES
+(1, 'Once Upon a Time', 'Once upon a time, time wasnt a thing.', 11, 1, '2017-03-13 14:23:35');
 
 -- --------------------------------------------------------
 
@@ -159,10 +192,10 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `name`, `username`, `email`, `password`, `address`, `school`, `dob`, `profile_pic`) VALUES
-(1, 'Allena Denise', 'skysaur', 'allenazamoras@yahoo.com', 'password', NULL, NULL, NULL, ''),
-(2, 'Denise Zamoras', 'TheNiece', 'denisezamoras@yahoo.com', 'password', NULL, NULL, NULL, ''),
-(3, 'Marjorie Avenido', 'Pink_Punk123', 'marjoavenido@gmail.com', 'password', NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`user_id`, `name`, `username`, `email`, `password`, `address`, `school`, `dob`, `about`, `profile_pic`) VALUES
+(1, 'Allena Denise', 'skysaur', 'allenazamoras@yahoo.com', '5f4dcc3b5aa765d61d8327deb882cf99', '', 'Adolf Hitler School for Friendship and Tolerance', '0000-00-00', 'Expert Procrastinator | Panics every 2 seconds | Has crippling depression', ''),
+(2, 'Denise Zamoras', 'TheNiece', 'denisezamoras@yahoo.com', '5f4dcc3b5aa765d61d8327deb882cf99', NULL, NULL, NULL, NULL, ''),
+(3, 'Marjorie Avenido', 'Pink_Punk123', 'marjoavenido@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -217,7 +250,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `contributions`
 --
 ALTER TABLE `contributions`
-  MODIFY `contribution_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `contribution_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `post`
 --
@@ -268,3 +301,4 @@ ALTER TABLE `post`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
