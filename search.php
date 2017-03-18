@@ -139,7 +139,6 @@
 						<h3 name="fname"><?php echo $_SESSION["name"];?></h3>
 						<h5 name="uname" class="contri"><?php echo $_SESSION["username"];?></h5>
 					</div>
-					<button type="button" class="btn btn-primary h4" data-toggle="modal" data-target="#writem" id="write">Write</button>
 				</div>
 			</div>
 			
