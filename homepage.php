@@ -176,13 +176,14 @@
 				</div>
 				<div class="panel-body">
 					<?php 
-						$mostfavequery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND (SELECT MAX(no_fave) FROM post)");
+						$mostfavepostquery = mysqli_query($conn,"SELECT post_id,COUNT(post_id) AS favs FROM favourite GROUP BY post_id ORDER BY favs DESC LIMIT 1");
+						$mostfavepost = mysqli_fetch_assoc($mostfavepostquery);
+						$mostfavequery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND post_id='{$mostfavepost['post_id']}'");
 						$mostfave = mysqli_fetch_assoc($mostfavequery);
 						$authorOfPost = mysqli_query($conn,"SELECT username FROM users WHERE user_id='{$mostfave['author_id']}'");
 						$author = mysqli_fetch_assoc($authorOfPost);
 						echo "<h5>".$mostfave['post_title']." <small>by ".$author['username']."</small></h5>";
 					?>
-					<h5>Night Vale <small>by GlowCloud</small></h5>
 				</div>
 			</div>
 		</div><!-- /.featured -->
