@@ -380,7 +380,11 @@
 			});
 		});
 		
+<<<<<<< HEAD
 		$(".posts").on("click", ".favourite", function(){
+=======
+		$(".favourite").on("click", function(){
+>>>>>>> 2bbfd47486fbb703bd10be448758a4156b9150c3
 			var n = $(this).prev().val();
 			var faid = $(this).parent().parent().parent().prev().val();
 			var ftitle = $(this).parent().parent().parent().prev().prev().find("strong").text();
@@ -421,7 +425,7 @@
 		});
 		
 		$(".row").on("click", ".delete_c", function(){
-			var conf = confirm("Are you sure you want to delete this post? You might miss it :(");
+			var conf = confirm("Are you sure you want to delete this contribution? You might miss it :(");
 			if(conf){
 				var contrid = $(this).prev().val();
 				var postid = $(this).parent().parent().parent().prev().children().find("input").val();
