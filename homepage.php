@@ -100,6 +100,9 @@
 			.glyphicon-remove{
 				color: rgb(149, 149, 149);
 			}
+			.list-group{
+				display: none;
+			}
 			#userinfo{
 				position: fixed;
 				width: 250px;
@@ -309,16 +312,16 @@
 </html>
 <script src="jq/jquery.min.js"></script>
 <script>
-	$(".list-group").hide();
 	$("#cbtn").prop("disabled", false);
 	$("#wbtn").prop("disabled", false);
 	$(document).ready(function(){
-		$(".comments").on("click", function(){
+		$(".posts").on("click", ".comments", function(){
 			var contribution_sibs = $(this).parent().parent().parent().parent().siblings().children(".panel-body").children(".list-group"); console.log(contribution_sibs);
 			var contribution_curr = $(this).parent().parent().siblings(".list-group"); console.log(contribution_curr);
 			$(contribution_sibs).slideUp();
 			$(contribution_curr).slideToggle();
-			var chevron_sibs = $(contribution_sibs).siblings(".row").children(".col-lg-4").children(".comments").children(); console.log(chevron_sibs);
+			var chevron_sibs = $(contribution_sibs).siblings(".row").children(".col-lg-4").children(".comments").children(); 
+			console.log(chevron_sibs);
 			var chevron_curr = $(this).children(); console.log(chevron_curr);
 			$(chevron_sibs).addClass("glyphicon-chevron-down");
 			$(chevron_sibs).removeClass("glyphicon-chevron-up");

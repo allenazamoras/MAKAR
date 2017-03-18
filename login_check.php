@@ -10,16 +10,19 @@
 		die("Query FAILED: ". mysqli_connect_error());
 	}else{
 		$row = mysqli_fetch_array($user);
-
-		if($password == $row['password']){
-			session_start();
-			$_SESSION["user_id"] = $row["user_id"];
-			$_SESSION["name"] = $row["name"];
-			$_SESSION["username"] = $row["username"];
+		if($row["email"]){
+			if($password == $row['password']){
+				session_start();
+				$_SESSION["user_id"] = $row["user_id"];
+				$_SESSION["name"] = $row["name"];
+				$_SESSION["username"] = $row["username"];
 			
-			header("Location: homepage.php?id=".$_SESSION["user_id"]);
+				header("Location: homepage.php?id=".$_SESSION["user_id"]);
+			}else{
+				echo "<script>alert('Password Incorrect'); window.location.replace('login.php');</script>";
+			}
 		}else{
-			header("Location: login.php?");
+			echo "<script>alert('Email Incorrect'); window.location.replace('login.php');</script>";
 		}
 	}
 	

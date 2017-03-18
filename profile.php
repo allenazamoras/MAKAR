@@ -438,26 +438,6 @@
                       </form>
                  </div><!--/tab-pane-->
               </div><!--/tab-content-->
-  			<div id="writem" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <form method="POST" action="write.php" autocomplete="off">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Title</h4>
-                        <input name="wtitle" type="text" class="form-control write" required>
-                      </div>
-                      <div class="modal-body">
-                        <textarea name="wcontent" class="form-control write" id="wcontent" rows="7"></textarea>
-                      </div>
-                      <div class="modal-footer">
-                        <h5 class="contri" id="wmax">170</h5>
-                        <button type="submit" class="btn btn-success" disabled="disabled" id="wbtn">Post</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div> <!--writem-->
               <div id="contribute" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                   <div class="modal-content">
