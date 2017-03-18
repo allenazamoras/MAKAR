@@ -3,14 +3,13 @@
 	if(!isset($_SESSION['user_id'])){
 		header("location: login.php");
 	}
-
+	
 	require("connectdb.php");
-
 	$id = $_POST["post_id"];
-
+	
 	$qfave = "DELETE FROM favourite WHERE user_id=".$_SESSION["user_id"]." and post_id=".$id;
 	$fave = mysqli_query($conn, $qfave);
-
+	
 	$userpostsquery = mysqli_query($conn,"SELECT post_id FROM post WHERE author_id='{$_POST['user_id']}'");
     $totalfaves = 0;
     while($userposts = mysqli_fetch_assoc($userpostsquery)){

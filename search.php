@@ -8,6 +8,7 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/animate.css">
 		<script src="jq/jquery.min.js"></script>
 		<script src="dist/js/bootstrap.min.js"></script>
 		<title>Makar</title>
@@ -128,7 +129,7 @@
 		</style>
 	</head>
 	<body>
-		<div class='container-fluid'>
+		<div class='container-fluid animated fadeIn'>
 			<?php
 				require("navbar.php");
 			?>

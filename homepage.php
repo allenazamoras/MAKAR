@@ -8,6 +8,7 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/animate.css">
 		<script src="jq/jquery.min.js"></script>
 		<script src="dist/js/bootstrap.min.js"></script>
 		<title>Makar</title>
@@ -130,177 +131,179 @@
 		<?php
 			require("navbar.php");
 		?>
-		<div id="userinfo"> <!-- user info and actions -->
-			<div class="thumbnail">
-				<img src="img/logo.png" alt="picture">
-				<div class="caption">
-					<h3 name="fname"><?php echo $_SESSION["name"];?></h3>
-					<h5 name="uname" class="contri"><?php echo $_SESSION["username"];?></h5>
-				</div>
-				<button type="button" class="btn btn-primary h4" data-toggle="modal" data-target="#writem" id="write">Write</button>
-			</div>
-		</div>
-	
-		<div class="featured">
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					<h5 class="panel-title"><strong>Writer of the Day</strong></h5>
-				</div>
-				<div class="panel-body">
-					<?php 
-						$wodquery = mysqli_query($conn,"SELECT U.username, COUNT(P.post_id) AS postCount FROM users AS U INNER JOIN post AS P ON U.user_id = P.author_id WHERE P.pdate > DATE_SUB(NOW(), INTERVAL 1 DAY) GROUP BY U.username ORDER BY COUNT(P.post_id) DESC LIMIT 1");
-						$wod = mysqli_fetch_assoc($wodquery);
-						echo "<h5>".$wod['username']."</h5>";
-					?>
+		<div class='container-fluid animated fadeIn'>
+			<div id="userinfo"> <!-- user info and actions -->
+				<div class="thumbnail">
+					<img src="img/logo.png" alt="picture">
+					<div class="caption">
+						<h3 name="fname"><?php echo $_SESSION["name"];?></h3>
+						<h5 name="uname" class="contri"><?php echo $_SESSION["username"];?></h5>
+					</div>
+					<button type="button" class="btn btn-primary h4" data-toggle="modal" data-target="#writem" id="write">Write</button>
 				</div>
 			</div>
-			
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					<h5 class="panel-title"><strong>Most Contributed Post</strong></h5>
+		
+			<div class="featured">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<h5 class="panel-title"><strong>Writer of the Day</strong></h5>
+					</div>
+					<div class="panel-body">
+						<?php 
+							$wodquery = mysqli_query($conn,"SELECT U.username, COUNT(P.post_id) AS postCount FROM users AS U INNER JOIN post AS P ON U.user_id = P.author_id WHERE P.pdate > DATE_SUB(NOW(), INTERVAL 1 DAY) GROUP BY U.username ORDER BY COUNT(P.post_id) DESC LIMIT 1");
+							$wod = mysqli_fetch_assoc($wodquery);
+							echo "<h5>".$wod['username']."</h5>";
+						?>
+					</div>
 				</div>
-				<div class="panel-body">
-					<?php 
-						$mostcontriquery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND (SELECT MAX(no_contri) FROM post)");
-						$mostcontri = mysqli_fetch_assoc($mostcontriquery);
-						$authorOfPost = mysqli_query($conn,"SELECT username FROM users WHERE user_id='{$mostcontri['author_id']}'");
-						$author = mysqli_fetch_assoc($authorOfPost);
-						echo "<h5>".$mostcontri['post_title']." <small>by ".$author['username']."</small></h5>";
-					?>
-				</div>
-			</div>
-			
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					<h5 class="panel-title"><strong>Most Favourited Post</strong></h5>
-				</div>
-				<div class="panel-body">
-					<?php 
-						$mostfavepostquery = mysqli_query($conn,"SELECT post_id,COUNT(post_id) AS favs FROM favourite GROUP BY post_id ORDER BY favs DESC LIMIT 1");
-						$mostfavepost = mysqli_fetch_assoc($mostfavepostquery);
-						$mostfavequery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND post_id='{$mostfavepost['post_id']}'");
-						$mostfave = mysqli_fetch_assoc($mostfavequery);
-						$authorOfPost = mysqli_query($conn,"SELECT username FROM users WHERE user_id='{$mostfave['author_id']}'");
-						$author = mysqli_fetch_assoc($authorOfPost);
-						echo "<h5>".$mostfave['post_title']." <small>by ".$author['username']."</small></h5>";
-					?>
-				</div>
-			</div>
-		</div><!-- /.featured -->
-		<div class="row">
-			<div class="col-lg-5 col-lg-offset-3 posts">
-				<?php
-					require("connectdb.php");
-					$qpost = "SELECT * FROM post WHERE author_id IN (SELECT user_id FROM followers WHERE follower_id='".$_SESSION["user_id"]."') ORDER BY pdate DESC";
-					$posts = mysqli_query($conn, $qpost);
-					
-					if($posts->num_rows > 0){
-						while($post = $posts->fetch_assoc()){
-							$qpost2 = "SELECT username FROM users WHERE user_id='".$post["author_id"]."'";
-							$post2 = mysqli_query($conn, $qpost2);
-							
-							$row = $post2->fetch_assoc();
-							echo '<div class="panel panel-primary">
-									<div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit">by '.$row["username"].'</small></div>
-									<input type="hidden" value="'.$post["author_id"].'">
-									<div class="panel-body">
-										<p>'.$post["post"].'</p>
-										<div class="row">
-											<div class="col-lg-4 expand">
-												<h5 class="contri"><span class="badge">'.$post["no_contri"].'</span> Contributors</h5>
-												<button type="button" class="btn btn-default btn-lg comments">
-													<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
-												</button>
-											</div>
-												
-											<div class="col-lg-4 col-lg-offset-4 es">
-												<input type="hidden" value="'.$post["post_id"].'">
-												<button type="button" class="btn btn-default btn-lg edit favourite">
-													<span class="glyphicon glyphicon glyphicon-star" aria-hidden="true" aria-label="favourite" id="i'.$post["post_id"].'"></span>
-												</button>
-												<button type="button" class="btn btn-default btn-lg edit add_c" data-toggle="modal" data-target="#contribute">
-													<span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
-												</button>
-											</div>
-										</div>
-							
-										<ul class="list-group">';
-											
-							$qfave = "SELECT * FROM favourite WHERE user_id='".$_SESSION["user_id"]."' and post_id='".$post["post_id"]."'";
-							$fave = mysqli_query($conn, $qfave);
 				
-							if($fave->num_rows > 0){
-								$x = $post["post_id"];
-								echo '<style>span[id=i'.$post["post_id"].']{color: rgb(255, 204, 70);}</style>';	
-							}
-			
-							$qcontri = "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC";
-							$contri = mysqli_query($conn, $qcontri);
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<h5 class="panel-title"><strong>Most Contributed Post</strong></h5>
+					</div>
+					<div class="panel-body">
+						<?php 
+							$mostcontriquery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND (SELECT MAX(no_contri) FROM post)");
+							$mostcontri = mysqli_fetch_assoc($mostcontriquery);
+							$authorOfPost = mysqli_query($conn,"SELECT username FROM users WHERE user_id='{$mostcontri['author_id']}'");
+							$author = mysqli_fetch_assoc($authorOfPost);
+							echo "<h5>".$mostcontri['post_title']." <small>by ".$author['username']."</small></h5>";
+						?>
+					</div>
+				</div>
+				
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<h5 class="panel-title"><strong>Most Favourited Post</strong></h5>
+					</div>
+					<div class="panel-body">
+						<?php 
+							$mostfavepostquery = mysqli_query($conn,"SELECT post_id,COUNT(post_id) AS favs FROM favourite GROUP BY post_id ORDER BY favs DESC LIMIT 1");
+							$mostfavepost = mysqli_fetch_assoc($mostfavepostquery);
+							$mostfavequery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND post_id='{$mostfavepost['post_id']}'");
+							$mostfave = mysqli_fetch_assoc($mostfavequery);
+							$authorOfPost = mysqli_query($conn,"SELECT username FROM users WHERE user_id='{$mostfave['author_id']}'");
+							$author = mysqli_fetch_assoc($authorOfPost);
+							echo "<h5>".$mostfave['post_title']." <small>by ".$author['username']."</small></h5>";
+						?>
+					</div>
+				</div>
+			</div><!-- /.featured -->
+			<div class="row">
+				<div class="col-lg-5 col-lg-offset-3 posts">
+					<?php
+						require("connectdb.php");
+						$qpost = "SELECT * FROM post WHERE author_id IN (SELECT user_id FROM followers WHERE follower_id='".$_SESSION["user_id"]."') ORDER BY pdate DESC";
+						$posts = mysqli_query($conn, $qpost);
 						
-							if($contri->num_rows > 0){
-								while($contrib = $contri->fetch_assoc()){
-									$qcontri2 = "SELECT username FROM users WHERE user_id='".$contrib["author_id"]."'";
-									$contri2 = mysqli_query($conn, $qcontri2);
-									$fetch = $contri2->fetch_assoc();
-									echo'<div>
-											<blockquote>';
-											if($_SESSION["user_id"] == $contrib["author_id"]){
-												echo'<input type="hidden" value='.$contrib["contribution_id"].'>
-													<button type="button" class="btn btn-default btn-xs pull-right delete_c">
-														<span class="glyphicon glyphicon-remove" aria-hidden="true" aria-label="remove"></span>
-													</button>';	
-											}
-									echo		'<h5>'.$contrib["contribution"].'</h5> 
-												<footer><cite title="Source Title">'.$fetch["username"].'</cite></footer>
-										</blockquote>
-										</div>';
+						if($posts->num_rows > 0){
+							while($post = $posts->fetch_assoc()){
+								$qpost2 = "SELECT username FROM users WHERE user_id='".$post["author_id"]."'";
+								$post2 = mysqli_query($conn, $qpost2);
+								
+								$row = $post2->fetch_assoc();
+								echo '<div class="panel panel-primary">
+										<div class="panel-heading"><strong>'.$post["post_title"].'</strong><small class="edit">by '.$row["username"].'</small></div>
+										<input type="hidden" value="'.$post["author_id"].'">
+										<div class="panel-body">
+											<p>'.$post["post"].'</p>
+											<div class="row">
+												<div class="col-lg-4 expand">
+													<h5 class="contri"><span class="badge">'.$post["no_contri"].'</span> Contributors</h5>
+													<button type="button" class="btn btn-default btn-lg comments">
+														<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
+													</button>
+												</div>
+													
+												<div class="col-lg-4 col-lg-offset-4 es">
+													<input type="hidden" value="'.$post["post_id"].'">
+													<button type="button" class="btn btn-default btn-lg edit favourite">
+														<span class="glyphicon glyphicon glyphicon-star" aria-hidden="true" aria-label="favourite" id="i'.$post["post_id"].'"></span>
+													</button>
+													<button type="button" class="btn btn-default btn-lg edit add_c" data-toggle="modal" data-target="#contribute">
+														<span class="glyphicon glyphicon-pencil" aria-hidden="true" aria-label="pencil"></span>
+													</button>
+												</div>
+											</div>
+								
+											<ul class="list-group">';
+												
+								$qfave = "SELECT * FROM favourite WHERE user_id='".$_SESSION["user_id"]."' and post_id='".$post["post_id"]."'";
+								$fave = mysqli_query($conn, $qfave);
+					
+								if($fave->num_rows > 0){
+									$x = $post["post_id"];
+									echo '<style>span[id=i'.$post["post_id"].']{color: rgb(255, 204, 70);}</style>';	
 								}
+				
+								$qcontri = "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC";
+								$contri = mysqli_query($conn, $qcontri);
+							
+								if($contri->num_rows > 0){
+									while($contrib = $contri->fetch_assoc()){
+										$qcontri2 = "SELECT username FROM users WHERE user_id='".$contrib["author_id"]."'";
+										$contri2 = mysqli_query($conn, $qcontri2);
+										$fetch = $contri2->fetch_assoc();
+										echo'<div>
+												<blockquote>';
+												if($_SESSION["user_id"] == $contrib["author_id"]){
+													echo'<input type="hidden" value='.$contrib["contribution_id"].'>
+														<button type="button" class="btn btn-default btn-xs pull-right delete_c">
+															<span class="glyphicon glyphicon-remove" aria-hidden="true" aria-label="remove"></span>
+														</button>';	
+												}
+										echo		'<h5>'.$contrib["contribution"].'</h5> 
+													<footer><cite title="Source Title">'.$fetch["username"].'</cite></footer>
+											</blockquote>
+											</div>';
+									}
+								}
+								echo"</ul>
+									</div>
+									</div>";
 							}
-							echo"</ul>
-								</div>
-								</div>";
 						}
-					}
-				?>
-			</div>	
-			<div id="writem" class="modal fade" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Title</h4>
-							<input name="wtitle" type="text" class="form-control write" required>
-						</div>
-						<div class="modal-body">
-							<textarea name="wcontent" class="form-control write" id="wcontent" rows="7"></textarea>
-						</div>
+					?>
+				</div>	
+			</div>
+		</div>
+		<div id="writem" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Title</h4>
+						<input name="wtitle" type="text" class="form-control write" required>
+					</div>
+					<div class="modal-body">
+						<textarea name="wcontent" class="form-control write" id="wcontent" rows="7"></textarea>
+					</div>
+					<div class="modal-footer">
+						<h5 class="contri" id="wmax">170</h5>
+						<button type="button" class="btn btn-success" disabled="disabled" id="wbtn" data-dismiss="modal">Post</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="contribute" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 name="ctitle" id="ctitle" class="modal-title"></h4>
+						<input name="aid" type="hidden" value="" id="aid">
+					</div>
+					<div class="modal-body">
+						<input name="id" type="hidden" value="" id="id">
+						<textarea name="content" class="form-control write" id="ccontent" rows="7"></textarea>
 						<div class="modal-footer">
-							<h5 class="contri" id="wmax">170</h5>
-							<button type="button" class="btn btn-success" disabled="disabled" id="wbtn" data-dismiss="modal">Post</button>
+							<h5 class="contri" id="cmax">170</h5>
+							<button type="button" class="btn btn-success" disabled="disabled" id="cbtn" data-dismiss="modal">Contribute</button>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div id="contribute" class="modal fade" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 name="ctitle" id="ctitle" class="modal-title"></h4>
-							<input name="aid" type="hidden" value="" id="aid">
-						</div>
-						<div class="modal-body">
-							<input name="id" type="hidden" value="" id="id">
-							<textarea name="content" class="form-control write" id="ccontent" rows="7"></textarea>
-							<div class="modal-footer">
-								<h5 class="contri" id="cmax">170</h5>
-								<button type="button" class="btn btn-success" disabled="disabled" id="cbtn" data-dismiss="modal">Contribute</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>	
-		</div>
+		</div>	
 	</div>
 </body>
 </html>
@@ -377,12 +380,12 @@
 			});
 		});
 		
-		$(".row").on("click", ".favourite", function(){
+		$(".posts").on("click", ".favourite", function(){
 			var n = $(this).prev().val();
 			var faid = $(this).parent().parent().parent().prev().val();
 			var ftitle = $(this).parent().parent().parent().prev().prev().find("strong").text();
-			
 			if($(this).children().css("color") == "rgb(0, 0, 0)"){
+				console.log($(this).children().css("color"));
 				$(this).children().css("color", "rgb(255, 204, 70)");
 				var data = {post_id : n, author_id : faid, title : ftitle};
 				$.ajax({
@@ -391,6 +394,7 @@
 					data: data
 				});
 			}else{
+				console.log($(this).children().css("color"));
 				$(this).children().css("color", "rgb(0, 0, 0)");
 				$.ajax({
 					url: "dfave.php",

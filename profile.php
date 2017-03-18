@@ -213,7 +213,7 @@
               <!-- NOTICE: if you want to use the fa classes, add <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">  they add icons --> 
               <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"> 
               <div class="panel panel-default">
-                <div class="panel-heading">Something About Me<i class="fa fa-link fa-1x"></i></div>
+                <div class="panel-heading">Something About Me&nbsp &nbsp<i class="fa fa-link fa-1x"></i></div>
                 <div class="panel-body" id="about"><?php echo $row["about"] ?></div>
               </div>
               
