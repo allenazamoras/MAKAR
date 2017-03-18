@@ -146,37 +146,46 @@
 			<div class="featured">
 				<div class="panel panel-info">
 					<div class="panel-heading">
-						<h5 class="panel-title"><strong>Post of the Day</strong></h5>
-					</div>
-					<div class="panel-body">
-						<h5>Night Vale <small>by GlowCloud</small></h5>
-					</div>
-				</div>
-				
-				<div class="panel panel-info">
-					<div class="panel-heading">
 						<h5 class="panel-title"><strong>Writer of the Day</strong></h5>
 					</div>
 					<div class="panel-body">
-						<h5>Cecil Baldwin</h5>
+						<?php 
+							$wodquery = mysqli_query($conn,"SELECT U.username, COUNT(P.post_id) AS postCount FROM users AS U INNER JOIN post AS P ON U.user_id = P.author_id WHERE P.pdate > DATE_SUB(NOW(), INTERVAL 1 DAY) GROUP BY U.username ORDER BY COUNT(P.post_id) DESC LIMIT 1");
+							$wod = mysqli_fetch_assoc($wodquery);
+							echo "<h5>".$wod['username']."</h5>";
+						?>
 					</div>
 				</div>
-				
+			
 				<div class="panel panel-info">
 					<div class="panel-heading">
-						<h5 class="panel-title"><strong>Most Contributed</strong></h5>
+						<h5 class="panel-title"><strong>Most Contributed Post</strong></h5>
 					</div>
 					<div class="panel-body">
-						<h5>Night Vale <small>by GlowCloud</small></h5>
+						<?php 
+							$mostcontriquery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND (SELECT MAX(no_contri) FROM post)");
+							$mostcontri = mysqli_fetch_assoc($mostcontriquery);
+							$authorOfPost = mysqli_query($conn,"SELECT username FROM users WHERE user_id='{$mostcontri['author_id']}'");
+							$author = mysqli_fetch_assoc($authorOfPost);
+							echo "<h5>".$mostcontri['post_title']." <small>by ".$author['username']."</small></h5>";
+						?>
 					</div>
 				</div>
-				
+			
 				<div class="panel panel-info">
 					<div class="panel-heading">
-						<h5 class="panel-title"><strong>Most Favourites</strong></h5>
+						<h5 class="panel-title"><strong>Most Favourited Post</strong></h5>
 					</div>
 					<div class="panel-body">
-						<h5>Night Vale <small>by GlowCloud</small></h5>
+						<?php 
+							$mostfavepostquery = mysqli_query($conn,"SELECT post_id,COUNT(post_id) AS favs FROM favourite GROUP BY post_id ORDER BY favs DESC LIMIT 1");
+							$mostfavepost = mysqli_fetch_assoc($mostfavepostquery);
+							$mostfavequery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND post_id='{$mostfavepost['post_id']}'");
+							$mostfave = mysqli_fetch_assoc($mostfavequery);
+							$authorOfPost = mysqli_query($conn,"SELECT username FROM users WHERE user_id='{$mostfave['author_id']}'");
+							$author = mysqli_fetch_assoc($authorOfPost);
+							echo "<h5>".$mostfave['post_title']." <small>by ".$author['username']."</small></h5>";
+						?>
 					</div>
 				</div>
 			</div>
