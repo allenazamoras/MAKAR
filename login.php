@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Makar | Log In</title>
         <link rel="stylesheet" type="text/css" href="dist/css/bootstrap.min.css">
-		
+		<link rel="stylesheet" href="css/animate.css">
 		<style>
 			body{
 				background-image: url("img/11.png");
@@ -99,7 +99,7 @@
 	</head>
 	
     <body>
-        <div class='container-fluid'>
+        <div class='container-fluid animated fadeIn'>
             <div class="row">
             	<div id="login-box">
 					<div class="col-lg-4 col-lg-offset-2">
@@ -117,7 +117,7 @@
 							<li role="presentation"><a class="sign h4" href="#">Sign up</a></li>
 						</ul>
 						<div class="row">
-							<div class="col-lg-12 center-dc l">
+							<div class="col-lg-12 center-dc l animated fadeIn">
 								<div>
 									<form action="login_check.php" method="POST">
 										<div class="input-group space1">
@@ -137,7 +137,7 @@
 								</div>
 							</div>
 							
-							<div class="col-lg-12 center-dc s">
+							<div class="col-lg-12 center-dc s animated fadeIn">
 								<div>
 									<form action="register.php" method="POST">
 										<div class="input-group space1">
@@ -171,19 +171,40 @@
 									</form>
 								</div>
 							</div>
+
+							<div class="col-lg-10 col-lg-offset-1 a animated fadeIn">
+								<h3>About Us</h3>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis eros massa, sed ornare sapien imperdiet condimentum. Nunc lobortis dignissim purus egestas dapibus. Donec leo lacus, sodales ut laoreet vitae, vulputate id arcu. Vivamus lectus arcu, molestie vel dapibus non, porttitor sed lectus. Nulla blandit tristique ipsum, ut porttitor purus scelerisque dignissim. Phasellus nec mollis dui. Fusce erat justo, molestie hendrerit tincidunt et, pretium vitae mauris.</p>
+
+								<p>Donec dapibus et metus et congue. Phasellus semper placerat efficitur. Donec id erat id ligula viverra sagittis. Suspendisse viverra consequat sapien pharetra vestibulum. Nam ac mauris eget dolor varius consequat ac a risus. Pellentesque ac congue lectus, ac pellentesque nisi. Integer condimentum arcu vitae lorem rhoncus malesuada.</p>	
+							</div>
+
+							<div class="col-lg-10 col-lg-offset-1 t animated fadeIn">
+								<h3>Terms</h3>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis eros massa, sed ornare sapien imperdiet condimentum. Nunc lobortis dignissim purus egestas dapibus. Donec leo lacus, sodales ut laoreet vitae, vulputate id arcu. Vivamus lectus arcu, molestie vel dapibus non, porttitor sed lectus. Nulla blandit tristique ipsum, ut porttitor purus scelerisque dignissim. Phasellus nec mollis dui. Fusce erat justo, molestie hendrerit tincidunt et, pretium vitae mauris.</p>
+
+								<p>Donec dapibus et metus et congue. Phasellus semper placerat efficitur. Donec id erat id ligula viverra sagittis. Suspendisse viverra consequat sapien pharetra vestibulum. Nam ac mauris eget dolor varius consequat ac a risus. Pellentesque ac congue lectus, ac pellentesque nisi. Integer condimentum arcu vitae lorem rhoncus malesuada.</p>	
+							</div>
+
+							<div class="col-lg-10 col-lg-offset-1 p animated fadeIn">
+								<h3>Privacy</h3>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis eros massa, sed ornare sapien imperdiet condimentum. Nunc lobortis dignissim purus egestas dapibus. Donec leo lacus, sodales ut laoreet vitae, vulputate id arcu. Vivamus lectus arcu, molestie vel dapibus non, porttitor sed lectus. Nulla blandit tristique ipsum, ut porttitor purus scelerisque dignissim. Phasellus nec mollis dui. Fusce erat justo, molestie hendrerit tincidunt et, pretium vitae mauris.</p>
+
+								<p>Donec dapibus et metus et congue. Phasellus semper placerat efficitur. Donec id erat id ligula viverra sagittis. Suspendisse viverra consequat sapien pharetra vestibulum. Nam ac mauris eget dolor varius consequat ac a risus. Pellentesque ac congue lectus, ac pellentesque nisi. Integer condimentum arcu vitae lorem rhoncus malesuada.</p>	
+							</div>
 							
 						</div>
 						<footer class="center-dc">
 							<div class="col-lg-3">
-								<button type="button" class="btn btn-default h4">ABOUT US</button>
+								<button type="button" class="btn btn-default h4 about">ABOUT US</button>
 							</div>
 								
 							<div class="col-lg-3">
-								<button type="button" class="btn btn-default h4">TERMS</button>
+								<button type="button" class="btn btn-default h4 terms">TERMS</button>
 							</div>
 							
 							<div class="col-lg-3">
-								<button type="button" class="btn btn-default h4">PRIVACY</button>
+								<button type="button" class="btn btn-default h4 privacy">PRIVACY</button>
 							</div>
 						</footer>
 					</div>
@@ -198,16 +219,48 @@
 <script>
 	$(document).ready(function(){
 		$(".s").hide();
-		
+		$(".a").hide();
+		$(".t").hide();
+		$(".p").hide();
+
 		$(".sign").on("click",function(){
+				$(".a").hide();
+				$(".t").hide();
+				$(".p").hide();
 				$(".l").hide();
 				$(".s").show();
 		});	
 		
 		$(".log").on("click",function(){
+				$(".a").hide();
+				$(".t").hide();
+				$(".p").hide();
 				$(".s").hide();
 				$(".l").show();
 		});		
 		
+		$(".about").on("click",function(){
+				$(".t").hide();
+				$(".p").hide();
+				$(".s").hide();
+				$(".l").hide();
+				$(".a").show();
+		});	
+
+		$(".terms").on("click",function(){
+				$(".a").hide();
+				$(".p").hide();
+				$(".s").hide();
+				$(".l").hide();
+				$(".t").show();
+		});	
+
+		$(".privacy").on("click",function(){
+				$(".a").hide();
+				$(".s").hide();
+				$(".l").hide();
+				$(".t").hide();
+				$(".p").show();
+		});	
 	});
 </script>
