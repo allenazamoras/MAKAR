@@ -195,28 +195,71 @@
 						require("connectdb.php");
 						
 						$search = addslashes($_POST["search"]);
-						$squery = "SELECT * FROM users WHERE name LIKE '%".$search."%'";
-						$rows = mysqli_query($conn, $squery);
+						$snamequery = "SELECT * FROM users WHERE name LIKE '%".$search."%'";
+						$susernamequery = "SELECT * FROM users WHERE username LIKE '%".$search."%'";
+						$nrows = mysqli_query($conn, $snamequery);
+						$urows = mysqli_query($conn, $susernamequery);
+						echo "<div class='panel panel-default'><div class='panel-body'><b>search by name</b></div></div>";
 						
-						if($rows->num_rows > 0){
-							while($row = $rows->fetch_assoc()){
+						if($nrows->num_rows > 0){
+							
+							while($nrow = $nrows->fetch_assoc()){
 								echo"<div class='panel panel-default'>
-										<a href='profile.php?id=".$row["user_id"]."' style='color:black; text-decoration:none;'>
+										<a href='profile.php?id=".$nrow["user_id"]."' style='color:black; text-decoration:none;'>
 										<div class='panel-body'>
 											<div class='media'>
-												<input type='hidden' value='".$row["user_id"]."'>
+												<input type='hidden' value='".$nrow["user_id"]."'>
 												<div class='media-left media-middle'>
-													<img class='media-object search-img' src='img/".$row["profile_pic"]."'>
+													<img class='media-object search-img' src='img/";
+								if($nrow["profile_pic"]!=""){
+									echo $nrow["profile_pic"];
+								}else{
+									echo "default.png";
+								}
+
+								echo "'>
 												</div>
 												<div class='media-body'>
-													<h4>".$row["name"]."</h4>
-													<small>".$row["username"]."</small>
+													<h4>".$nrow["name"]."</h4>
+													<small>".$nrow["username"]."</small>
 												</div>
 											</div>
 										</div>
 										</a>
 									</div>";
 							}
+						}else{
+							echo "<div class='panel panel-default'><div class='panel-body'><h3><b>We've Come Up Empty..</b></h3></div></div>";
+						}
+						echo "<div class='panel panel-default'><div class='panel-body'><b>search by username</b></div></div>";
+						if($urows->num_rows > 0){
+							while($urow = $urows->fetch_assoc()){
+								echo"<div class='panel panel-default'>
+										<a href='profile.php?id=".$urow["user_id"]."' style='color:black; text-decoration:none;'>
+										<div class='panel-body'>
+											<div class='media'>
+												<input type='hidden' value='".$urow["user_id"]."'>
+												<div class='media-left media-middle'>
+													<img class='media-object search-img' src='img/";
+								if($urow["profile_pic"]!=""){
+									echo $urow["profile_pic"];
+								}else{
+									echo "default.png";
+								}
+
+								echo "'>
+												</div>
+												<div class='media-body'>
+													<h4>".$urow["name"]."</h4>
+													<small>".$urow["username"]."</small>
+												</div>
+											</div>
+										</div>
+										</a>
+									</div>";
+							}
+						}else{
+							echo "<div class='panel panel-default'><div class='panel-body'><h3><b>We've Come Up Empty..</b></h3></div></div>";
 						}
 					?>
 				</div>
