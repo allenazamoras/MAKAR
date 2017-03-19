@@ -90,24 +90,6 @@
 				text-align: left;
 				transform: translate(-50%, 0);
 			}
-			#userinfo{
-				
-			}
-			#logo{
-				width: 150px;
-			}
-			#search{
-				width: 270px;
-			}
-			#options{
-				margin-top: 5px;
-			}
-			#test{
-				margin-top: 1000px;
-			}
-			#box{
-				border: 1px solid yellow;
-			}
 			a{
 				color: black;
 			}
@@ -115,15 +97,22 @@
           background-image: linear-gradient(#04519b,#044687 60%,#033769);
           color: #fff !important; 
       }
+      .white{
+        color: white;
+      }
+      .glyphicon-star{
+        color: rgb(0, 0, 0);
+      }
+      .contributionpane{
+        display: none;
+      }
+      #logo{
+        width: 150px;
+      }
       #prof_pic{
         height: 200px;
         width: 200px;
         padding: 0;
-      }
-      .white{
-        color: white;
-      }.glyphicon-star{
-        color: rgb(0, 0, 0);
       }
     </style>
 
@@ -256,7 +245,7 @@
                 <li><a href="#update" <?php if($id!=$_SESSION["user_id"]){ echo "class='hidden'"; } ?> data-toggle="tab">Update Information</a></li>
               </ul>    
               <div class="tab-content">
-                 <div class="tab-pane active" id="post">
+                 <div class="tab-pane active posts" id="post">
                   
                      <hr>
                       <!-- <nav aria-label="Page navigation" class="col-md-4 col-md-offset-4 text-center">
@@ -284,14 +273,14 @@
                               </div>
                               <input type="hidden" value="'.$post["author_id"].'">
                               <div class="panel-body">
-                            <p>'.$post["post"].'</p>
-                            <div class="row">
-                              <div class="col-lg-4">
-                                <h5 class="contri"><span class="badge">'.$post["no_contri"].'</span> Contributors</h5>
-                                <button type="button" class="btn btn-default btn-lg comments">
-                                  <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
-                                </button>
-                              </div>
+                                <p>'.$post["post"].'</p>
+                                <div class="row">
+                                <div class="col-lg-4">
+                                  <h5 class="contri"><span class="badge">'.$post["no_contri"].'</span> Contributors</h5>
+                                  <button type="button" class="btn btn-default btn-lg comments">
+                                    <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" aria-label="down"></span>
+                                  </button>
+                                </div>
                                 
                               <div class="col-lg-4 col-lg-offset-4 editing">
                                 <input type="hidden" value="'.$post["post_id"].'">
@@ -311,7 +300,7 @@
                 
                       if($fave->num_rows > 0){
                         $x = $post["post_id"];
-                        echo '<style>span[id=i'.$post["post_id"].']{color: yellow;}</style>'; 
+                        echo '<style>span[id=i'.$post["post_id"].']{color: rgb(255, 204, 70);}</style>'; 
                       }
               
                       $qcontri = "SELECT * FROM contributions WHERE post_id='".$post["post_id"]."' ORDER BY cdate ASC";
@@ -323,16 +312,22 @@
                           $contri2 = mysqli_query($conn, $qcontri2);
                           $fetch = $contri2->fetch_assoc();
                           echo'<div>
-                              <blockquote>
-                                <h5>'.$contrib["contribution"].'</h5>
+                              <blockquote>';
+                              if($_SESSION["user_id"] == $contrib["author_id"]){
+                                echo'<input type="hidden" value='.$contrib["contribution_id"].'>
+                                  <button type="button" class="btn btn-default btn-xs pull-right delete_c">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true" aria-label="remove"></span>
+                                  </button>'; 
+                              }
+                          echo    '<h5>'.$contrib["contribution"].'</h5> 
                                 <footer><cite title="Source Title">'.$fetch["username"].'</cite></footer>
-                              </blockquote>
+                            </blockquote>
                             </div>';
                         }
                       }
                       echo"</ul>
-                        </div>
-                        </div>";
+                            </div>
+                            </div>";
                     }
                   }
                   
@@ -345,7 +340,7 @@
                       <?php
                       require("connectdb.php");
                       
-                      $n = "SELECT notification FROM notify WHERE user_id='".$_SESSION["user_id"]."'";
+                      $n = "SELECT notification FROM notify WHERE user_id='".$_SESSION["user_id"]."' LIMIT 10";
                       $fetch = mysqli_query($conn, $n);
                       
                       if($fetch->num_rows > 0){
@@ -438,32 +433,32 @@
                       </form>
                  </div><!--/tab-pane-->
               </div><!--/tab-content-->
-              <div id="contribute" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <form method="POST" action="contribute.php" autocomplete="off">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 name="ctitle" id="ctitle" class="modal-title"></h4>
-                        <input name="aid" type="hidden" value="" id="aid">
-                      </div>
-                    
-                      <div class="modal-body">
-                        <input name="id" type="hidden" value="" id="id">
-                        <textarea name="content" class="form-control write" id="ccontent" rows="7"></textarea>
-                        <div class="modal-footer">
-                          <h5 class="contri" id="cmax">170</h5>
-                          <button type="submit" class="btn btn-success" disabled="disabled" id="cbtn">Contribute</button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div> <!--contribute-->
+              
           </div><!--/col-9-->
         </div><!--/row-->
       </div><!--/.container-->
-    </div><!--/container-fluid-->
+      <div id="contribute" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 name="ctitle" id="ctitle" class="modal-title"></h4>
+                  <input name="aid" type="hidden" value="" id="aid">
+                </div>
+                <div class="modal-body">
+                  <input name="id" type="hidden" value="" id="id">
+                  <textarea name="content" class="form-control write" id="ccontent" rows="7"></textarea>
+                  <div class="modal-footer">
+                    <h5 class="contri" id="cmax">170</h5>
+                    <button type="button" class="btn btn-success" disabled="disabled" id="cbtn" data-dismiss="modal">Contribute</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>   
+    </div><!--/container-fluid-->   
+</body>
+</html>
     <!-- jQuery Version 1.11.1 -->
     <script src="jq/jquery.min.js"></script>
 
@@ -473,19 +468,16 @@
     <!-- <script src="jq/update.js"></script> -->
     <script type="text/javascript">
       $(document).ready(function(){
-        $(".contributionpane").hide();
+        //$(".contributionpane").hide();
         $("#cbtn").prop("disabled", false);
-        $("#wbtn").prop("disabled", false);
-        $(".comments").on("click", function(){
+        $(".posts").on("click", ".comments", function(){
           var contribution_sibs = $(this).parent().parent().parent().parent().siblings().children(".panel-body").children(".list-group"); console.log(contribution_sibs);
           var contribution_curr = $(this).parent().parent().siblings(".list-group"); console.log(contribution_curr);
-
           $(contribution_sibs).slideUp();
           $(contribution_curr).slideToggle();
-
-          var chevron_sibs = $(contribution_sibs).siblings(".row").children(".col-lg-4").children(".comments").children(); console.log(chevron_sibs);
+          var chevron_sibs = $(contribution_sibs).siblings(".row").children(".col-lg-4").children(".comments").children(); 
+          console.log(chevron_sibs);
           var chevron_curr = $(this).children(); console.log(chevron_curr);
-
           $(chevron_sibs).addClass("glyphicon-chevron-down");
           $(chevron_sibs).removeClass("glyphicon-chevron-up");
           $(chevron_curr).toggleClass("glyphicon-chevron-down");
@@ -566,15 +558,31 @@
 
         // PLACE IN AJAX $("#prof_pic").html("<img title='profile image' class='img-responsive' src='img/"+response+"'>");
 
-        $(".add_c").on("click", function(){
+        $("#cbtn").on("click", function(){
+          var pid = $(this).parent().prev().prev().val();
+          var aid = $(this).parent().parent().prev().children().next().next().val();
+          var ccontent = $(this).parent().prev().val();
+          var data = {post_id : pid, author_id : aid, contribution : ccontent};
+          $.ajax({
+            url: "contribute.php",
+            type: "POST",
+            data: data,
+            dataType: "json",
+            success: function(contribute){
+              $(".panel-primary .panel-body .col-lg-offset-4 [value="+pid+"]").parent().parent().next().append('<div><blockquote><input type="hidden" value='+contribute.contribution_id+'><button type="button" class="btn btn-default btn-xs pull-right delete_c"><span class="glyphicon glyphicon-remove" aria-hidden="true" aria-label="remove"></span></button><h5>'+contribute.contribution+'</h5> <footer><cite title="Source Title"><?php echo $_SESSION["username"];?></cite></footer></blockquote></div>');
+              var x = $(".panel-primary .panel-body .col-lg-offset-4 [value="+pid+"]").parent().prev().children().find(".badge").text();
+              $(".panel-primary .panel-body .col-lg-offset-4 [value="+pid+"]").parent().prev().children().find(".badge").text(parseInt(x)+1);
+            }
+          });
+        });
+
+        $(".row").on("click", ".add_c", function(){
           var id = $(this).prev().prev().val();
           var title = $(this).parent().parent().parent().prev().prev().find("strong").text();
           var a_id = $(this).parent().parent().parent().prev().val();
-
           $("#contribute #ctitle").text(title);
           $("#contribute #id").val(id);
           $("#contribute #aid").val(a_id);
-
           $("#ccontent").keyup(function(){
             var clen = $(this).val().length;
             $("#cmax").text(170-clen);
@@ -584,7 +592,6 @@
               $("#cbtn").prop("disabled", true);
             }
           });
-          
         });
     
         // $(".add_f").on("click", function(){
@@ -598,20 +605,18 @@
         //   }
         // });
 
-        $(".favourite").on("click", function(){
+        $(".posts").on("click", ".favourite", function(){
           var n = $(this).prev().val();
           var faid = $(this).parent().parent().parent().prev().val();
           var ftitle = $(this).parent().parent().parent().prev().prev().find("strong").text();
-          
+          var data = {post_id : n, user_id : <?php echo $row['user_id']?>,author_id : faid, title : ftitle};
           if($(this).children().css("color") == "rgb(0, 0, 0)"){
-            $(this).children().css("color", "rgb(255, 255, 0)");
+            $(this).children().css("color", "rgb(255, 204, 70)");
             console.log(<?php echo $row['user_id']; ?>+"\n"+n);
-            // $(this).children().toggleClass("glyphicon-star-empty");
-            // $(this).children().toggleClass("glyphicon-star");
+            
             $.ajax({
               url: "afave.php",
-              data: {post_id : n,
-                     user_id : <?php echo $row['user_id']; ?>},
+              data: data,
               type: "POST",
               success: function(response){
                 $('#favourites').html("<span class='pull-left'><strong>Favourites</strong></span>"+response);
@@ -619,12 +624,9 @@
             });
           }else{
             $(this).children().css("color", "rgb(0, 0, 0)");
-            // $(this).children().toggleClass("glyphicon-star-empty");
-            // $(this).children().toggleClass("glyphicon-star");
             $.ajax({
               url: "dfave.php",
-              data: {post_id : n,
-                     user_id : <?php echo $row['user_id']; ?>},
+              data: data,
               type: "POST",
               success: function(response){
                   $('#favourites').html("<span class='pull-left'><strong>Favourites</strong></span>"+response);
@@ -651,9 +653,24 @@
               });
           }
         });
+
+        $(".row").on("click", ".delete_c", function(){
+          var conf = confirm("Are you sure you want to delete this post? You might miss it :(");
+          if(conf){
+            var contrid = $(this).prev().val();
+            var postid = $(this).parent().parent().parent().prev().children().find("input").val();
+            var contribution = $(this).parent().parent();
+            var data = {contr_id : contrid, post_id : postid };
+            $.ajax({
+              url: "deleteContribution.php",
+              type: "POST",
+              data: data,
+              success: function(no_contri){
+                contribution.hide('slow', function(){ contribution.remove(); });
+                $(".delete_c").parent().parent().parent().prev().children().children().find(".badge").text(no_contri);
+              }
+            });
+          }
+        });
       });
     </script>
-
-</body>
-
-</html>
