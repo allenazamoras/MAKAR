@@ -6,7 +6,8 @@ Users to login:
 
    email: allenazamoras@yahoo.com	
    
-   password: password		
+   password: password
+   
    		
    email: denisezamoras@yahoo.com	
    
