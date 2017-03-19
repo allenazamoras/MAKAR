@@ -150,20 +150,20 @@
 					</div>
 					<div class="panel-body">
 						<?php 
-							$wodquery = mysqli_query($conn,"SELECT U.username, COUNT(P.post_id) AS postCount FROM users AS U INNER JOIN post AS P ON U.user_id = P.author_id WHERE P.pdate > DATE_SUB(NOW(), INTERVAL 1 DAY) GROUP BY U.username ORDER BY COUNT(P.post_id) DESC LIMIT 1");
+							$wodquery = mysqli_query($conn,"SELECT U.username, COUNT(P.post_id) AS postCount FROM users AS U INNER JOIN post AS P ON U.user_id = P.author_id WHERE P.pdate >= CURDATE() GROUP BY U.username ORDER BY COUNT(P.post_id) DESC LIMIT 1");
 							$wod = mysqli_fetch_assoc($wodquery);
 							echo "<h5>".$wod['username']."</h5>";
 						?>
 					</div>
 				</div>
-			
+				
 				<div class="panel panel-info">
 					<div class="panel-heading">
 						<h5 class="panel-title"><strong>Most Contributed Post</strong></h5>
 					</div>
 					<div class="panel-body">
 						<?php 
-							$mostcontriquery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND (SELECT MAX(no_contri) FROM post)");
+							$mostcontriquery = mysqli_query($conn,"SELECT post_title,author_id,no_contri FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND no_contri = (SELECT MAX(no_contri) FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK))");
 							$mostcontri = mysqli_fetch_assoc($mostcontriquery);
 							$authorOfPost = mysqli_query($conn,"SELECT username FROM users WHERE user_id='{$mostcontri['author_id']}'");
 							$author = mysqli_fetch_assoc($authorOfPost);
@@ -171,14 +171,14 @@
 						?>
 					</div>
 				</div>
-			
+				
 				<div class="panel panel-info">
 					<div class="panel-heading">
 						<h5 class="panel-title"><strong>Most Favourited Post</strong></h5>
 					</div>
 					<div class="panel-body">
 						<?php 
-							$mostfavepostquery = mysqli_query($conn,"SELECT post_id,COUNT(post_id) AS favs FROM favourite GROUP BY post_id ORDER BY favs DESC LIMIT 1");
+							$mostfavepostquery = mysqli_query($conn,"SELECT post_id FROM favourite GROUP BY post_id ORDER BY COUNT(post_id) DESC LIMIT 1");
 							$mostfavepost = mysqli_fetch_assoc($mostfavepostquery);
 							$mostfavequery = mysqli_query($conn,"SELECT post_title,author_id FROM post WHERE pdate > DATE_SUB(NOW(), INTERVAL 1 WEEK) AND post_id='{$mostfavepost['post_id']}'");
 							$mostfave = mysqli_fetch_assoc($mostfavequery);
@@ -188,7 +188,7 @@
 						?>
 					</div>
 				</div>
-			</div>
+			</div><!-- /.featured -->
 			<div class="row">
 				<div class="col-lg-5 col-lg-offset-3">
 					<?php
