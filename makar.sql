@@ -6,6 +6,8 @@
 -- Generation Time: Mar 17, 2017 at 02:03 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 7.0.8
+CREATE DATABASE makar;
+USE makar;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
